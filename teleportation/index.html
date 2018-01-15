@@ -11,20 +11,29 @@
   <body>
     <a-scene stats>
       <a-assets>
-        <a-mixin id="beveled-square" geometry="primitive: cone; radiusTop: 0.15; radiusBottom: 0.19; height: 0.02; segmentsRadial: 4; segmentsHeight: 1" rotation="0 45 0"></a-mixin>
-        <img id="sol" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
-        <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg">
+        <img id="solTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
+        <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+        <a-mixin id="voxel"
+          geometry="primitive: box; depth: 0.5; height: 0.5; width :0.5"
+          material="shader: standard"
+          random-color
+          snap="offset: 0.25 0.25 0.25; snap: 0.5 0.5 0.5">
+        </a-mixin>
       </a-assets>
 
       <!-- Mains-->
-      <a-entity id="teleHand" hand-controls="left" teleport-controls></a-entity>
-      <a-entity id="normalHand" hand-controls="right"></a-entity>
+      <a-entity id="teleHand" hand-controls="left" teleport-controls="type : parabolic; collisionEntities : [mixin='voxel'], #sol"></a-entity>
+      <a-entity id="blockHand" hand-controls="right"></a-entity>
 
-      <a-entity geometry="primitive: box; depth: 0.5; height: 0.5; width :0.5"
-                material="color: red; shader: standard"></a-entity>
+      <a-entity mixin="voxel" position="-1 0 -2"></a-entity>
+      <a-entity mixin="voxel" position="0 0 -2"></a-entity>
+      <a-entity mixin="voxel" position="0 1 -2">
+        <a-animation attribute="rotation" to="0 360 0" repeat="indefinite"></a-animation>
+      </a-entity>
+      <a-entity mixin="voxel" position="1 0 -2"></a-entity>
 
       <a-sky id="fondArriere" theta-length="90" radius="30" src="#skyTexture"></a-sky>
-      <a-cylinder radius="10" height="0.1" id="leSol" src="#sol"></a-cylinder>
+      <a-cylinder radius="30" height="0.1" id="sol" src="#solTexture"></a-cylinder>
 
       <script>
       </script>
