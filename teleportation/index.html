@@ -6,7 +6,10 @@
     <meta name ="description" content="Téléportation - A-Frame">
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>
+    <script src="components/intersection-spawn.js"></script>
     <script src="components/random-color.js"></script>
+    <script src="components/snap.js"></script>
   </head>
   <body>
     <a-scene stats>
@@ -23,7 +26,10 @@
 
       <!-- Mains-->
       <a-entity id="teleHand" hand-controls="left" teleport-controls="type : parabolic; collisionEntities : [mixin='voxel'], #sol"></a-entity>
-      <a-entity id="blockHand" hand-controls="right"></a-entity>
+      <a-entity id="blockHand"
+        hand-controls="right"
+        intersection-spawn="event : click; mixin : voxel"
+        controller-cursor></a-entity>
 
       <a-entity mixin="voxel" position="-1 0 -2"></a-entity>
       <a-entity mixin="voxel" position="0 0 -2"></a-entity>
@@ -35,8 +41,10 @@
       <a-sky id="fondArriere" theta-length="90" radius="30" src="#skyTexture"></a-sky>
       <a-cylinder radius="30" height="0.1" id="sol" src="#solTexture"></a-cylinder>
 
-      <script>
-      </script>
+      <!-- Camera. -->
+      <a-camera>
+        <a-cursor intersection-spawn="event: click; mixin: voxel"></a-cursor>
+      </a-camera>
 
   </body>
 </html>
