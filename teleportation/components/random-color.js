@@ -1,0 +1,26 @@
+AFRAME.registerComponent('random-color', {
+
+    dependencies: ['material'],
+
+    init: function() {
+
+      // Met la couleur de l'element random
+      this.el.setAttribute('material', 'color', getRandomColor());
+
+    }
+
+});
+
+function getRandomColor() {
+
+    const letters = '0123456789ABCDEF';
+    var color = '#';
+    for(var i = 0; i < 6; i++) {
+
+      color += letters[MAth.floor(Math.random() * 16)];
+
+    }
+
+  return color;
+
+}
