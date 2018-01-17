@@ -7,38 +7,18 @@
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
     <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>
-    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/aframe-text-geometry-component@0.5.1/dist/aframe-text-geometry-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
     <script src="components/horloge.js"></script>
-    <!--<script src="components/collider-check.js"></script>
-      <script src="https://rawgit.com/caseyyee/aframe-ui-widgets/master/dist/aframe-ui-widgets.min.js"></script>
-    <script src="components/random-color.js"></script>
-    <script src="components/snap.js"></script>
-  -->
   </head>
   <body>
     <a-scene stats>
       <a-assets>
         <img id="solTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
-
-        <!-- font -->
-        <!--<a-asset-item id="optimerBoldFont" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>-->
-
       </a-assets>
 
-      <!-- Boutons -->
-
-<!--
-      <a-entity id="monLevier" mixin="square">
-        <a-entity grabbable pivot="0 0 0"geometry="primitive:box; depth:0.1; heigth:1; width:0.1"
-          position="0 0.5 0" rotation="90 0 0">
-          <a-entity geometry="primitive:sphere; radius:0.1" position="0 0.5 0"></a-entity>
-        </a-enity>
-      </a-entity>0-->
-
+      <!-- Horloge -->
       <a-entity id="horloge" horloge geometry="primitive: cylinder; radius:0.59; height:0.05;" position="0.5 0 -0.8" material="color:#FFFFFF;" rotation="90 270 0">
         <a-entity id="monAiguille" ui-rotary>
         </a-entity>
@@ -59,7 +39,6 @@
         </a-entity>
       </a-entity>
 
-
       <!-- Mains -->
       <a-entity id="teleHand"
         hand-controls="left"
@@ -78,7 +57,6 @@
       <a-cylinder radius="5" height="0.1" position="0 -1 0"
         id="sol" src="#solTexture">
       </a-cylinder>
-
     </a-scene>
   </body>
 </html>
