@@ -16,16 +16,9 @@
       <a-assets>
         <img id="solTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
-
-        <!-- font -->
-        <a-asset-item id="fontPressStart2P" crossorigin='anonymous'
-          src="https://fonts.googleapis.com/css?family=Press+Start+2P">
-        </a-asset-item>
-
       </a-assets>
 
       <!-- Cadran -->
-
       <a-entity id="cadran" cadran geometry="primitive: box; depth: 0.5; height: 0.5; width: 1.5" position="0 0.5 -0.8" material="color:#1a1a1a">
         <a-entity id="monterHeure" ui-button="color:#80ff00" position="-0.437 0.263 0"></a-entity>
         <a-entity id="diminuerHeure" ui-button="color: #ff0000" position="0.437 0.263 0"></a-entity>
@@ -35,7 +28,6 @@
           <a-entity  text="value: : 00;align:center;color:#800000;width:4"></a-entity>
         </a-entity>
       </a-entity>
-
 
       <!-- Mains -->
       <a-entity id="teleHand"
