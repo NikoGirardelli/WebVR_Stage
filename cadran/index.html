@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cadran</title>
+    <meta name ="description" content="Cadran - A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
+    <script src="components/ui-widget.js"></script>
+    <script src="components/cadran.js"></script>
+  </head>
+  <body>
+    <a-scene stats>
+      <a-assets>
+        <img id="solTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
+        <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+
+        <!-- font -->
+        <a-asset-item id="fontPressStart2P" crossorigin='anonymous'
+          src="https://fonts.googleapis.com/css?family=Press+Start+2P">
+        </a-asset-item>
+
+      </a-assets>
+
+      <!-- Cadran -->
+
+      <a-entity id="cadran" cadran geometry="primitive: box; depth: 0.5; height: 0.5; width: 1.5" position="0 0.5 -0.8" material="color:#1a1a1a">
+        <a-entity id="monterHeure" ui-button="color:#80ff00" position="-0.437 0.263 0"></a-entity>
+        <a-entity id="diminuerHeure" ui-button="color: #ff0000" position="0.437 0.263 0"></a-entity>
+        <a-entity position="0.216 0 0.255" scale="2 2 2">
+          <a-entity geometry="width:0.54;height:0.18;primitive:plane" position="-0.111 0 0" material="color:#121212;fog:false"></a-entity>
+          <a-entity id="heure" text="value:01;align:center;color:#800000;width:4" position="-0.271 0 0"></a-entity>
+          <a-entity  text="value: : 00;align:center;color:#800000;width:4"></a-entity>
+        </a-entity>
+      </a-entity>
+
+
+      <!-- Mains -->
+      <a-entity id="teleHand"
+        hand-controls="left"
+        teleport-controls="type : parabolic">
+      </a-entity>
+      <a-entity
+        hand-controls="right">
+      </a-entity>
+
+      <!-- Ciel et sol -->
+      <a-sky id="fondArriere" theta-length="90"
+        radius="5" src="#skyTexture">
+      </a-sky>
+      <a-cylinder radius="5" height="0.1"
+        id="sol" src="#solTexture">
+      </a-cylinder>
+
+    </a-scene>
+  </body>
+</html>
