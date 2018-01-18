@@ -2,19 +2,77 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Horloge</title>
-    <meta name ="description" content="Horloge - A-Frame">
+    <title>Calendrier version Cube</title>
+    <meta name ="description" content="Calendrier version cube - A-Frame">
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
-    <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.4/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
+    <script>
+      //color randomizer
+      AFRAME.registerComponent('color-randomizer', {
+        play: function () {
+          this.el.addEventListener('drag-drop', function (evt) {
+            evt.detail.dropped.setAttribute('material', 'color',
+              '#'+(Math.random()*0xFFFFFF<<0).toString(16));
+            // color randomizer credit: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript#comment6801353_5365036
+          });
+        }
+      });
+      // turn controller's physics presence on only while button held down
+      AFRAME.registerComponent('phase-shift', {
+        init: function () {
+          var el = this.el;
+
+          el.addEventListener('gripdown', function () {
+            el.setAttribute('collision-filter', {collisionForces: true});
+          });
+          el.addEventListener('gripup', function () {
+            el.setAttribute('collision-filter', {collisionForces: false});
+          });
+        }
+      });
+    </script>
     <!--<script src="components/scanner.js"></script>-->
   </head>
   <body>
-    <a-scene stats>
+    <a-scene stats physics environment="preset: threetowers; shadow:true">
+      <a-assets>
+        <a-mixin id="cubeMois" geometry="primitive:box; width:0.4; height:0.4; depth:0.4"
+                 grabbable hoverable draggable dynamic-body shadow
+                 event-set__hover-start="material.opacity: 0.7"
+                 event-set__hover-end="material.opacity: 1.0"></a-mixin>
+        <a-mixin id="transformer" color-randomizer droppable static-body
+                 collision-filter="collisionForces: false"
+                 geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"></a-mixin>
+         <!-- to change touch mode collider -->
+        <a-mixin id="mytouch" physics-collider phase-shift
+                 collision-filter="collisionForces: false"
+                 static-body="shape: sphere; sphereRadius: 0.02"
+                 super-hands="colliderEvent: collisions; colliderEventProperty: els;
+                              colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
+                              colliderState:"></a-mixin>
+      </a-assets>
 
+      <a-entity progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:false;">
+        <a-entity id="teleHand" class="left-controller"
+                  teleport-controls="type : parabolic"
+                  hand-controls="left"></a-entity>
+        <a-entity id="rightHand" class="right-controller"
+                  hand-controls="right"></a-entity>
+      </a-entity>
+
+      <a-entity class="cube" mixin="cubeMois" position="1 0.265 -1"
+                material="color: green"></a-entity>
+      <a-entity class="transformer" mixin="transformer" position = "0 1.6 -1"
+                material="color:grey" shadow></a-entity>
+
+      <!-- ground collider keeps objets from falling -->
+      <a-box static-body width=100 height=0.001 depth=100 visible="false"></a-box>
     </a-scene>
   </body>
 </html>
