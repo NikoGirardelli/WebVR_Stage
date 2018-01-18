@@ -10,7 +10,7 @@
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
     <script>
       //color randomizer
@@ -58,12 +58,12 @@
                               colliderState:"></a-mixin>
       </a-assets>
 
-      <a-entity progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:false;">
-        <a-entity id="teleHand" class="left-controller"
-                  teleport-controls="type : parabolic"
-                  hand-controls="left"></a-entity>
-        <a-entity id="rightHand" class="right-controller"
-                  hand-controls="right"></a-entity>
+      <a-entity progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:true">
+        <a-entity id="teleHand" hand-controls="left"
+                  
+                  teleport-controls="type : parabolic"></a-entity>
+        <a-entity id="rightHand" hand-controls="right"
+                  ></a-entity>
       </a-entity>
 
       <a-entity class="cube" mixin="cubeMois" position="1 0.265 -1"
