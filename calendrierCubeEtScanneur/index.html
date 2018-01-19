@@ -12,66 +12,85 @@
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
-    <script>
-      //color randomizer
-      AFRAME.registerComponent('color-randomizer', {
-        play: function () {
-          this.el.addEventListener('drag-drop', function (evt) {
-            evt.detail.dropped.setAttribute('material', 'color',
-              '#'+(Math.random()*0xFFFFFF<<0).toString(16));
-            // color randomizer credit: http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript#comment6801353_5365036
-          });
-        }
-      });
-      // turn controller's physics presence on only while button held down
-      AFRAME.registerComponent('phase-shift', {
-        init: function () {
-          var el = this.el;
-
-          el.addEventListener('gripdown', function () {
-            el.setAttribute('collision-filter', {collisionForces: true});
-          });
-          el.addEventListener('gripup', function () {
-            el.setAttribute('collision-filter', {collisionForces: false});
-          });
-        }
-      });
-    </script>
-    <!--<script src="components/scanner.js"></script>-->
+    <script src="components/lecture-cube.js"></script>
+    <script src="components/phase-shift.js"></script>
   </head>
   <body>
+
     <a-scene stats physics environment="preset: threetowers; shadow:true">
+
       <a-assets>
         <a-mixin id="cubeMois" geometry="primitive:box; width:0.4; height:0.4; depth:0.4"
                  grabbable hoverable draggable dynamic-body shadow
                  event-set__hover-start="material.opacity: 0.7"
                  event-set__hover-end="material.opacity: 1.0"></a-mixin>
-        <a-mixin id="transformer" color-randomizer droppable static-body
+        <a-mixin id="lecteurCube" droppable static-body
                  collision-filter="collisionForces: false"
-                 geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"></a-mixin>
-         <!-- to change touch mode collider -->
+                 geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
+                 event-set__dragover-start="material.color: green"
+                 event-set__drag-drop="material.color: green"></a-mixin>
+        <!-- to change touch mode collider -->
         <a-mixin id="mytouch" physics-collider phase-shift
                  collision-filter="collisionForces: false"
                  static-body="shape: sphere; sphereRadius: 0.02"
                  super-hands="colliderEvent: collisions; colliderEventProperty: els;
                               colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
                               colliderState:"></a-mixin>
+        <!-- Les textures des mois -->
+        <img id="jan" src="img/jan.png">
+        <img id="feb" src="img/feb.png">
+        <img id="mar" src="img/mar.png">
+        <img id="apr" src="img/apr.png">
+        <img id="may" src="img/may.png">
+        <img id="june" src="img/june.png">
+        <img id="july" src="img/july.png">
+        <img id="aug" src="img/aug.png">
+        <img id="sept" src="img/sept.png">
+        <img id="oct" src="img/oct.png">
+        <img id="nov" src="img/nov.png">
+        <img id="dec" src="img/dec.png">
       </a-assets>
 
-      <a-entity progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:true">
+      <!-- Les mains -->
+      <a-entity progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:false">
         <a-entity id="teleHand" hand-controls="left"
-                  
                   teleport-controls="type : parabolic"></a-entity>
-        <a-entity id="rightHand" hand-controls="right"
-                  ></a-entity>
+        <a-entity id="rightHand" hand-controls="right"></a-entity>
       </a-entity>
 
-      <a-entity class="cube" mixin="cubeMois" position="1 0.265 -1"
-                material="color: green"></a-entity>
-      <a-entity class="transformer" mixin="transformer" position = "0 1.6 -1"
-                material="color:grey" shadow></a-entity>
+      <!-- Les cubes pour choisir le mois -->
+      <a-entity class="cube" mixin="cubeMois" position="-1 0.265 0"
+                material="src:#jan" data-mois="JAN"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-2 0.265 1"
+                material="src:#feb" data-mois="FEB"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-3 0.265 1"
+                material="src:#dec" data-mois="DEC"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-4 0.265 0"
+                material="src:#mar" data-mois="MAR"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-5 0.265 1"
+                material="src:#apr" data-mois="APR"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-6 0.265 1"
+                material="src:#may" data-mois="MAY"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-7 0.265 0"
+                material="src:#june" data-mois="JUNE"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-8 0.265 1"
+                material="src:#july" data-mois="JULY"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-9 0.265 1"
+                material="src:#aug" data-mois="AUG"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-10 0.265 0"
+                material="src:#nov" data-mois="NOV"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-11 0.265 1"
+                material="src:#sept" data-mois="SEPT"></a-entity>
+      <a-entity class="cube" mixin="cubeMois" position="-12 0.265 1"
+                material="src:#oct" data-mois="OCT"></a-entity>
 
-      <!-- ground collider keeps objets from falling -->
+      <!-- Le lecteur de cube -->
+      <a-entity class="lecteurCube" mixin="lecteurCube" position = "0 1 0"
+                material="color:red; opacity: 0.7" data-mois-choisi="" lecture-cube>
+        <a-box static-body width=0.5 height=0.5 depth=0.5 visible="true" position="0 -0.5 0" shadow></a-box>
+      </a-entity>
+
+      <!-- Collider du sol pour empêcher les blocs de tomber -->
       <a-box static-body width=100 height=0.001 depth=100 visible="false"></a-box>
     </a-scene>
   </body>
