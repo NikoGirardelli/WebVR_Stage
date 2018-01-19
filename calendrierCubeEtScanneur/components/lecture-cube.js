@@ -7,6 +7,7 @@ AFRAME.registerComponent('lecture-cube', {
 
     var el = this.el;
     var leMoisChoisi = " ";
+    var bloc = document.querySelector("#blocSousLecteur");
 
     el.addEventListener('drag-drop', function (evt) {
 
@@ -14,6 +15,8 @@ AFRAME.registerComponent('lecture-cube', {
       el.setAttribute("data-mois-choisi",leMoisChoisi);
 
       console.log(el.getAttribute("data-mois-choisi"));
+
+      bloc.setAttribute("material", "src:#" + el.getAttribute("data-mois-choisi"));
     });
 
   }
