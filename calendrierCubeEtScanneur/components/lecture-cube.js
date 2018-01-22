@@ -14,8 +14,6 @@ AFRAME.registerComponent('lecture-cube', {
       leMoisChoisi = evt.detail.dropped.getAttribute('data-mois');
       el.setAttribute("data-mois-choisi",leMoisChoisi);
 
-      console.log(el.getAttribute("data-mois-choisi"));
-
       bloc.setAttribute("material", "src:#" + el.getAttribute("data-mois-choisi"));
     });
 
