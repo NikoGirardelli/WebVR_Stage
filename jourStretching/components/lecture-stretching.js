@@ -26,9 +26,9 @@ AFRAME.registerComponent('lecture-stretching', {
       }*/
 
       /* Changer la valeur du jour de choisi */
-      if(el.getAttribute("scale").x/2 >= tabGrosseur[1] && el.getAttribute("scale").x/2 <= tabGrosseur[2]) {
+      if(el.getAttribute("scale").x/10 >= tabGrosseur[1] && el.getAttribute("scale").x/10 <= tabGrosseur[2]) {
 
-        console.log(el.getAttribute("scale").x/2);
+        console.log("test");
 
       }
 

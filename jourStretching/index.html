@@ -21,8 +21,8 @@
     <a-scene stats physics environment="preset: threetowers; shadow:true">
 
       <a-assets>
-        <a-mixin id="leJour" geometry="primitive:box;"
-                 grabbable hoverable  dynamic-body stretchable  shadow
+        <a-mixin id="leJour" scale="0.1 0.1 0.1" geometry="primitive:box;"
+                 grabbable hoverable dynamic-body="mass:50" stretchable  shadow
                  event-set__hover-start="material.opacity: 0.6"
                  event-set__hover-end="material.opacity: 0.8"></a-mixin>
         <!-- to change touch mode collider -->
@@ -34,12 +34,12 @@
                               colliderState:"></a-mixin>
       </a-assets>
 
-      <!-- Les mains et la camera -->
+      <!-- Les mains et la camera <a-entity geometry="height:0.05" position="0 0 -1.658" static-body="sphereRadius:NaN"></a-entity>-->
       <a-entity id="cameraRig" progressive-controls="objects: #leJour; touchMixin: mytouch; override: true; controllerModel:false">
         <a-entity id="head" camera wasd-controls look-controls></a-entity>
         <a-entity id="left-hand" vive-controls="hand:left;model:true;" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;type:parabolic;"></a-entity>
         <a-entity id="right-hand" vive-controls="hand:right;model:true;">
-          <a-entity geometry="height:0.05" position="0 0 -1.658" static-body="sphereRadius:NaN"></a-entity>
+
         </a-entity>
       </a-entity>
 
