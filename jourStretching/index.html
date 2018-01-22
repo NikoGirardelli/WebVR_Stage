@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jour - Étirement Cube</title>
+    <meta name ="description" content="Jour Étirement Cube - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+  <!--  <script src="components/ui-widget.js"></script>-->
+    <script src="components/lecture-stretching.js"></script>
+    <script src="components/phase-shift.js"></script>
+
+  </head>
+  <body>
+
+    <a-scene stats physics environment="preset: threetowers; shadow:true">
+
+      <a-assets>
+        <a-mixin id="leJour" geometry="primitive:box;"
+                 grabbable hoverable  dynamic-body stretchable  shadow
+                 event-set__hover-start="material.opacity: 0.6"
+                 event-set__hover-end="material.opacity: 0.8"></a-mixin>
+        <!-- to change touch mode collider -->
+        <a-mixin id="mytouch" physics-collider phase-shift
+                 collision-filter="collisionForces: false"
+                 static-body="shape: sphere; sphereRadius: 0.03"
+                 super-hands="colliderEvent: collisions; colliderEventProperty: els;
+                              colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
+                              colliderState:"></a-mixin>
+      </a-assets>
+
+      <!-- Les mains et la camera -->
+      <a-entity id="cameraRig" progressive-controls="objects: #leJour; touchMixin: mytouch; override: true; controllerModel:false">
+        <a-entity id="head" camera wasd-controls look-controls></a-entity>
+        <a-entity id="left-hand" vive-controls="hand:left;model:true;" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;type:parabolic;"></a-entity>
+        <a-entity id="right-hand" vive-controls="hand:right;model:true;">
+          <a-entity geometry="height:0.05" position="0 0 -1.658" static-body="sphereRadius:NaN"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le cube pour choisir le jour -->
+      <a-entity lecture-stretching class="leJour" mixin="leJour" position="-3 0.5 0"
+                material="opacity:0.8" data-jour="01">
+      </a-entity>
+      <a-entity geometry="primitive:box; height:0.5;" position="-5 0 0" static-body ></a-entity>
+
+      <!-- Collider du sol pour empêcher les blocs de tomber -->
+      <a-box static-body width=100 height=0.001 depth=100 visible="false"></a-box>
+    </a-scene>
+  </body>
+</html>
