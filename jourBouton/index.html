@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jour - Boutons</title>
+    <meta name ="description" content="Jour Bouton - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="components/ui-widget.js"></script>
+    <script src="components/cadran.js"></script>
+  </head>
+  <body>
+    <a-scene stats environment="preset:egypt; shadow:true;">
+
+      <a-assets>
+        <a-mixin id="bouton" ui-button="pressedColor: #808080; color: #000000; baseColor: #ffffff;"></a-mixin>
+        <a-mixin id="btn1" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/1.png"></a-mixin>
+        <a-mixin id="btn2" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/2.png"></a-mixin>
+        <a-mixin id="btn3" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/3.png"></a-mixin>
+        <a-mixin id="btn4" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/4.png"></a-mixin>
+        <a-mixin id="btn5" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/5.png"></a-mixin>
+        <a-mixin id="btn6" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/6.png"></a-mixin>
+        <a-mixin id="btn7" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/7.png"></a-mixin>
+        <a-mixin id="btn8" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/8.png"></a-mixin>
+        <a-mixin id="btn9" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/9.png"></a-mixin>
+        <a-mixin id="btn0" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/0.png"></a-mixin>
+        <a-mixin id="btn-ok" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/ok.png"></a-mixin>
+        <a-mixin id="btn-reset" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/reset.png"></a-mixin>
+      </a-assets>
+
+      <!-- Selecteur jour -->
+      <a-entity id="selecteurJour">
+        <!-- Les boutons -->
+        <a-entity geometry="primitive:box;depth:1.28;height:0.25;width:1.75;"
+                  material="color:#FFFFFF;" position="-0.25 0.129 0"></a-entity>
+        <a-entity mixin="bouton" data-btn="1" ui-button="top:btn1;"position="-0.813 0.263 0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="4" ui-button="top:btn4;" position="-0.813 0.263 0"></a-entity>
+        <a-entity mixin="bouton" data-btn="7" ui-button="top:btn7;" position="-0.813 0.263 -0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="2" ui-button="top:btn2;" position="-0.4375 0.263 0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="5" ui-button="top:btn5;" position="-0.4375 0.263 0"></a-entity>
+        <a-entity mixin="bouton" data-btn="8" ui-button="top:btn8;" position="-0.4375 0.263 -0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="3" ui-button="top:btn3;" position="-0.0625 0.263 0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="6" ui-button="top:btn6;" position="-0.0625 0.263 0"></a-entity>
+        <a-entity mixin="bouton" data-btn="9" ui-button="top:btn9;" position="-0.0625 0.263 -0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="0" ui-button="top:btn0;" position="0.3125 0.263 0.375"></a-entity>
+        <a-entity mixin="bouton" data-btn="confirm" position="0.3125 0.263 0" ui-button="top:btn-ok;"></a-entity>
+        <a-entity mixin="bouton" data-btn="reset" position="0.3125 0.263 -0.375" ui-button="top:btn-reset;"></a-entity>
+        <!-- Le texte -->
+        <a-entity id="ecranJour" position="0 1.883 -0.94" geometry="radius:1.44;phiStart:180;phiLength:180;primitive:sphere" material="side:back" text__t="width:1.98;wrapCount:5.84;value:Day : 31"></a-entity>
+        <a-entity  text="value:Day : 0;align:center;color:#800000;width:4" position="0 1 -1"></a-entity>
+      </a-entity>
+
+      <!-- Les mains et la camera -->
+      <a-entity id="cameraRig" progressive-controls="objects: #leJour; touchMixin: mytouch; override: true; controllerModel:false">
+        <a-entity id="head" camera wasd-controls look-controls></a-entity>
+        <a-entity id="left-hand"
+          vive-controls="hand:left;model:true;"
+          teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;type:parabolic;"></a-entity>
+        <a-entity id="right-hand" vive-controls="hand:right;model:true;"></a-entity>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
