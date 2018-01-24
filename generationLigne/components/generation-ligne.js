@@ -3,7 +3,7 @@ AFRAME.registerComponent("generation-ligne", {
 
 	  init: function () {
 
-			/* Référence  = 86 fps début
+			/* Référence  = 86 fps début avec 1600 entités
       var el = this.el;
 
 			for(var x=0;x<40;x++) {
@@ -34,6 +34,7 @@ AFRAME.registerComponent("generation-ligne", {
 
 	  }*/
 
+		/* 85fps après 4 secondes pour 1 entités avec 2000 lignes */
 		var el = this.el;
 		var ligne = document.createElement('a-entity');
 
@@ -54,9 +55,6 @@ AFRAME.registerComponent("generation-ligne", {
 		}
 
 		el.appendChild(ligne);
-
-
-		console.log("devrait marcher");
 
 	}
 
