@@ -10,12 +10,13 @@
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
     <script src="components/cadran.js"></script>
+    <script src="components/jour-bouton.js"></script>
   </head>
   <body>
     <a-scene stats environment="preset:egypt; shadow:true;">
 
       <a-assets>
-        <a-mixin id="bouton" ui-button="pressedColor: #808080; color: #000000; baseColor: #ffffff;"></a-mixin>
+        <a-mixin id="bouton" jour-bouton ui-button="pressedColor: #808080; color: #000000; baseColor: #ffffff;"></a-mixin>
         <a-mixin id="btn1" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/1.png"></a-mixin>
         <a-mixin id="btn2" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/2.png"></a-mixin>
         <a-mixin id="btn3" geometry="primitive: cylinder; radius: 0.1; height: 0.025; segmentsHeight: 1;" position="0 0.02 0" material="src:img/3.png"></a-mixin>
@@ -45,19 +46,20 @@
         <a-entity mixin="bouton" data-btn="6" ui-button="top:btn6;" position="-0.0625 0.263 0"></a-entity>
         <a-entity mixin="bouton" data-btn="9" ui-button="top:btn9;" position="-0.0625 0.263 -0.375"></a-entity>
         <a-entity mixin="bouton" data-btn="0" ui-button="top:btn0;" position="0.3125 0.263 0.375"></a-entity>
-        <a-entity mixin="bouton" data-btn="confirm" position="0.3125 0.263 0" ui-button="top:btn-ok;"></a-entity>
+        <a-entity mixin="bouton" data-btn="ok" position="0.3125 0.263 0" ui-button="top:btn-ok;"></a-entity>
         <a-entity mixin="bouton" data-btn="reset" position="0.3125 0.263 -0.375" ui-button="top:btn-reset;"></a-entity>
         <!-- Le texte -->
-        <a-entity id="ecranJour" position="0 1.883 -0.94" geometry="radius:1.44;phiStart:180;phiLength:180;primitive:sphere" material="side:back" text__t="width:1.98;wrapCount:5.84;value:Day : 31"></a-entity>
-        <a-entity  text="value:Day : 0;align:center;color:#800000;width:4" position="0 1 -1"></a-entity>
+        <a-entity id="ecranJour" position="-0.25 1.883 -1" geometry="radius:1.44;phiStart:180;phiLength:180;primitive:sphere" material="side:back" text__t="width:1.98;wrapCount:5.84;value:Day :"></a-entity>
+        <a-entity position="-0.25 1.201 -1" text__t="wrapCount:28;value:\nYou can't have more than two numbers.\nPress 'Ok' to continue \nor press 'Reset' to enter new day;width:1.98;align:center"></a-entity>
       </a-entity>
 
       <!-- Les mains et la camera -->
-      <a-entity id="cameraRig" progressive-controls="objects: #leJour; touchMixin: mytouch; override: true; controllerModel:false">
+      <a-entity id="cameraRig" position="0 2 0">
         <a-entity id="head" camera wasd-controls look-controls></a-entity>
-        <a-entity id="left-hand"
-          vive-controls="hand:left;model:true;"
-          teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;type:parabolic;"></a-entity>
+        <a-entity id="left-hand" vive-controls="hand:left;model:true;"
+                  teleport-controls="cameraRig: #cameraRig;
+                                     teleportOrigin: #head;
+                                     type:parabolic;"></a-entity>
         <a-entity id="right-hand" vive-controls="hand:right;model:true;"></a-entity>
       </a-entity>
 
