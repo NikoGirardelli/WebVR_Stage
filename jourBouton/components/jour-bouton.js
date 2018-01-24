@@ -6,40 +6,54 @@ AFRAME.registerComponent("jour-bouton", {
 			/* Référence à l'écran */
       var texteEcranJour = document.querySelector("#ecranJour");
 
+			/* Bouton */
+			var el = this.el;
+
 			/* Permet d'aider pour l'écriture de la journée */
-			var jour = "";
 			var phraseDefaut = "value: Day : ";
-			var compteur = 0;
 
       /* Lorsque qu'on appuit le bouton */
-      this.el.addEventListener('pressed', function() {
+      el.addEventListener('pressed', function() {
 
 				// Vérifier si la date est bonne sinon retourner erreur
-				if(this.el.getAttribute("data-btn") == "ok") {
+				if(el.getAttribute("data-btn") == "ok") {
 
 					console.log("ok");
 
 				}
 
 				/* Remet le texte par défaut */
-				else if(this.el.getAttribute("data-btn") == "reset") {
+				else if(el.getAttribute("data-btn") == "reset") {
 
-					texteEcranJour.setAttribute("text__t", phraseDefaut);
-					compteur = 0;
+					texteEcranJour.setAttribute("data-jour", "");
+					console.log("reset");
 
 				}
 
 				/* Si nous n'avons pas entrer trois valeur et que c'est un chiffre &&
 					(this.el.getAttribute("data-btn") != "reset" ||
 					 this.el.getAttribute("data-btn") != "ok")*/
-				else if(compteur < 3) {
+				else if(texteEcranJour.getAttribute("data-jour").length < 2) {
 
 					// On lit le date du bouton et l'ajoute à la variable jour.
-					jour = this.el.getAttribute("data-btn");
-					texteEcranJour.setAttribute("text__t", phraseDefaut + jour);
-					compteur ++;
+					texteEcranJour.setAttribute("data-jour", texteEcranJour.getAttribute("data-jour") + el.getAttribute("data-btn"));
 
 				}
+
+				/* A MODIFIER LORS DU PROTOTYPE CHANGER LA VALEUR SELON */
+				if(parseInt(texteEcranJour.getAttribute("data-jour")) < 32) {
+
+					texteEcranJour.setAttribute("text__t", "color:green");
+
+				}
+
+				else {
+
+					texteEcranJour.setAttribute("text__t", "color:red");
+
+				}
+
+				texteEcranJour.setAttribute("text__t", phraseDefaut + texteEcranJour.getAttribute("data-jour"));
 
       });
 
