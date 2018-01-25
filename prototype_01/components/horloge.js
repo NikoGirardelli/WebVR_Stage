@@ -30,7 +30,7 @@ AFRAME.registerComponent('horloge', {
         /* Pour 12h, 10 et -10 ou -350 et 0 */
         if((angle < lesAnglesPositifs[1] && angle > lesAnglesNegatifs[0]) ||
           (angle < lesAnglesNegatifs[23] && angle > lesAnglesPositifs[0])) {
-          console.log("12h");
+
           monHorloge.setAttribute("material", "color:#c9c3c3");
           monHorloge.setAttribute("data-heure-choisisse",12);
 
@@ -39,98 +39,100 @@ AFRAME.registerComponent('horloge', {
         /* Pour 1,-20 et -40 ou 340 et 320 */
         else if((angle < lesAnglesNegatifs[1] && angle > lesAnglesNegatifs[3]) ||
                (angle < lesAnglesPositifs[22] && angle > lesAnglesPositifs[21])) {
-          console.log("1h");
+
           monHorloge.setAttribute("material", "color:#af9480");
           monHorloge.setAttribute("data-heure-choisisse",1);
+
         }
 
         /* Pour 2, -50 et -70 ou 310 et 290 */
         else if((angle < lesAnglesNegatifs[3] && angle > lesAnglesNegatifs[4]) ||
                (angle < lesAnglesPositifs[20] && angle > lesAnglesPositifs[19])) {
-          console.log("2h");
+
            monHorloge.setAttribute("material", "color:#498446");
            monHorloge.setAttribute("data-heure-choisisse",2);
+
         }
 
         /* Pour 3, -80 et -100 ou 280 et 260 */
         else if((angle < lesAnglesNegatifs[5] && angle > lesAnglesNegatifs[6]) ||
                (angle < lesAnglesPositifs[18] && angle > lesAnglesPositifs[17])) {
-          console.log("3h");
 
           monHorloge.setAttribute("material", "color:#fffb26");
           monHorloge.setAttribute("data-heure-choisisse",3);
+
         }
 
         /* Pour 4, -110 et -130 ou 250 et 230 */
         else if((angle < lesAnglesNegatifs[7] && angle > lesAnglesNegatifs[8]) ||
                (angle < lesAnglesPositifs[16] && angle > lesAnglesPositifs[15])) {
-          console.log("4h");
 
           monHorloge.setAttribute("material", "color:#28ffde");
           monHorloge.setAttribute("data-heure-choisisse",4);
+
         }
 
         /* Pour 5, -140 et -160 ou 220 et 200 */
         else if((angle < lesAnglesNegatifs[9] && angle > lesAnglesNegatifs[10]) ||
                (angle < lesAnglesPositifs[14] && angle > lesAnglesPositifs[13])) {
-          console.log("5h");
 
           monHorloge.setAttribute("material", "color:#2772f4");
           monHorloge.setAttribute("data-heure-choisisse",5);
+
         }
 
         /* Pour 6, -170 et -190 ou 190 ou 170 */
         else if((angle < lesAnglesNegatifs[11] && angle > lesAnglesNegatifs[12]) ||
                (angle < lesAnglesPositifs[12] && angle > lesAnglesPositifs[11])) {
-          console.log("6h");
 
           monHorloge.setAttribute("material", "color:#8e27e8");
           monHorloge.setAttribute("data-heure-choisisse",6);
+
         }
 
         /* Pour 7, -200 et -220 ou 160 et 140 */
         else if((angle < lesAnglesNegatifs[13] && angle > lesAnglesNegatifs[14]) ||
                (angle < lesAnglesPositifs[10] && angle > lesAnglesPositifs[9])) {
-          console.log("7h");
 
           monHorloge.setAttribute("material", "color:#e829be");
           monHorloge.setAttribute("data-heure-choisisse",7);
+
         }
 
         /* Pour 8, -230 et -250 ou 130 et 110  */
         else if((angle < lesAnglesNegatifs[15] && angle > lesAnglesNegatifs[16]) ||
                (angle < lesAnglesPositifs[8] && angle > lesAnglesPositifs[7])) {
-          console.log("8h");
 
           monHorloge.setAttribute("material", "color:#e2266e");
           monHorloge.setAttribute("data-heure-choisisse",8);
+
         }
 
         /* Pour 9, -260 et 280 ou 90 et 70 */
         else if((angle < lesAnglesNegatifs[17] && angle > lesAnglesNegatifs[18]) ||
                (angle < lesAnglesPositifs[6] && angle > lesAnglesPositifs[5])) {
-          console.log("9h");
 
           monHorloge.setAttribute("material", "color:#890000");
           monHorloge.setAttribute("data-heure-choisisse",9);
+
         }
 
         /* Pour 10, -290 et -310 ou 60 et 40 */
         else if((angle < lesAnglesNegatifs[19] && angle > lesAnglesNegatifs[20]) ||
                (angle < lesAnglesPositifs[4] && angle > lesAnglesPositifs[3])) {
-          console.log("10h");
 
           monHorloge.setAttribute("material", "color:#ff9000");
           monHorloge.setAttribute("data-heure-choisisse",10);
+
         }
 
         /* Pour 11, -320 et -340 ou 30 et 10 */
         else if((angle < lesAnglesNegatifs[21] && angle > lesAnglesNegatifs[22]) ||
                (angle < lesAnglesPositifs[2] && angle > lesAnglesPositifs[1])) {
-          console.log("11h");
 
           monHorloge.setAttribute("material", "color:#154c56");
           monHorloge.setAttribute("data-heure-choisisse",11);
+
         }
 
       });

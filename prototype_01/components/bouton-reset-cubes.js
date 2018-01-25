@@ -1,10 +1,18 @@
-/* S'occupe des boutons resets 																							NE FONCTIONNE PAS POUR L'INSTANT */
+/* S'occupe des boutons resets CRASH LORSQU'ON A UN CUBE DANS LES MAINS ET QU'ON APPUIT */
 AFRAME.registerComponent("bouton-reset-cubes", {
 
-	  init: function () {
+		schema: {
+			enabled: {type: 'boolean', default: true}
+		},
+
+	  update: function () {
 
 			/* Référence au parent */
       var selecteurMois = document.querySelector("#selecteurMois");
+
+			/* Data et bouton*/
+			var el = this.el;
+			var data = this.data;
 
 			/* Référence aux cubes */
       var lesCubesMois = document.querySelectorAll(".cube");
@@ -20,45 +28,50 @@ AFRAME.registerComponent("bouton-reset-cubes", {
 															"-0.5 5 -3.5","0.5 5 -3.5","1.5 5 -3.5",
 															"1.5 5 -4.5","-0.5 5 -4.5","0.5 5 -4.5"];
 
-			/* Bouton */
-			var el = this.el;
+			/* Suppression complete */
+			var suppressionComplete = false;
 
-      /* Lorsque qu'on appuit le bouton */
+			/* Lorsque qu'on appuit le bouton */
       el.addEventListener('pressed', function() {
 
-				selecteurMois.removeChild(lesCubesMois[0]);
-/*
-					// On instancie des cubes à leur position de départ en supprimant les anciens.
-					for(var i = 0; i < 12;i++) {
-						console.log(i);
+				/* Si on a coché enabled */
+				if(data.enabled == true) {
 
-						if(lesCubesMois.length > 0) {
+					/* On supprime les anciens cubes.*/
+					if(suppressionComplete == false) {
 
+						for(var i = 0; i < 12; i++) {
+
+							lesCubesMois[i].removeAttribute("mixin");
 							selecteurMois.removeChild(lesCubesMois[i]);
 
 						}
 
-						else  {
+						suppressionComplete = true;
 
+					}
+
+					if(suppressionComplete == true) {
+
+						/* On instancie des cubes à leur position de départ. */
+						for(var j = 0; j < 12; j++) {
 
 							var cube = document.createElement("a-entity");
 							cube.setAttribute("mixin", "cubeMois");
 							cube.setAttribute("class", "cube");
-							cube.setAttribute("material","src:" + lesMois[i]);
-							cube.setAttribute("data-mois", lesDataMois[i]);
-							cube.setAttribute("position", lesPositionsMois[i]);
+							cube.setAttribute("material","src:" + lesMois[j]);
+							cube.setAttribute("data-mois", lesDataMois[j]);
+							cube.setAttribute("position", lesPositionsMois[j]);
 							selecteurMois.appendChild(cube);
 
 						}
 
-					}*/
-
-					if(lesCubesMois.length === 0) {
-
-						console.log("vide");
-						//selecteurMois.removeChild(lesCubesMois[i]);
+						lesCubesMois = document.querySelectorAll(".cube");
+						suppressionComplete = false;
 
 					}
+
+				}
 
       });
 
@@ -66,15 +79,8 @@ AFRAME.registerComponent("bouton-reset-cubes", {
 
 		tick: function () {
 
-    var entity = this.el; /*
-		var lesCubesMois = document.querySelectorAll(".cube");
+     //console.log(this.data.enabled);
 
-    if (lesCubesMois.length == 12) {
-
-      selecteurMois.removeChild(lesCubesMois);
-			console.log("devrait marcher");
-    }
-			*/
-  }
+	 }
 
 });

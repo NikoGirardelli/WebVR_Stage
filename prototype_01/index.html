@@ -10,7 +10,7 @@
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <!--<script src="https://rawgit.com/caseyyee/aframe-ui-widgets/master/dist/aframe-ui-widgets.min.js"></script>-->
     <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
     <script src="components/lecture-cube.js"></script>
@@ -43,7 +43,9 @@
         <a-mixin id="cubeMois" geometry="primitive:box; width:0.4; height:0.4; depth:0.4"
                  grabbable hoverable draggable dynamic-body shadow
                  event-set__hover-start="material.opacity: 0.7"
-                 event-set__hover-end="material.opacity: 1.0"></a-mixin>
+                 event-set__hover-end="material.opacity: 1.0"
+                 event-set__grab-start="_target:#bouton-reset-cubes;bouton-reset-cubes.enabled:false;"
+                 event-set__grab-end="scale:1.5 1.5 1.5; _target:#bouton-reset-cubes;bouton-reset-cubes.enabled:true;"></a-mixin>
         <a-mixin id="lecteurCube" droppable static-body
                  collision-filter="collisionForces: false"
                  geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
@@ -85,7 +87,7 @@
 
       <!-- Les mains et la camera -->
       <a-entity id="cameraRig" progressive-controls="objects: .cube; touchMixin: mytouch; override: true; controllerModel:false">
-        <a-entity id="head" camera wasd-controls look-controls></a-entity>
+        <a-entity id="head" camera="far:1000" wasd-controls look-controls></a-entity>
         <a-entity id="left-hand"
                   teleport-controls="cameraRig: #cameraRig;
                                      teleportOrigin: #head;
@@ -95,7 +97,7 @@
       </a-entity>
 
       <!-- Selecteur jour -->
-      <a-entity id="selecteurJour" scale="0.8 0.8 0.8" position="0 0.5 -3">
+      <a-entity id="selecteurJour" scale="0.8 0.8 0.8" position="0 0.5 -3" rotation="45 0 0">
         <!-- Les boutons -->
         <a-entity geometry="primitive:box;depth:1.28;height:0.25;width:1.75;"
                   material="color:#FFFFFF;" position="-0.25 0.129 0"></a-entity>
@@ -112,8 +114,10 @@
         <a-entity mixin="bouton" data-btn="ok" position="0.3125 0.263 0" ui-button="top:btn-ok;pressed:btn-ok,offset"></a-entity>
         <a-entity mixin="bouton" data-btn="reset" position="0.3125 0.263 -0.375" ui-button="top:btn-reset;pressed:btn-reset,offset"></a-entity>
         <!-- Le texte -->
-        <a-entity id="ecranJour" position="-0.25 1.883 -1" data-jour="" geometry="radius:1.44;phiStart:180;phiLength:180;primitive:sphere" material="side:back" text__t="width:1.98;wrapCount:6.5;value:Day :  ;color:red;"></a-entity>
-        <a-entity position="-0.25 1.201 -1" text__t="wrapCount:28;value:\nYou can't have more than two numbers.\nPress 'Ok' to continue \nor press 'Reset' to enter new day;width:1.98;align:center"></a-entity>
+        <a-entity rotation="-45 0 0" position="0 -0.13 0">
+          <a-entity id="ecranJour" position="-0.25 1.883 -1" data-jour-choisi="" geometry="radius:1.44;phiStart:180;phiLength:180;primitive:sphere" material="side:back" text__t="width:1.98;wrapCount:6.5;value:Day :  ;color:red;"></a-entity>
+          <a-entity position="-0.25 1.201 -1" text__t="wrapCount:28;value:\nYou can't have more than two numbers.\nPress 'Ok' to continue \nor press 'Reset' to enter new day;width:1.98;align:center"></a-entity>
+      </a-entity>
       </a-entity>
 
       <!-- Les cubes pour choisir le mois -->
@@ -149,7 +153,7 @@
           <a-box id="blocSousLecteur" static-body width=0.5 height=0.5 depth=0.5 visible="true" position="0 -0.5 0" shadow></a-box>
         </a-entity>
 
-        <a-entity bouton-reset-cubes position="1.5 1.17 -0.8" ui-button="baseColor: #ffffff;top:btn-reset;pressed:btn-reset,offset"></a-entity>
+        <a-entity id="bouton-reset-cubes" bouton-reset-cubes position="1.5 1.17 -0.8" ui-button="baseColor: #ffffff;top:btn-reset;pressed:btn-reset,offset"></a-entity>
         <a-entity position="0.5 0.5 -2.7"geometry="primitive:box;depth: 4.5; width: 3; height: 1.25" static-body material="color:brown;"></a-entity>
       </a-entity>
 

@@ -25,7 +25,7 @@ AFRAME.registerComponent("jour-bouton", {
 				/* Remet le texte par défaut */
 				else if(el.getAttribute("data-btn") == "reset") {
 
-					texteEcranJour.setAttribute("data-jour", "");
+					texteEcranJour.setAttribute("data-jour-choisi", "");
 					console.log("reset");
 
 				}
@@ -33,15 +33,17 @@ AFRAME.registerComponent("jour-bouton", {
 				/* Si nous n'avons pas entrer trois valeur et que c'est un chiffre &&
 					(this.el.getAttribute("data-btn") != "reset" ||
 					 this.el.getAttribute("data-btn") != "ok")*/
-				else if(texteEcranJour.getAttribute("data-jour").length < 2) {
+				else if(texteEcranJour.getAttribute("data-jour-choisi").length < 2) {
 
 					// On lit le date du bouton et l'ajoute à la variable jour.
-					texteEcranJour.setAttribute("data-jour", texteEcranJour.getAttribute("data-jour") + el.getAttribute("data-btn"));
+					texteEcranJour.setAttribute("data-jour-choisi",
+												 texteEcranJour.getAttribute("data-jour-choisi") +
+												 el.getAttribute("data-btn"));
 
 				}
 
 				/* A MODIFIER LORS DU PROTOTYPE CHANGER LA VALEUR SELON */
-				if(parseInt(texteEcranJour.getAttribute("data-jour")) < 32) {
+				if(parseInt(texteEcranJour.getAttribute("data-jour-choisi")) < 32) {
 
 					texteEcranJour.setAttribute("text__t", "color:green");
 
@@ -53,7 +55,8 @@ AFRAME.registerComponent("jour-bouton", {
 
 				}
 
-				texteEcranJour.setAttribute("text__t", phraseDefaut + texteEcranJour.getAttribute("data-jour"));
+				texteEcranJour.setAttribute("text__t",
+											phraseDefaut + texteEcranJour.getAttribute("data-jour-choisi"));
 
       });
 
