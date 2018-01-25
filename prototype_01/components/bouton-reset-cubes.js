@@ -34,10 +34,12 @@ AFRAME.registerComponent("bouton-reset-cubes", {
 			/* Lorsque qu'on appuit le bouton */
       el.addEventListener('pressed', function() {
 
-				/* Si on a coché enabled */
+				selecteurMois.setAttribute("data-mois-choisi", "");
+
+				/* Si on a coché enabled
 				if(data.enabled == true) {
 
-					/* On supprime les anciens cubes.*/
+					/* On supprime les anciens cubes.
 					if(suppressionComplete == false) {
 
 						for(var i = 0; i < 12; i++) {
@@ -53,7 +55,7 @@ AFRAME.registerComponent("bouton-reset-cubes", {
 
 					if(suppressionComplete == true) {
 
-						/* On instancie des cubes à leur position de départ. */
+						/* On instancie des cubes à leur position de départ.
 						for(var j = 0; j < 12; j++) {
 
 							var cube = document.createElement("a-entity");
@@ -71,7 +73,7 @@ AFRAME.registerComponent("bouton-reset-cubes", {
 
 					}
 
-				}
+				}*/
 
       });
 
