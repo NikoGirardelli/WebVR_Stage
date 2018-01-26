@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>A-Frame Super Hands Component - Pointer Controls</title>
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://rawgit.com/ngokevin/aframe-event-set-component/master/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../assets/examples.css">
+  </head>
+  <body>
+    <a-scene environment="preset: default; shadow: true"
+             touch-to-click-converter>
+      <a-assets>
+        <img id="portals-preview" src="../assets/portals.jpg"></img>
+        <a-mixin id="cube" geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
+                 hoverable grabbable stretchable draggable droppable
+                 shadow
+                 event-set="_event: drag-drop; geometry.primitive: sphere; geometry.radius: 0.25"></a-mixin>
+        <a-mixin id="cube-hovered" material="opacity: 0.7; transparent: true">
+        </a-mixin>
+        <a-mixin id="cube-dragover" material="wireframe: true;"></a-mixin>
+      </a-assets>
+
+      <a-entity progressive-controls="objects: .cube, a-link; maxLevel: point">
+          <a-entity id="rhand" class="right-controller"></a-entity>
+          <a-entity id="lhand" class="left-controller"></a-entity>
+      </a-entity>
+      <a-entity class="cube" mixin="cube" position="0 1 -1.25" material="color: red"></a-entity>
+      <a-entity class="cube" mixin="cube" position="0 1.6 -1.5" material="color: red"></a-entity>
+      <a-entity class="cube" mixin="cube" position="-0.9 1 -0.9" material="color: blue"></a-entity>
+      <a-entity class="cube" mixin="cube" position="-1 1.6 -1" material="color: blue"></a-entity>
+      <a-entity class="cube" mixin="cube" position="0.9 1 -0.9" material="color: green"></a-entity>
+      <a-entity class="cube" mixin="cube" position="1 1.6 -1" material="color: green"></a-entity>
+    </a-scene>
+</html>
