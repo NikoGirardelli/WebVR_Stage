@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Calendrier main</title>
+    <meta name ="description" content="Calendrier main - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <!--<script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>-->
+    <script src="components/ui-widget.js"></script>
+    <script src="components/changement-outil.js"></script>
+    <script src="components/horloge.js"></script>
+  </head>
+  <body>
+    <a-scene stats physics environment="preset:forest; shadow:false;">
+
+      <a-assets>
+        <a-mixin id="mypoint" phase-shift raycaster="showLine:true;far:100;interval:25;"
+               super-hands="colliderEvent:raycaster-intersection;
+                            colliderEventProperty:els;
+                            colliderEndEvent:raycaster-intersection-cleared;
+                            colliderEndEventProperty:el;
+                            dragDropEndButtons: triggerup;
+                            dragDropStartButtons: triggerdown;
+                            stretchEndButtons: triggerup;
+                            stretchStartButtons: triggerdown;
+                            grabEndButtons: triggerup;
+                            grabStartButtons: triggerdown;"></a-mixin>
+        <!-- to change touch mode collider -->
+        <a-mixin id="mytouch" physics-collider phase-shift
+                 collision-filter="collisionForces: false"
+                 static-body="shape: sphere; sphereRadius: 0.02"
+                 super-hands="colliderEvent: collisions; colliderEventProperty: els;
+                              colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
+                              grabStartButtons:triggerdown;grabEndButtons:triggerup;colliderState:"></a-mixin>
+        <a-mixin id="cubeMois" geometry="primitive:box; width:0.4; height:0.4; depth:0.4"
+                 grabbable hoverable draggable dynamic-body stretchable shadow
+                 event-set__grab-start="material.opacity: 0.7"
+                 event-set__grab-end="material.opacity:1.0"></a-mixin>
+        <a-mixin id='cubeMois-hovered' material="opacity:0.7; transparent:true;"></a-mixin>
+        <a-mixin id='cubeMois-grabbed' material="color:red;"></a-mixin>
+        <a-mixin id='horloge-hovered' material="opacity:0.7; transparent:true;"></a-mixin>
+      </a-assets>
+
+      <!-- Les mains -->
+      <a-entity id="player" progressive-controls="controllerModel:false;maxLevel:touch;
+                pointMixin:mypoint;touchMixin:mytouch;override:true;">
+        <a-entity id="lhand" teleport-controls="type:parabolic;"
+                  hand-controls="left"></a-entity>
+        <a-entity id="rhand" changement-outil hand-controls="right"></a-entity>
+      </a-entity>
+
+      <!-- Horloge -->
+      <a-entity id="horloge"
+                event-set__grab-start="material.opacity: 0.7"
+                event-set__grab-end="material.opacity:1.0"
+                event-set__hover-start="material.wireframe: true"
+                event-set__hover-end="material.wireframe:false"
+                horloge hoverable grabbable draggable
+                data-heure-choisisse=""
+                geometry="primitive: cylinder; radius:0.59; height:0.045;"
+                scale="0.8 0.8 0.8" position="1.5 1.5 -1"
+                material="color:#FFFFFF;" rotation="90 270 0">
+        <a-entity id="monAiguille" ui-rotary ></a-entity>
+        <a-entity geometry="primitive: box; depth:0.01; height: 0.6; width:0.02;" position="0 0.048 -0.217" material="color:#a82121" rotation="90 0 0"></a-entity>
+        <a-entity id="lesChiffres">
+          <a-entity  text="value:1;align:center;color:#000000;width:4" rotation="-90 0 0" position="0.252 0.027 -0.388"></a-entity>
+          <a-entity  text="value:2;align:center;color:#000000;width:4" rotation="-90 0 0" position="0.419 0.027 -0.25"></a-entity>
+          <a-entity  text="value:3;align:center;color:#000000;width:4" rotation="-90 0 0" position="0.493 0.027 -0.003"></a-entity>
+          <a-entity  text="value:4;align:center;color:#000000;width:4" rotation="-90 0 0" position="0.419 0.027 0.255"></a-entity>
+          <a-entity  text="value:5;align:center;color:#000000;width:4" rotation="-90 0 0" position="0.237 0.027 0.41"></a-entity>
+          <a-entity  text="value:6;align:center;color:#000000;width:4" rotation="-90 0 0" position="0 0.027 0.474"></a-entity>
+          <a-entity  text="value:7;align:center;color:#000000;width:4" rotation="-90 0 0" position="-0.261 0.027 0.41"></a-entity>
+          <a-entity  text="value:8;align:center;color:#000000;width:4" rotation="-90 0 0" position="-0.43 0.027 0.255"></a-entity>
+          <a-entity  text="value:9;align:center;color:#000000;width:4" rotation="-90 0 0" position="-0.493 0.027 -0.003"></a-entity>
+          <a-entity  text="value:10;align:center;color:#000000;width:4" rotation="-90 0 0" position="-0.43 0.027 -0.217"></a-entity>
+          <a-entity  text="value:11;align:center;color:#000000;width:4" rotation="-90 0 0" position="-0.261 0.027 -0.388"></a-entity>
+          <a-entity  text="value:12;align:center;color:#000000;width:4" rotation="-90 0 0" position="0 0.027 -0.462"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity id="calendrier" position="0 2 0" rotation="90 90 0">
+        <a-entity class="pivot" geometry="depth:0.1;height:0.2;width:0.2" position="0 0.01 -0.355" rotation="90 90 0" material="color:black" static-body></a-entity>
+        <a-entity grabbable constraint="axis:0 0 0;targetPivot: 0 0.02 0; type: pointToPoint; pivot: 0 1 0;distance:0.2; maxForce: 1;target:.pivot;" geometry="width:0.5;height:0.1;depth:0.5" dynamic-body material="color:red"></a-entity>
+        <a-entity geometry="width:0.5;height:0.1;depth:0.5" material="color:white"></a-entity>
+      </a-entity>
+
+
+      <a-entity class="cube" mixin="cubeMois" position="-0.5 5 -1.5"  material="color:green"></a-entity>
+      <a-grid static-body material="opacity:0"></a-grid>
+    </a-scene>
+
+</html>
