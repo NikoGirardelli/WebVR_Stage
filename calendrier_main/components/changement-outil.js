@@ -1,11 +1,18 @@
 AFRAME.registerComponent('changement-outil', {
 
   schema: {
-    outilSelection: {type: 'string', default: ""}
+    outilSelection: {type: 'number', default: 0}
   },
 
   init: function () {
-  // Do something when component first attached.
+    // Do something when component first attached.
+    var player = document.querySelector("#player");
+
+    /* On commence avec le touch */
+    player.setAttribute("progressive-controls","pointMixin","mypoint");
+    player.setAttribute("progressive-controls","touchMixin","mytouch");
+    player.setAttribute("progressive-controls", "maxLevel","point");
+    player.setAttribute("progressive-controls", "objects", ".cube, #horloge, .choixJour");
 
 
   },
@@ -16,16 +23,15 @@ AFRAME.registerComponent('changement-outil', {
     // Do something when component's data is updated.
     this.el.addEventListener("menudown", function() {
 
+      data.outilSelection ++;
 
+      if(data.outilSelection == 2) {
 
-      if(data.outilSelection == 0){
+        data.outilSelection = 0;
 
-        player.setAttribute("progressive-controls", "maxLevel","point");
-        player.setAttribute("progressive-controls", "objects", "#graph, .cube, #horloge");
-        console.log("Changement a point");
       }
 
-      else if(data.outilSelection == 1) {
+      if(data.outilSelection == 0) {
 
         player.setAttribute("progressive-controls", "maxLevel","touch");
         player.setAttribute("progressive-controls", "objects", ".cube");
@@ -33,9 +39,15 @@ AFRAME.registerComponent('changement-outil', {
 
       }
 
-      data.outilSelection ++;
+      else if(data.outilSelection == 1) {
 
-      if(data.outilSelection == 2) data.outilSelection = 0;
+        player.setAttribute("progressive-controls", "maxLevel","point");
+        player.setAttribute("progressive-controls", "objects",
+                                                    "#graph, .cube, #horloge");
+        console.log("Changement a point");
+
+      }
+
       console.log(player.getAttribute("progressive-controls").maxLevel);
     });
 
