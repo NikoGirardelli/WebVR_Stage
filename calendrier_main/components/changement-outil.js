@@ -12,7 +12,7 @@ AFRAME.registerComponent('changement-outil', {
     player.setAttribute("progressive-controls","pointMixin","mypoint");
     player.setAttribute("progressive-controls","touchMixin","mytouch");
     player.setAttribute("progressive-controls", "maxLevel","point");
-    player.setAttribute("progressive-controls", "objects", ".cube, #horloge, .choixJour");
+
 
 
   },
