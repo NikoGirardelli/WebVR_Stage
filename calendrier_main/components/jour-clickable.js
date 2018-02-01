@@ -34,43 +34,44 @@ AFRAME.registerComponent("jour-clickable", {
 
 });
 
+/* Variables Globale */
+var jourChoisi = JSON.parse(sessionStorage.getItem(jourChoisi));
+
 /* Action d'ajouter la valeur au titre de jour */
 function calendrierAction(event) {
 
 	/* Référence à l'écran, le jour, la phrase de défaut */
 	var txtJour = document.querySelector("#textJour"),
 	el = event.target,
-	phraseDefaut = "Day Selected : ",
-	jourChoisi = JSON.parse(sessionStorage.getItem(jourChoisi));
+	phraseDefaut = "Day Selected : ";
 
 	/* Si on ne aucun jour choisi dernièrement */
 	if(jourChoisi == null) {
-		console.log("est null");
+
 		jourChoisi = new Array();
+
+	}
+
+	/* Cherche notre jour dans le tableau, si rien est trouvé, on l'ajoute*/
+	if(jourChoisi.indexOf(el.getAttribute("data-jour")) == -1) {
+
+		/* Ajout du jour dans notre tableau */
+		jourChoisi.push(el.getAttribute("data-jour"));
+
+	}
+	/* Si le jour est déjà dans le tableau */
+	else if(jourChoisi.indexOf(el.getAttribute("data-jour")) != -1){
+
+		var posJour = jourChoisi.indexOf(el.getAttribute("data-jour"));
+		jourChoisi.splice(posJour,1);
 
 	}
 
 	/* Joue l'animation de fade-in/fade-out */
 	el.emit("playFade");
-jourChoisi.push(el.getAttribute("data-jour"));
-	/* Cherche notre jour dans le tableau, si rien est trouvé, on l'ajoute */
-	if(jourChoisi.indexOf(el.getAttribute("data-jour")) == -1) {
 
-
-		console.log("ajout du jour dans array " + jourChoisi);
-
-	}
-	/* Si non on l'enlève
-	else {
-
-		var posJour = jourChoisi.indexOf(el.getAttribute("data-jour"));
-		jourChoisi.splice(posJour);
-		console.log("retrait du jour dans array " + jourChoisi);
-
-	}*/
-
+	/* Enregistrement de la variable jourChoisi dans la sessionStorage */
 	sessionStorage.setItem("jourChoisi", JSON.stringify(jourChoisi));
 	txtJour.setAttribute("value", phraseDefaut + jourChoisi.toString());
-
 
 }
