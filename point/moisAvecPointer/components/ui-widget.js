@@ -53,7 +53,7 @@
 
 	AFRAME.registerComponent('ui-slider', __webpack_require__(3));
 
-	AFRAME.registerComponent('ui-rotary', __webpack_require__(4));
+	AFRAME.registerComponent("ui-rotary", __webpack_require__(4));
 
 
 /***/ }),
@@ -471,6 +471,7 @@
 	    this.el.setObject3D('mesh', knob);
 
 	    this.controllers = Array.prototype.slice.call(document.querySelectorAll('a-entity[hand-controls]'));
+			//console.log(this);
 	  },
 
 	  play: function () {
@@ -483,8 +484,8 @@
 
 	  pause: function () {
 	    this.controllers.forEach(function (controller) {
-	      controller.removeEventListener('triggerdown', this.onTriggerDown.bind(this));
-	      controller.removeEventListener('triggerup', this.onTriggerUp.bind(this));
+	      controller.removeEventListener('grab-start', this.onGrabStart.bind(this));
+	      controller.removeEventListener('grab-end', this.onGrabEnd.bind(this));
 	    }.bind(this));
 	  },
 
@@ -493,12 +494,13 @@
 	      this.grabbed.visible = true;
 	      this.grabbed = false;
 	    }
-			/*
-			console.log(this.knob.rotation.y);
+
+			/*console.log(this.knob.rotation.y);
 			console.log(this.lastRotation + "rot");*/
 	  },
 
 	  onTriggerDown: function (e) {
+			//console.log(this.knob.rotation.y);
 	    var hand = e.target.object3D;
 	    var knob = this.knob;
 
