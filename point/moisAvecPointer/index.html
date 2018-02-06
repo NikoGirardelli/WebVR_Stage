@@ -17,9 +17,12 @@
     <script src="components/horloge.js"></script>
     <script src="components/jour-clickable.js"></script>
     <script src="components/lecture-cube.js"></script>
+    <script src="components/am-pm.js"></script>
   </head>
   <body>
-    <a-scene stats physics environment="preset:forest; shadow:false;">
+    <a-scene stats physics environment="preset:forest; shadow:false;
+                                        skyType:atmosphere;
+                                        lightPosition: [0, 5, 0]">
 
       <a-assets>
         <a-mixin id="mypoint" phase-shift
@@ -133,7 +136,7 @@
 
       <!-- Horloge -->
       <a-entity id="horloge" hoverable
-                horloge data-heure-choisisse=""
+                horloge data-heure-choisisse="" data-am-pm="AM"
                 event-set__hover-start="material.opacity: 0.2;"
                 event-set__hover-end="material.opacity:1;"
                 scale="0.8 0.8 0.8" position="1.5 1.5 -1"
@@ -158,9 +161,17 @@
         <!-- Les aiguilles
         <a-entity id="monAiguille" mixin="aiguille"
                   geometry="height: 0.4;"
-                  position="0 0.048 -0.217"></a-entity>
-        <a-entity mixin="aiguille" position="0 0.034 -0.217"></a-entity>-->
-
+                  position="0 0.048 -0.217"></a-entity>-->
+        <a-entity mixin="aiguille" position="0 0.034 -0.217"></a-entity>
+        <a-entity am-pm ui-toggle rotation="0 -90 0"
+                  position="-0.008 0.001 1.165" scale="2 2 2">
+                  <a-entity text="value:AM;align:center;color:#000000;width:4"
+                            rotation="270 90 0"
+                            position="-0.174 0.02 -0.23"></a-entity>
+                  <a-entity text="value:PM;align:center;color:#000000;width:4"
+                            rotation="270 90 0"
+                            position="0.174 0.02 -0.23"></a-entity>
+        </a-entity>
         <!-- Les chiffres -->
         <a-entity id="lesChiffres">
           <a-entity text="value:1;align:center;color:#000000;width:4"
@@ -202,104 +213,73 @@
                   position="0.24 -1.97 -0.3"
                   material="color: white;" static-body></a-entity>
         <!-- 1re rangée -->
-        <a-entity class="choixJour" data-jour="1" mixin="btnCal" material="src:#t_1;">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="2" mixin="btnCal" material="src:#t_2;" position="0.6 0 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="3" mixin="btnCal" material="src:#t_3;" position="1.2 0 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="4" mixin="btnCal" material="src:#t_4;" position="1.8 0 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="5" mixin="btnCal" material="src:#t_5;" position="2.4 0 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="6" mixin="btnCal" material="src:#t_6;" position="3 0 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="1" mixin="btnCal"
+                  material="src:#t_1;"></a-entity>
+        <a-entity class="choixJour" data-jour="2" mixin="btnCal"
+                  material="src:#t_2;" position="0.6 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="3" mixin="btnCal"
+                  material="src:#t_3;" position="1.2 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="4" mixin="btnCal"
+                  material="src:#t_4;" position="1.8 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="5" mixin="btnCal"
+                  material="src:#t_5;" position="2.4 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="6" mixin="btnCal"
+                  material="src:#t_6;" position="3 0 0"></a-entity>
         <!-- 2e rangée -->
-        <a-entity class="choixJour" data-jour="7" mixin="btnCal" material="src:#t_7;" position="0 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="8" mixin="btnCal" material="src:#t_8;" position="0.6 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="9" mixin="btnCal" material="src:#t_9;" position="1.2 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="10" mixin="btnCal" material="src:#t_10;" position="1.8 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="11" mixin="btnCal" material="src:#t_11;" position="2.4 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="12" mixin="btnCal" material="src:#t_12;" position="3 -0.6 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="7" mixin="btnCal"
+                  material="src:#t_7;" position="0 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="8" mixin="btnCal"
+                  material="src:#t_8;" position="0.6 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="9" mixin="btnCal"
+                  material="src:#t_9;" position="1.2 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="10" mixin="btnCal"
+                  material="src:#t_10;" position="1.8 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="11" mixin="btnCal"
+                  material="src:#t_11;" position="2.4 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="12" mixin="btnCal"
+                  material="src:#t_12;" position="3 -0.6 0"></a-entity>
         <!-- 3e rangée -->
-        <a-entity class="choixJour" data-jour="13" mixin="btnCal" material="src:#t_13;" position="0 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="14" mixin="btnCal" material="src:#t_14;" position="0.6 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="15" mixin="btnCal" material="src:#t_15;" position="1.2 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="16" mixin="btnCal" material="src:#t_16;" position="1.8 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="17" mixin="btnCal" material="src:#t_17;" position="2.4 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="18" mixin="btnCal" material="src:#t_18;" position="3 -1.2 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="13" mixin="btnCal"
+                  material="src:#t_13;" position="0 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="14" mixin="btnCal"
+                  material="src:#t_14;" position="0.6 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="15" mixin="btnCal"
+                  material="src:#t_15;" position="1.2 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="16" mixin="btnCal"
+                  material="src:#t_16;" position="1.8 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="17" mixin="btnCal"
+                  material="src:#t_17;" position="2.4 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="18" mixin="btnCal"
+                  material="src:#t_18;" position="3 -1.2 0"></a-entity>
         <!-- 4e rangée -->
-        <a-entity class="choixJour" data-jour="19" mixin="btnCal" material="src:#t_19;" position="0 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="20" mixin="btnCal" material="src:#t_20;" position="0.6 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="21" mixin="btnCal" material="src:#t_21;" position="1.2 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="22" mixin="btnCal" material="src:#t_22;" position="1.8 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="23" mixin="btnCal" material="src:#t_23;" position="2.4 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="24" mixin="btnCal" material="src:#t_24;" position="3 -1.8 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="19" mixin="btnCal"
+                  material="src:#t_19;" position="0 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="20" mixin="btnCal"
+                  material="src:#t_20;" position="0.6 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="21" mixin="btnCal"
+                  material="src:#t_21;" position="1.2 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="22" mixin="btnCal"
+                  material="src:#t_22;" position="1.8 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="23" mixin="btnCal"
+                  material="src:#t_23;" position="2.4 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="24" mixin="btnCal"
+                  material="src:#t_24;" position="3 -1.8 0"></a-entity>
         <!-- 5e rangée -->
-        <a-entity class="choixJour" data-jour="25" mixin="btnCal" material="src:#t_25;" position="0 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="26" mixin="btnCal" material="src:#t_26;" position="0.6 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="27" mixin="btnCal" material="src:#t_27;" position="1.2 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="28" mixin="btnCal" material="src:#t_28;" position="1.8 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="29" mixin="btnCal" material="src:#t_29;" position="2.4 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
-        <a-entity class="choixJour" data-jour="30" mixin="btnCal" material="src:#t_30;" position="3 -2.4 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="25" mixin="btnCal"
+                  material="src:#t_25;" position="0 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="26" mixin="btnCal"
+                  material="src:#t_26;" position="0.6 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="27" mixin="btnCal"
+                  material="src:#t_27;" position="1.2 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="28" mixin="btnCal"
+                  material="src:#t_28;" position="1.8 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="29" mixin="btnCal"
+                  material="src:#t_29;" position="2.4 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="30" mixin="btnCal"
+                  material="src:#t_30;" position="3 -2.4 0"></a-entity>
         <!-- 6e rangée -->
-        <a-entity class="choixJour" data-jour="31" mixin="btnCal" material="src:#t_31;" position="0 -3 0">
-          <a-animation mixin="fade"></a-animation>
-        </a-entity>
+        <a-entity class="choixJour" data-jour="31" mixin="btnCal"
+                  material="src:#t_31;" position="0 -3 0"></a-entity>
       </a-entity>
 
       <!-- Mois -->

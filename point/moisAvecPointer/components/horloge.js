@@ -1,6 +1,13 @@
 AFRAME.registerComponent('horloge', {
 
-  init: function() {
+  init:function() {
+
+    /* Met le soleil à la bonne place */
+    this.el.sceneEl.setAttribute("environment","lightPosition",{x:0,y:5,z:0});
+
+  },
+
+  play: function() {
 
     /* Lorsque que la petite aiguille tombe sur un chiffre*/
     this.el.addEventListener('change', this.changerHeure.bind(this));
@@ -14,22 +21,19 @@ AFRAME.registerComponent('horloge', {
   },
 
   changerHeure:function() {
-    var fond = document.querySelector("#fondHorloge");
 
-    //console.log(aiguille.components);
-    /* Si on a cliqué à gauche */
-    //if(event.target)
+    var fond = document.querySelector("#fondHorloge"),
+        scene = this.el.sceneEl,
 
+      /* Angle de l'horloge*/
+      angle = knob.rotation.y * 180 / Math.PI,
 
-    /* Angle de l'horloge*/
-    var angle = knob.rotation.y * 180 / Math.PI;
-
-    /* Grosseur de 25 angles */
-    var lesAnglesNegatifs = [-10, -20, -40, -50, -70, -80, -100, -110, -130,
-                             -140, -160, -170, -190, -200, -220, -230, -250,
-                             -260, -280, -290, -310, -320, -340, -350, -360];
-   /* Grosseur de 24 angles */
-   var lesAnglesPositifs = [0, 10, 30, 40, 60, 70, 90, 110, 130, 140, 160,
+      /* Grosseur de 25 angles */
+      lesAnglesNegatifs = [-10, -20, -40, -50, -70, -80, -100, -110, -130,
+                           -140, -160, -170, -190, -200, -220, -230, -250,
+                           -260, -280, -290, -310, -320, -340, -350, -360],
+      /* Grosseur de 24 angles */
+      lesAnglesPositifs = [0, 10, 30, 40, 60, 70, 90, 110, 130, 140, 160,
                            170, 190, 200, 220, 230, 250, 260, 280, 290, 310,
                            320, 340, 360];
 
@@ -40,13 +44,26 @@ AFRAME.registerComponent('horloge', {
       knob.rotation.y = 0;
 
     }
-
+//console.log(scene.getAttribute("environment").lightPosition);
     /* Pour 12h, 10 et -10 ou -350 et 0 */
     if((angle < lesAnglesPositifs[1] && angle > lesAnglesNegatifs[0]) ||
       (angle < lesAnglesNegatifs[23] && angle > lesAnglesPositifs[0])) {
 
       fond.setAttribute("material", "color:#c9c3c3");
       this.el.setAttribute("data-heure-choisisse",12);
+
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+        console.log("am 12");
+        scene.setAttribute("environment","lightPosition",{x:0,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+        console.log("pm 12");
+        scene.setAttribute("environment","lightPosition", {x:0,y:-5,z:0});
+
+      }
+
 
     }
 
@@ -57,6 +74,19 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#af9480");
       this.el.setAttribute("data-heure-choisisse",1);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+console.log("am 1");
+        scene.setAttribute("environment","lightPosition",{x:2,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+console.log("pm 1");
+        scene.setAttribute("environment","lightPosition",{x:2,y:-5,z:0});
+
+      }
+
+
     }
 
     /* Pour 2, -50 et -70 ou 310 et 290 */
@@ -65,6 +95,18 @@ AFRAME.registerComponent('horloge', {
 
        fond.setAttribute("material", "color:#498446");
        this.el.setAttribute("data-heure-choisisse",2);
+
+       if(this.el.getAttribute("data-am-pm") == "AM") {
+
+         scene.setAttribute("environment","lightPosition",{x:4,y:5,z:0});
+
+       }
+
+       if(this.el.getAttribute("data-am-pm") == "PM") {
+
+         scene.setAttribute("environment","lightPosition",{x:4,y:-5,z:0});
+
+       }
 
     }
 
@@ -75,6 +117,18 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#fffb26");
       this.el.setAttribute("data-heure-choisisse",3);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:6,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:6,y:-5,z:0});
+
+      }
+
     }
 
     /* Pour 4, -110 et -130 ou 250 et 230 */
@@ -83,6 +137,18 @@ AFRAME.registerComponent('horloge', {
 
       fond.setAttribute("material", "color:#28ffde");
       this.el.setAttribute("data-heure-choisisse",4);
+
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:8,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:8,y:-5,z:0});
+
+      }
 
     }
 
@@ -93,6 +159,18 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#2772f4");
       this.el.setAttribute("data-heure-choisisse",5);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:10,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:10,y:-5,z:0});
+
+      }
+
     }
 
     /* Pour 6, -170 et -190 ou 190 ou 170 */
@@ -101,6 +179,18 @@ AFRAME.registerComponent('horloge', {
 
       fond.setAttribute("material", "color:#8e27e8");
       this.el.setAttribute("data-heure-choisisse",6);
+
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:12,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:12,y:-5,z:0});
+
+      }
 
     }
 
@@ -111,6 +201,18 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#e829be");
       this.el.setAttribute("data-heure-choisisse",7);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-2,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-2,y:-5,z:0});
+
+      }
+
     }
 
     /* Pour 8, -230 et -250 ou 130 et 110  */
@@ -119,6 +221,18 @@ AFRAME.registerComponent('horloge', {
 
       fond.setAttribute("material", "color:#e2266e");
       this.el.setAttribute("data-heure-choisisse",8);
+
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-4,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-4,y:-5,z:0});
+
+      }
 
     }
 
@@ -129,6 +243,18 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#890000");
       this.el.setAttribute("data-heure-choisisse",9);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-6,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-6,y:-5,z:0});
+
+      }
+
     }
 
     /* Pour 10, -290 et -310 ou 60 et 40 */
@@ -138,6 +264,18 @@ AFRAME.registerComponent('horloge', {
       fond.setAttribute("material", "color:#ff9000");
       this.el.setAttribute("data-heure-choisisse",10);
 
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-8,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-8,y:-5,z:0});
+
+      }
+
     }
 
     /* Pour 11, -320 et -340 ou 30 et 10 */
@@ -146,6 +284,18 @@ AFRAME.registerComponent('horloge', {
 
       fond.setAttribute("material", "color:#154c56");
       this.el.setAttribute("data-heure-choisisse",11);
+
+      if(this.el.getAttribute("data-am-pm") == "AM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-10,y:5,z:0});
+
+      }
+
+      if(this.el.getAttribute("data-am-pm") == "PM") {
+
+        scene.setAttribute("environment","lightPosition",{x:-10,y:-5,z:0});
+
+      }
 
     }
 

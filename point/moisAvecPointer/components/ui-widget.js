@@ -484,8 +484,8 @@
 
 	  pause: function () {
 	    this.controllers.forEach(function (controller) {
-	      controller.removeEventListener('grab-start', this.onGrabStart.bind(this));
-	      controller.removeEventListener('grab-end', this.onGrabEnd.bind(this));
+	      controller.removeEventListener('triggerdown', this.onTriggerDown.bind(this));
+	      controller.removeEventListener('triggerup', this.onTriggerUp.bind(this));
 	    }.bind(this));
 	  },
 

@@ -8,10 +8,17 @@ AFRAME.registerComponent('lecture-cube', {
     var el = this.el;
     this.leMoisChoisi = new String();
 
+  },
 
-    el.addEventListener('drag-drop', this.lectureMois.bind(this));
+  play:function() {
 
-    el.removeEventListener('drag-drop', this.lectureMois.bind(this));
+    this.el.addEventListener('drag-drop', this.lectureMois.bind(this));
+
+  },
+
+  pause:function() {
+
+    this.el.removeEventListener('drag-drop', this.lectureMois.bind(this));
 
   },
 
@@ -22,6 +29,7 @@ AFRAME.registerComponent('lecture-cube', {
         listeJours = document.querySelectorAll(".choixJour"),
         txtJour = document.querySelector("#textJour");
 
+    /* Modification du texte pour le jour choisi */
     el.setAttribute("data-mois-choisi",leMoisChoisi);
     document.querySelector("#blocSousLecteur").setAttribute(
                            "material", "src:#" +
@@ -37,8 +45,21 @@ AFRAME.registerComponent('lecture-cube', {
       /* Pour tout les jours */
       for(var i = 0; i < listeJours.length; i++) {
 
+        /* S'il y a une animation comme enfant */
+        if(listeJours[i].childNodes[1] != null) {
+
+          listeJours[i].removeChild(listeJours[i].childNodes[1]);
+
+        }
+
+        var anim = document.createElement('a-animation');
+
+        /* Ajout du mixin pour le fade à l'animation */
+        anim.setAttribute("mixin","fade");
+
         listeJours[i].setAttribute("material","color:white");
         listeJours[i].setAttribute("jour-clickable","");
+        listeJours[i].appendChild(anim);
 
       }
 
