@@ -1,45 +1,45 @@
-/* S'occupe de savoir quel journée est saisie
- * lorsque les boutons sont cliqué
- */
+/* S'occupe de modifier le data-am-pm lorsqu'on utiliser la switch */
 AFRAME.registerComponent("am-pm", {
 
 		init:function () {
 
-			var el = this.el;
+			var el = this.el,
+					horloge = document.querySelector('#horloge');
 
-			this.verifierValeur = function() {
+			this.verifierAmPm = function() {
 
-				var horloge = document.querySelector('#horloge');
+				//console.log(el.components["ui-toggle"].lever.position);
 
-				/* Si le slider est à 0 (haut) = AM */
-				if(el.getAttribute("ui-toggle").value == 1) {
+				/* Si c'est PM */
+				if(horloge.getAttribute("data-am-pm") == "PM") {
 
-					horloge.setAttribute("data-am-pm","PM");
-					el.setAttribute("ui-toggle","value:0");
+					horloge.setAttribute("data-am-pm","AM");
 
 				}
 
-				/* Sinon si le slider est à 1 (bas) = PM */
-				else if(el.getAttribute("ui-toggle").value == 0) {
+				/* Sinon (AM) */
+				else if(horloge.getAttribute("data-am-pm") == "AM") {
 
-					horloge.setAttribute("data-am-pm","AM");
-					el.setAttribute("ui-toggle","value:1");
+					horloge.setAttribute("data-am-pm","PM");
 
 				}
 
 			};
 
+			/* Au départ il est 12h PM */
+			horloge.setAttribute("data-am-pm","PM");
+
 		},
 
 		play:function() {
 
-				this.el.addEventListener("change",this.verifierValeur);
+				this.el.addEventListener("change",this.verifierAmPm);
 
 		},
 
 		pause:function() {
 
-			this.el.removeEventListener("change",this.verifierValeur);
+			this.el.removeEventListener("change",this.verifierAmPm);
 
 		}
 
