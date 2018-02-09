@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prototype 02 - 02-08</title>
+    <meta name ="description" content="Prototype 02 - 02-08-2018 - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="components/ui-widget.js"></script>
+    <script src="components/phase-shift.js"></script>
+    <!--<script src="components/changement-outil.js"></script>-->
+    <script src="components/rafraichissement.js"></script>
+    <script src="components/bouton-generate.js"></script>
+    <script src="components/horloge.js"></script>
+    <script src="components/jour-clickable.js"></script>
+    <script src="components/lecture-cube.js"></script>
+    <script src="components/am-pm.js"></script>
+    <script src="components/lumiere-nuit.js"></script>
+  </head>
+  <body>
+    <a-scene stats physics environment="preset:forest; shadow:false;
+                                        skyType:atmosphere;">
+
+      <a-assets>
+        <a-mixin id="mypoint" phase-shift
+                 raycaster="showLine:true;far:3;interval:100;
+                            objects:.choixJour, .cube,
+                                    .horloge, .lecteurCube,
+                                    .solGraphe;"
+                 super-hands="colliderEvent:raycaster-intersection;
+                              colliderEventProperty:els;
+                              colliderEndEvent:raycaster-intersection-cleared;
+                              colliderEndEventProperty:el;
+                              dragDropEndButtons: triggerup;
+                              dragDropStartButtons: triggerdown;
+                              stretchEndButtons: triggerup;
+                              stretchStartButtons: triggerdown;
+                              grabEndButtons: triggerup;
+                              grabStartButtons: triggerdown;"></a-mixin>
+        <!-- Pour les mois -->
+        <a-mixin id="cubeMois" grabbable hoverable
+                 draggable dynamic-body shadow
+                 geometry="primitive:box; width:0.4; height:0.4; depth:0.4"
+                 event-set__hover-start="material.opacity: 0.4"
+                 event-set__hover-end="material.opacity: 1.0"></a-mixin>
+        <a-mixin id="lecteurCube"
+                 droppable="accepts:.cube"
+                 collision-filter="collisionForces: false"
+                 geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
+                 event-set__dragover-start="material.color: green"
+                 event-set__dragover-end="material.color: grey"></a-mixin>
+        <a-mixin id="etagere" static-body material="color:grey;"
+                 rotation="0 90 0"
+                 geometry="primitive:box;
+                           depth: 0.75;
+                           width: 2;height: 0.2"></a-mixin>
+        <!-- Pour les jours -->
+        <a-mixin id="btnCal" rotation="90 90 90"
+                 geometry="width:0.5;height:0.1;depth:0.5"
+                 material="opacity:0.2"></a-mixin>
+        <!-- Aiguille -->
+        <a-mixin id="aiguille" material="color:#a82121" rotation="90 0 0"
+                 geometry="primitive: box;
+                           depth:0.01; height: 0.6; width:0.02;"></a-mixin>
+        <!-- Animations-->
+        <a-mixin id="fade" attribute="material.opacity" direction="alternate"
+                 begin="playFade" repeat="0"
+                 from="0.2" to="1" dur="500"></a-mixin>
+        <!-- Audio -->
+        <audio id="foret" loop='true' autoplay="true"
+        src="audio/Forest.mp3" preload="auto"></audio>
+
+        <!-- Bouton generate -->
+        <a-mixin id="offset" position="0 0.01 0"></a-mixin>
+        <a-mixin id="btn-generate" position="0 0.02 0"
+                 geometry="primitive: cylinder;
+                           radius: 0.1; height: 0.025;
+                           segmentsHeight: 1;"
+                 material="src:img/graph/generate.png"></a-mixin>
+        <!-- Textures jour -->
+        <img id="t_1" src="img/jour/1.png">
+        <img id="t_2" src="img/jour/2.png">
+        <img id="t_3" src="img/jour/3.png">
+        <img id="t_4" src="img/jour/4.png">
+        <img id="t_5" src="img/jour/5.png">
+        <img id="t_6" src="img/jour/6.png">
+        <img id="t_7" src="img/jour/7.png">
+        <img id="t_8" src="img/jour/8.png">
+        <img id="t_9" src="img/jour/9.png">
+        <img id="t_10" src="img/jour/10.png">
+        <img id="t_11" src="img/jour/11.png">
+        <img id="t_12" src="img/jour/12.png">
+        <img id="t_13" src="img/jour/13.png">
+        <img id="t_14" src="img/jour/14.png">
+        <img id="t_15" src="img/jour/15.png">
+        <img id="t_16" src="img/jour/16.png">
+        <img id="t_17" src="img/jour/17.png">
+        <img id="t_18" src="img/jour/18.png">
+        <img id="t_19" src="img/jour/19.png">
+        <img id="t_20" src="img/jour/20.png">
+        <img id="t_21" src="img/jour/21.png">
+        <img id="t_22" src="img/jour/22.png">
+        <img id="t_23" src="img/jour/23.png">
+        <img id="t_24" src="img/jour/24.png">
+        <img id="t_25" src="img/jour/25.png">
+        <img id="t_26" src="img/jour/26.png">
+        <img id="t_27" src="img/jour/27.png">
+        <img id="t_28" src="img/jour/28.png">
+        <img id="t_29" src="img/jour/29.png">
+        <img id="t_30" src="img/jour/30.png">
+        <img id="t_31" src="img/jour/31.png">
+        <!-- Textures mois -->
+        <img id="jan" src="img/mois/jan.png">
+        <img id="feb" src="img/mois/feb.png">
+        <img id="mar" src="img/mois/mar.png">
+        <img id="apr" src="img/mois/apr.png">
+        <img id="may" src="img/mois/may.png">
+        <img id="june" src="img/mois/june.png">
+        <img id="july" src="img/mois/july.png">
+        <img id="aug" src="img/mois/aug.png">
+        <img id="sept" src="img/mois/sept.png">
+        <img id="oct" src="img/mois/oct.png">
+        <img id="nov" src="img/mois/nov.png">
+        <img id="dec" src="img/mois/dec.png">
+        <img id="JAN" src="img/mois/jan_t.png">
+        <img id="FEB" src="img/mois/feb_t.png">
+        <img id="MAR" src="img/mois/mar_t.png">
+        <img id="APR" src="img/mois/apr_t.png">
+        <img id="MAY" src="img/mois/may_t.png">
+        <img id="JUNE" src="img/mois/june_t.png">
+        <img id="JULY" src="img/mois/july_t.png">
+        <img id="AUG" src="img/mois/aug_t.png">
+        <img id="SEPT" src="img/mois/sept_t.png">
+        <img id="OCT" src="img/mois/oct_t.png">
+        <img id="NOV" src="img/mois/nov_t.png">
+        <img id="DEC" src="img/mois/dec_t.png">
+      </a-assets>
+
+      <!-- Les mains -->
+      <a-entity id="player" rafraichissement progressive-controls="controllerModel:false;
+                maxLevel:point;pointMixin:mypoint;touchMixin:mytouch;">
+        <a-entity id="lhand" hand-controls="left"
+                  teleport-controls="type:parabolic;"></a-entity>
+        <a-entity id="rhand" hand-controls="right"></a-entity>
+      </a-entity>
+
+      <!-- Horloge -->
+      <a-entity id="horloge" hoverable
+                horloge data-heure-choisisse="" data-am-pm=""
+                event-set__hover-start="material.opacity: 0.2;"
+                event-set__hover-end="material.opacity:1;"
+                scale="0.25 0.25 0.25" position="0.8 1 -0.62"
+                rotation="45 0 0">
+        <a-entity id="monAiguille"
+                  aiguille-horloge clickable hoverable ui-rotary></a-entity>
+        <a-entity id="fondHorloge" geometry="primitive: cylinder; radius:0.59; height:0.045;"
+                  material="color:#FFFFFF;"></a-entity>
+        <a-entity geometry="width: 1.4; height: 2.3; depth: 0.32"
+                  position="0 -0.19 0.468" rotation="90 90 90"
+                  material="color: white;" static-body></a-entity>
+        <!--<a-entity geometry="primitive: cylinder; radius:0.1; height:0.045;"
+                  material="color:grey;" position="0 0.05 0"></a-entity>-->
+
+        <!-- Les aiguilles
+        <a-entity id="monAiguille" mixin="aiguille"
+                  geometry="height: 0.4;"
+                  position="0 0.048 -0.217"></a-entity>-->
+        <a-entity mixin="aiguille" position="0 0.034 -0.217"></a-entity>
+
+        <!--  Choisir Am ou Pm avec la switch -->
+        <a-entity am-pm ui-toggle rotation="0 -90 0"
+                  position="-0.008 0.001 1.165" scale="2 2 2">
+                  <a-entity text="value:AM;align:center;color:#333333;width:2.5"
+                            rotation="270 90 0"
+                            position="0 0 -0.23"></a-entity>
+                  <a-entity text="value:PM;align:center;color:#333333;width:2.5"
+                            rotation="270 90 0"
+                            position="0 0 0.23"></a-entity>
+        </a-entity>
+        <!-- Les chiffres -->
+        <a-entity id="lesChiffres">
+          <a-entity text="value:1;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0.252 0.027 -0.388"></a-entity>
+          <a-entity text="value:2;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0.419 0.027 -0.25"></a-entity>
+          <a-entity text="value:3;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0.493 0.027 -0.003"></a-entity>
+          <a-entity text="value:4;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0.419 0.027 0.255"></a-entity>
+          <a-entity text="value:5;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0.237 0.027 0.41"></a-entity>
+          <a-entity text="value:6;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0 0.027 0.474"></a-entity>
+          <a-entity text="value:7;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="-0.261 0.027 0.41"></a-entity>
+          <a-entity text="value:8;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="-0.43 0.027 0.255"></a-entity>
+          <a-entity text="value:9;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="-0.493 0.027 -0.003"></a-entity>
+          <a-entity text="value:10;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="-0.43 0.027 -0.217"></a-entity>
+          <a-entity text="value:11;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="-0.261 0.027 -0.388"></a-entity>
+          <a-entity text="value:12;align:center;color:#000000;width:4"
+                    rotation="-90 0 0" position="0 0.027 -0.462"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Jour -->
+      <a-entity id="calendrier" hoverable
+                position="1.3 1.43 -3" scale="0.3 0.3 0.3">
+        <a-text id="textJour" position="-2.9 0.25 0" value="Day Selected : "
+                text="whiteSpace: pre;
+                      tabSize: 0; width: 2.5;
+                      baseline: top; wrapCount: 12;
+                      letterSpacing: 0.3"></a-text>
+
+        <!-- 1re rangée -->
+        <a-entity class="choixJour" data-jour="1" mixin="btnCal"
+                  material="src:#t_1;"></a-entity>
+        <a-entity class="choixJour" data-jour="2" mixin="btnCal"
+                  material="src:#t_2;" position="0.6 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="3" mixin="btnCal"
+                  material="src:#t_3;" position="1.2 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="4" mixin="btnCal"
+                  material="src:#t_4;" position="1.8 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="5" mixin="btnCal"
+                  material="src:#t_5;" position="2.4 0 0"></a-entity>
+        <a-entity class="choixJour" data-jour="6" mixin="btnCal"
+                  material="src:#t_6;" position="3 0 0"></a-entity>
+        <!-- 2e rangée -->
+        <a-entity class="choixJour" data-jour="7" mixin="btnCal"
+                  material="src:#t_7;" position="0 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="8" mixin="btnCal"
+                  material="src:#t_8;" position="0.6 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="9" mixin="btnCal"
+                  material="src:#t_9;" position="1.2 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="10" mixin="btnCal"
+                  material="src:#t_10;" position="1.8 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="11" mixin="btnCal"
+                  material="src:#t_11;" position="2.4 -0.6 0"></a-entity>
+        <a-entity class="choixJour" data-jour="12" mixin="btnCal"
+                  material="src:#t_12;" position="3 -0.6 0"></a-entity>
+        <!-- 3e rangée -->
+        <a-entity class="choixJour" data-jour="13" mixin="btnCal"
+                  material="src:#t_13;" position="0 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="14" mixin="btnCal"
+                  material="src:#t_14;" position="0.6 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="15" mixin="btnCal"
+                  material="src:#t_15;" position="1.2 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="16" mixin="btnCal"
+                  material="src:#t_16;" position="1.8 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="17" mixin="btnCal"
+                  material="src:#t_17;" position="2.4 -1.2 0"></a-entity>
+        <a-entity class="choixJour" data-jour="18" mixin="btnCal"
+                  material="src:#t_18;" position="3 -1.2 0"></a-entity>
+        <!-- 4e rangée -->
+        <a-entity class="choixJour" data-jour="19" mixin="btnCal"
+                  material="src:#t_19;" position="0 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="20" mixin="btnCal"
+                  material="src:#t_20;" position="0.6 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="21" mixin="btnCal"
+                  material="src:#t_21;" position="1.2 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="22" mixin="btnCal"
+                  material="src:#t_22;" position="1.8 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="23" mixin="btnCal"
+                  material="src:#t_23;" position="2.4 -1.8 0"></a-entity>
+        <a-entity class="choixJour" data-jour="24" mixin="btnCal"
+                  material="src:#t_24;" position="3 -1.8 0"></a-entity>
+        <!-- 5e rangée -->
+        <a-entity class="choixJour" data-jour="25" mixin="btnCal"
+                  material="src:#t_25;" position="0 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="26" mixin="btnCal"
+                  material="src:#t_26;" position="0.6 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="27" mixin="btnCal"
+                  material="src:#t_27;" position="1.2 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="28" mixin="btnCal"
+                  material="src:#t_28;" position="1.8 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="29" mixin="btnCal"
+                  material="src:#t_29;" position="2.4 -2.4 0"></a-entity>
+        <a-entity class="choixJour" data-jour="30" mixin="btnCal"
+                  material="src:#t_30;" position="3 -2.4 0"></a-entity>
+        <!-- 6e rangée -->
+        <a-entity class="choixJour" data-jour="31" mixin="btnCal"
+                  material="src:#t_31;" position="0 -3 0"></a-entity>
+      </a-entity>
+
+      <!-- Mois -->
+      <a-entity id="selecteurMois" rotation="0 270 0"
+                scale="0.42 0.42 0.42" position="-1.3 0.4 -3.075">
+        <!-- 1re étagère -->
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 -2"
+                  material="src:#jan" data-mois="JAN"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 -2.7"
+                  material="src:#feb" data-mois="FEB"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 -3.4"
+                  material="src:#dec" data-mois="DEC"></a-entity>
+        <a-entity mixin="etagere" position="0.5 2.2 -2.7"></a-entity>
+        <!-- 2e étagère -->
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 -2"
+                  material="src:#mar" data-mois="MAR"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 -2.7"
+                  material="src:#apr" data-mois="APR"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 -3.4"
+                  material="src:#may" data-mois="MAY"></a-entity>
+        <a-entity mixin="etagere" position="0.5 1.4 -2.7"></a-entity>
+        <!-- 3e étagère -->
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 0"
+                  material="src:#june" data-mois="JUNE"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 0.7"
+                  material="src:#july" data-mois="JULY"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 2.5 1.4"
+                  material="src:#aug" data-mois="AUG"></a-entity>
+        <a-entity mixin="etagere" position="0.5 2.2 0.7"></a-entity>
+        <!-- 4e étagère -->
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 0"
+                  material="src:#nov" data-mois="NOV"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 0.7"
+                  material="src:#sept" data-mois="SEPT"></a-entity>
+        <a-entity class="cube" mixin="cubeMois" position="0.5 1.7 1.4"
+                  material="src:#oct" data-mois="OCT"></a-entity>
+        <a-entity mixin="etagere" position="0.5 1.4 0.7"></a-entity>
+
+        <!-- Le lecteur de cube -->
+        <a-entity class="lecteurCube" mixin="lecteurCube"
+                  position="0.5 1.8 -1" scale="1.2 1.2 1.2"
+                  lecture-cube data-mois-choisi=""
+                  material="color:grey; opacity: 0.7">
+          <a-box id="blocSousLecteur" static-body width=0.5 position="0 -0.5 0"
+                 height=0.5 depth=0.5 visible="true" shadow></a-box>
+        </a-entity>
+      </a-entity>
+
+      <!-- Mur -->
+      <a-entity geometry="depth:0.06;width:4.58;height:1.71"
+                position="0.083 0.814 -3.049"
+                material="color:white"
+                static-body></a-entity>
+
+      <!-- Le bouton graphe -->
+      <a-entity geometry="primitive:box;width: 0.3; depth: 0.3"
+                position="0.799 0.7 -0.866" rotation="0 90 0"
+                scale="0.8 0.8 0.8" material="color:#ffffff">
+        <a-entity data-pret-generate="false"
+                  bouton-generate position="0 0.5 0"
+                  ui-button="baseColor: #ffffff;
+                             top:btn-generate;
+                            pressed:btn-generate,offset"></a-entity>
+      </a-entity>
+
+      <!-- Ensemble graphes -->
+      <!-- Graphe avec une ligne -->
+      <a-entity class="graphe" position="-1.3 0.04 -2" scale="0.2 0.2 0.2"
+                grabbable stretchable hoverable>
+
+        <!-- le graphe -->
+        <a-entity scale="2 2 2" rotation="0 90 0">
+
+          <!-- Lignes blanches -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.25, .8;  end: -.8 0.25 -.8; color: white"
+                      line__b="start: -.8, 0.5, .8;  end: -.8 0.5 -.8; color: white"
+                      line__c="start: -.8, 0.75, .8; end: -.8 0.75 -.8; color: white"
+                      line__d="start: -.8, 1, .8;    end: -.8 1 -.8; color: white"
+                      line__e="start: -.8, 0.25, -.8;  end: .8 0.25 -.8; color: white"
+                      line____f="start: -.8, 0.5, -.8;  end: .8 0.5 -.8; color: white"
+                      line__g="start: -.8, 0.75, -.8; end: .8 0.75 -.8; color: white"
+                      line__h="start: -.8, 1, -.8;    end: .8 1 -.8; color: white"
+                      line__i="start: .8, 0.25, .8; end: .8 0.25 -.8; color: white"
+                      line__j="start: .8, 0.5, .8; end: .8 0.5 -.8; color: white"
+                      line__k="start: .8, 0.75, .8; end: .8 0.75 -.8; color: white"
+                      line__l="start: .8, 1, .8; end: .8 1 -.8; color: white"></a-entity>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 90 90" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 -90 90" ></a-text>
+          </a-entity>
+
+          <!-- Ligne noir au sol -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.05, -.8; end: .8 0.05 -.8; color: black"
+                      line__b="start: -.8, 0.05, -.7; end: .8 0.05 -.7; color: black"
+                      line__c="start: -.8, 0.05, -.6; end: .8 0.05 -.6; color: black"
+                      line__d="start: -.8, 0.05, -.5; end: .8 0.05 -.5; color: black"
+                      line__e="start: -.8, 0.05, -.4; end: .8 0.05 -.4; color: black"
+                      line__f="start: -.8, 0.05, -.3; end: .8 0.05 -.3; color: black"
+                      line__g="start: -.8, 0.05, -.2; end: .8 0.05 -.2; color: black"
+                      line__h="start: -.8, 0.05, -.1; end: .8 0.05 -.1; color: black"
+                      line__i="start: -.8, 0.05, 0;   end: .8 0.05 0;   color: black"
+                      line__j="start: -.8, 0.05, .8; end: .8 0.05 .8; color: black"
+                      line__k="start: -.8, 0.05, .7; end: .8 0.05 .7; color: black"
+                      line__l="start: -.8, 0.05, .6; end: .8 0.05 .6; color: black"
+                      line__m="start: -.8, 0.05, .5; end: .8 0.05 .5; color: black"
+                      line__n="start: -.8, 0.05, .4; end: .8 0.05 .4; color: black"
+                      line__o="start: -.8, 0.05, .3; end: .8 0.05 .3; color: black"
+                      line__p="start: -.8, 0.05, .2; end: .8 0.05 .2; color: black"
+                      line__q="start: -.8, 0.05, .1; end: .8 0.05 .1; color: black"
+                      line__r="start: -.8, 0.05, -.8;  end: -.8 0.05 .8; color: black"
+                      line__s="start: -.7, 0.05, -.8;  end: -.7 0.05 .8; color: black"
+                      line__t="start: -.6, 0.05, -.8;  end: -.6 0.05 .8; color: black"
+                      line__u="start: -.5, 0.05, -.8;  end: -.5 0.05 .8; color: black"
+                      line__v="start: -.4, 0.05, -.8;  end: -.4 0.05 .8; color: black"
+                      line__w="start: -.3, 0.05, -.8;  end: -.3 0.05 .8; color: black"
+                      line__y="start: -.2, 0.05, -.8;  end: -.2 0.05 .8; color: black"
+                      line__z="start: -.1, 0.05, -.8;  end: -.1 0.05 .8; color: black"
+                      line__aa="start: 0, 0.05, -.8;    end: 0 0.05 .8; color: black"
+                      line__ba="start: .8, 0.05, -.8;  end: .8 0.05 .8; color: black"
+                      line__ca="start: .7, 0.05, -.8;  end: .7 0.05 .8; color: black"
+                      line__da="start: .6, 0.05, -.8;  end: .6 0.05 .8; color: black"
+                      line__ea="start: .5, 0.05, -.8;  end: .5 0.05 .8; color: black"
+                      line__fa="start: .4, 0.05, -.8;  end: .4 0.05 .8; color: black"
+                      line__ga="start: .3, 0.05, -.8;  end: .3 0.05 .8; color: black"
+                      line__ha="start: .2, 0.05, -.8;  end: .2 0.05 .8; color: black"
+                      line__ja="start: .1, 0.05, -.8;  end: .1 0.05 .8; color: black"></a-entity>
+          </a-entity>
+
+          <!-- Le texte pour diamètre -->
+          <a-entity>
+            <a-text value="1970" color="white" width="5" wrap-count="180" position="-.95 .03 .8" rotation="-90 0 0" ></a-text>
+            <a-text value="1972" color="white" width="5" wrap-count="180" position="-.95 .03 .72" rotation="-90 0 0" ></a-text>
+            <a-text value="1974" color="white" width="5" wrap-count="180" position="-.95 .03 .64" rotation="-90 0 0" ></a-text>
+            <a-text value="1976" color="white" width="5" wrap-count="180" position="-.95 .03 .56" rotation="-90 0 0" ></a-text>
+            <a-text value="1978" color="white" width="5" wrap-count="180" position="-.95 .03 .48" rotation="-90 0 0" ></a-text>
+            <a-text value="1980" color="white" width="5" wrap-count="180" position="-.95 .03 .42" rotation="-90 0 0" ></a-text>
+            <a-text value="1982" color="white" width="5" wrap-count="180" position="-.95 .03 .34" rotation="-90 0 0" ></a-text>
+            <a-text value="1984" color="white" width="5" wrap-count="180" position="-.95 .03 .26" rotation="-90 0 0" ></a-text>
+            <a-text value="1986" color="white" width="5" wrap-count="180" position="-.95 .03 .18" rotation="-90 0 0" ></a-text>
+            <a-text value="1988" color="white" width="5" wrap-count="180" position="-.95 .03 .1" rotation="-90 0 0" ></a-text>
+            <a-text value="1990" color="white" width="5" wrap-count="180" position="-.95 .03 .02" rotation="-90 0 0" ></a-text>
+            <a-text value="1992" color="white" width="5" wrap-count="180" position="-.95 .03 -.06" rotation="-90 0 0" ></a-text>
+            <a-text value="1994" color="white" width="5" wrap-count="180" position="-.95 .03 -.14" rotation="-90 0 0" ></a-text>
+            <a-text value="1996" color="white" width="5" wrap-count="180" position="-.95 .03 -.22" rotation="-90 0 0" ></a-text>
+            <a-text value="1998" color="white" width="5" wrap-count="180" position="-.95 .03 -.3" rotation="-90 0 0" ></a-text>
+            <a-text value="2000" color="white" width="5" wrap-count="180" position="-.95 .03 -.38" rotation="-90 0 0" ></a-text>
+            <a-text value="2002" color="white" width="5" wrap-count="180" position="-.95 .03 -.46" rotation="-90 0 0" ></a-text>
+            <a-text value="2004" color="white" width="5" wrap-count="180" position="-.95 .03 -.54" rotation="-90 0 0" ></a-text>
+            <a-text value="2006" color="white" width="5" wrap-count="180" position="-.95 .03 -.62" rotation="-90 0 0" ></a-text>
+            <a-text value="2008" color="white" width="5" wrap-count="180" position="-.95 .03 -.7" rotation="-90 0 0" ></a-text>
+            <a-text value="2010" color="white" width="5" wrap-count="180" position="-.95 .03 -.8" rotation="-90 0 0" ></a-text>
+            <a-text value="Academic Year" color="white"  width="5" wrap-count="180"  position="-1.1 .03 .19" rotation="-90 90 0" ></a-text>
+          </a-entity>
+
+          <!-- Le sol et la bordure -->
+          <a-entity class="solGraphe" static-body  >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
+            <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
+          </a-entity>
+
+          <!-- La ligne du graphe -->
+          <a-entity class="ligneGraphe"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Graphe avec 3 lignes -->
+      <a-entity class="graphe" position="0 0.04 -2" scale="0.2 0.2 0.2"
+                grabbable stretchable hoverable>
+
+        <!-- le graphe -->
+        <a-entity scale="2 2 2" rotation="0 90 0">
+
+          <!-- Lignes blanches -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.25, .8;  end: -.8 0.25 -.8; color: white"
+                      line__b="start: -.8, 0.5, .8;  end: -.8 0.5 -.8; color: white"
+                      line__c="start: -.8, 0.75, .8; end: -.8 0.75 -.8; color: white"
+                      line__d="start: -.8, 1, .8;    end: -.8 1 -.8; color: white"
+                      line__e="start: -.8, 0.25, -.8;  end: .8 0.25 -.8; color: white"
+                      line____f="start: -.8, 0.5, -.8;  end: .8 0.5 -.8; color: white"
+                      line__g="start: -.8, 0.75, -.8; end: .8 0.75 -.8; color: white"
+                      line__h="start: -.8, 1, -.8;    end: .8 1 -.8; color: white"
+                      line__i="start: .8, 0.25, .8; end: .8 0.25 -.8; color: white"
+                      line__j="start: .8, 0.5, .8; end: .8 0.5 -.8; color: white"
+                      line__k="start: .8, 0.75, .8; end: .8 0.75 -.8; color: white"
+                      line__l="start: .8, 1, .8; end: .8 1 -.8; color: white"></a-entity>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 90 90" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 -90 90" ></a-text>
+          </a-entity>
+
+          <!-- Ligne noir au sol -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.05, -.8; end: .8 0.05 -.8; color: black"
+                      line__b="start: -.8, 0.05, -.7; end: .8 0.05 -.7; color: black"
+                      line__c="start: -.8, 0.05, -.6; end: .8 0.05 -.6; color: black"
+                      line__d="start: -.8, 0.05, -.5; end: .8 0.05 -.5; color: black"
+                      line__e="start: -.8, 0.05, -.4; end: .8 0.05 -.4; color: black"
+                      line__f="start: -.8, 0.05, -.3; end: .8 0.05 -.3; color: black"
+                      line__g="start: -.8, 0.05, -.2; end: .8 0.05 -.2; color: black"
+                      line__h="start: -.8, 0.05, -.1; end: .8 0.05 -.1; color: black"
+                      line__i="start: -.8, 0.05, 0;   end: .8 0.05 0;   color: black"
+                      line__j="start: -.8, 0.05, .8; end: .8 0.05 .8; color: black"
+                      line__k="start: -.8, 0.05, .7; end: .8 0.05 .7; color: black"
+                      line__l="start: -.8, 0.05, .6; end: .8 0.05 .6; color: black"
+                      line__m="start: -.8, 0.05, .5; end: .8 0.05 .5; color: black"
+                      line__n="start: -.8, 0.05, .4; end: .8 0.05 .4; color: black"
+                      line__o="start: -.8, 0.05, .3; end: .8 0.05 .3; color: black"
+                      line__p="start: -.8, 0.05, .2; end: .8 0.05 .2; color: black"
+                      line__q="start: -.8, 0.05, .1; end: .8 0.05 .1; color: black"
+                      line__r="start: -.8, 0.05, -.8;  end: -.8 0.05 .8; color: black"
+                      line__s="start: -.7, 0.05, -.8;  end: -.7 0.05 .8; color: black"
+                      line__t="start: -.6, 0.05, -.8;  end: -.6 0.05 .8; color: black"
+                      line__u="start: -.5, 0.05, -.8;  end: -.5 0.05 .8; color: black"
+                      line__v="start: -.4, 0.05, -.8;  end: -.4 0.05 .8; color: black"
+                      line__w="start: -.3, 0.05, -.8;  end: -.3 0.05 .8; color: black"
+                      line__y="start: -.2, 0.05, -.8;  end: -.2 0.05 .8; color: black"
+                      line__z="start: -.1, 0.05, -.8;  end: -.1 0.05 .8; color: black"
+                      line__aa="start: 0, 0.05, -.8;    end: 0 0.05 .8; color: black"
+                      line__ba="start: .8, 0.05, -.8;  end: .8 0.05 .8; color: black"
+                      line__ca="start: .7, 0.05, -.8;  end: .7 0.05 .8; color: black"
+                      line__da="start: .6, 0.05, -.8;  end: .6 0.05 .8; color: black"
+                      line__ea="start: .5, 0.05, -.8;  end: .5 0.05 .8; color: black"
+                      line__fa="start: .4, 0.05, -.8;  end: .4 0.05 .8; color: black"
+                      line__ga="start: .3, 0.05, -.8;  end: .3 0.05 .8; color: black"
+                      line__ha="start: .2, 0.05, -.8;  end: .2 0.05 .8; color: black"
+                      line__ja="start: .1, 0.05, -.8;  end: .1 0.05 .8; color: black"></a-entity>
+          </a-entity>
+
+          <!-- Le texte pour diamètre -->
+          <a-entity>
+            <a-text value="1970" color="white" width="5" wrap-count="180" position="-.95 .03 .8" rotation="-90 0 0" ></a-text>
+            <a-text value="1972" color="white" width="5" wrap-count="180" position="-.95 .03 .72" rotation="-90 0 0" ></a-text>
+            <a-text value="1974" color="white" width="5" wrap-count="180" position="-.95 .03 .64" rotation="-90 0 0" ></a-text>
+            <a-text value="1976" color="white" width="5" wrap-count="180" position="-.95 .03 .56" rotation="-90 0 0" ></a-text>
+            <a-text value="1978" color="white" width="5" wrap-count="180" position="-.95 .03 .48" rotation="-90 0 0" ></a-text>
+            <a-text value="1980" color="white" width="5" wrap-count="180" position="-.95 .03 .42" rotation="-90 0 0" ></a-text>
+            <a-text value="1982" color="white" width="5" wrap-count="180" position="-.95 .03 .34" rotation="-90 0 0" ></a-text>
+            <a-text value="1984" color="white" width="5" wrap-count="180" position="-.95 .03 .26" rotation="-90 0 0" ></a-text>
+            <a-text value="1986" color="white" width="5" wrap-count="180" position="-.95 .03 .18" rotation="-90 0 0" ></a-text>
+            <a-text value="1988" color="white" width="5" wrap-count="180" position="-.95 .03 .1" rotation="-90 0 0" ></a-text>
+            <a-text value="1990" color="white" width="5" wrap-count="180" position="-.95 .03 .02" rotation="-90 0 0" ></a-text>
+            <a-text value="1992" color="white" width="5" wrap-count="180" position="-.95 .03 -.06" rotation="-90 0 0" ></a-text>
+            <a-text value="1994" color="white" width="5" wrap-count="180" position="-.95 .03 -.14" rotation="-90 0 0" ></a-text>
+            <a-text value="1996" color="white" width="5" wrap-count="180" position="-.95 .03 -.22" rotation="-90 0 0" ></a-text>
+            <a-text value="1998" color="white" width="5" wrap-count="180" position="-.95 .03 -.3" rotation="-90 0 0" ></a-text>
+            <a-text value="2000" color="white" width="5" wrap-count="180" position="-.95 .03 -.38" rotation="-90 0 0" ></a-text>
+            <a-text value="2002" color="white" width="5" wrap-count="180" position="-.95 .03 -.46" rotation="-90 0 0" ></a-text>
+            <a-text value="2004" color="white" width="5" wrap-count="180" position="-.95 .03 -.54" rotation="-90 0 0" ></a-text>
+            <a-text value="2006" color="white" width="5" wrap-count="180" position="-.95 .03 -.62" rotation="-90 0 0" ></a-text>
+            <a-text value="2008" color="white" width="5" wrap-count="180" position="-.95 .03 -.7" rotation="-90 0 0" ></a-text>
+            <a-text value="2010" color="white" width="5" wrap-count="180" position="-.95 .03 -.8" rotation="-90 0 0" ></a-text>
+            <a-text value="Academic Year" color="white"  width="5" wrap-count="180"  position="-1.1 .03 .19" rotation="-90 90 0" ></a-text>
+          </a-entity>
+
+          <!-- Le sol et la bordure -->
+          <a-entity class="solGraphe" static-body >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
+            <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
+          </a-entity>
+
+          <!-- La ligne du graphe de gauche -->
+          <a-entity class="ligneGraphe" position="-0.3 0 0"></a-entity>
+
+          <!-- La ligne du graphe du centre -->
+          <a-entity class="ligneGraphe" position="0 0.06 0"></a-entity>
+
+          <!-- La ligne du graphe de droite -->
+          <a-entity class="ligneGraphe" position="0.3 0.12 0"></a-entity>
+
+        </a-entity>
+      </a-entity>
+
+      <!-- Graphe avec 3 tubes -->
+      <a-entity class="graphe" position="1.30 0.04 -2" scale="0.2 0.2 0.2"
+                grabbable stretchable hoverable>
+
+        <!-- le graphe -->
+        <a-entity scale="2 2 2" rotation="0 90 0">
+
+          <!-- Lignes blanches -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.25, .8;  end: -.8 0.25 -.8; color: white"
+                      line__b="start: -.8, 0.5, .8;  end: -.8 0.5 -.8; color: white"
+                      line__c="start: -.8, 0.75, .8; end: -.8 0.75 -.8; color: white"
+                      line__d="start: -.8, 1, .8;    end: -.8 1 -.8; color: white"
+                      line__e="start: -.8, 0.25, -.8;  end: .8 0.25 -.8; color: white"
+                      line____f="start: -.8, 0.5, -.8;  end: .8 0.5 -.8; color: white"
+                      line__g="start: -.8, 0.75, -.8; end: .8 0.75 -.8; color: white"
+                      line__h="start: -.8, 1, -.8;    end: .8 1 -.8; color: white"
+                      line__i="start: .8, 0.25, .8; end: .8 0.25 -.8; color: white"
+                      line__j="start: .8, 0.5, .8; end: .8 0.5 -.8; color: white"
+                      line__k="start: .8, 0.75, .8; end: .8 0.75 -.8; color: white"
+                      line__l="start: .8, 1, .8; end: .8 1 -.8; color: white"></a-entity>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.25"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.5"  color="white"  width="5" wrap-count="180"  position="-.8, 0.5, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 90 0" ></a-text>
+            <a-text value="0.75"  color="white"  width="5" wrap-count="180"  position="-.8, 0.75, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 90 0" ></a-text>
+            <a-text value="1"  color="white"  width="5" wrap-count="180"  position="-.8, 1, 1" rotation="0 -90 0" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 90 90" ></a-text>
+            <a-text value="Percentage of Bachelors accorded to Women"  color="white"  width="5" wrap-count="180"  position="-.8, 0.25, 1.2" rotation="0 -90 90" ></a-text>
+          </a-entity>
+
+          <!-- Ligne noir au sol -->
+          <a-entity>
+            <a-entity line__a="start: -.8, 0.05, -.8; end: .8 0.05 -.8; color: black"
+                      line__b="start: -.8, 0.05, -.7; end: .8 0.05 -.7; color: black"
+                      line__c="start: -.8, 0.05, -.6; end: .8 0.05 -.6; color: black"
+                      line__d="start: -.8, 0.05, -.5; end: .8 0.05 -.5; color: black"
+                      line__e="start: -.8, 0.05, -.4; end: .8 0.05 -.4; color: black"
+                      line__f="start: -.8, 0.05, -.3; end: .8 0.05 -.3; color: black"
+                      line__g="start: -.8, 0.05, -.2; end: .8 0.05 -.2; color: black"
+                      line__h="start: -.8, 0.05, -.1; end: .8 0.05 -.1; color: black"
+                      line__i="start: -.8, 0.05, 0;   end: .8 0.05 0;   color: black"
+                      line__j="start: -.8, 0.05, .8; end: .8 0.05 .8; color: black"
+                      line__k="start: -.8, 0.05, .7; end: .8 0.05 .7; color: black"
+                      line__l="start: -.8, 0.05, .6; end: .8 0.05 .6; color: black"
+                      line__m="start: -.8, 0.05, .5; end: .8 0.05 .5; color: black"
+                      line__n="start: -.8, 0.05, .4; end: .8 0.05 .4; color: black"
+                      line__o="start: -.8, 0.05, .3; end: .8 0.05 .3; color: black"
+                      line__p="start: -.8, 0.05, .2; end: .8 0.05 .2; color: black"
+                      line__q="start: -.8, 0.05, .1; end: .8 0.05 .1; color: black"
+                      line__r="start: -.8, 0.05, -.8;  end: -.8 0.05 .8; color: black"
+                      line__s="start: -.7, 0.05, -.8;  end: -.7 0.05 .8; color: black"
+                      line__t="start: -.6, 0.05, -.8;  end: -.6 0.05 .8; color: black"
+                      line__u="start: -.5, 0.05, -.8;  end: -.5 0.05 .8; color: black"
+                      line__v="start: -.4, 0.05, -.8;  end: -.4 0.05 .8; color: black"
+                      line__w="start: -.3, 0.05, -.8;  end: -.3 0.05 .8; color: black"
+                      line__y="start: -.2, 0.05, -.8;  end: -.2 0.05 .8; color: black"
+                      line__z="start: -.1, 0.05, -.8;  end: -.1 0.05 .8; color: black"
+                      line__aa="start: 0, 0.05, -.8;    end: 0 0.05 .8; color: black"
+                      line__ba="start: .8, 0.05, -.8;  end: .8 0.05 .8; color: black"
+                      line__ca="start: .7, 0.05, -.8;  end: .7 0.05 .8; color: black"
+                      line__da="start: .6, 0.05, -.8;  end: .6 0.05 .8; color: black"
+                      line__ea="start: .5, 0.05, -.8;  end: .5 0.05 .8; color: black"
+                      line__fa="start: .4, 0.05, -.8;  end: .4 0.05 .8; color: black"
+                      line__ga="start: .3, 0.05, -.8;  end: .3 0.05 .8; color: black"
+                      line__ha="start: .2, 0.05, -.8;  end: .2 0.05 .8; color: black"
+                      line__ja="start: .1, 0.05, -.8;  end: .1 0.05 .8; color: black"></a-entity>
+          </a-entity>
+
+          <!-- Le texte pour diamètre -->
+          <a-entity>
+            <a-text value="1970" color="white" width="5" wrap-count="180" position="-.95 .03 .8" rotation="-90 0 0" ></a-text>
+            <a-text value="1972" color="white" width="5" wrap-count="180" position="-.95 .03 .72" rotation="-90 0 0" ></a-text>
+            <a-text value="1974" color="white" width="5" wrap-count="180" position="-.95 .03 .64" rotation="-90 0 0" ></a-text>
+            <a-text value="1976" color="white" width="5" wrap-count="180" position="-.95 .03 .56" rotation="-90 0 0" ></a-text>
+            <a-text value="1978" color="white" width="5" wrap-count="180" position="-.95 .03 .48" rotation="-90 0 0" ></a-text>
+            <a-text value="1980" color="white" width="5" wrap-count="180" position="-.95 .03 .42" rotation="-90 0 0" ></a-text>
+            <a-text value="1982" color="white" width="5" wrap-count="180" position="-.95 .03 .34" rotation="-90 0 0" ></a-text>
+            <a-text value="1984" color="white" width="5" wrap-count="180" position="-.95 .03 .26" rotation="-90 0 0" ></a-text>
+            <a-text value="1986" color="white" width="5" wrap-count="180" position="-.95 .03 .18" rotation="-90 0 0" ></a-text>
+            <a-text value="1988" color="white" width="5" wrap-count="180" position="-.95 .03 .1" rotation="-90 0 0" ></a-text>
+            <a-text value="1990" color="white" width="5" wrap-count="180" position="-.95 .03 .02" rotation="-90 0 0" ></a-text>
+            <a-text value="1992" color="white" width="5" wrap-count="180" position="-.95 .03 -.06" rotation="-90 0 0" ></a-text>
+            <a-text value="1994" color="white" width="5" wrap-count="180" position="-.95 .03 -.14" rotation="-90 0 0" ></a-text>
+            <a-text value="1996" color="white" width="5" wrap-count="180" position="-.95 .03 -.22" rotation="-90 0 0" ></a-text>
+            <a-text value="1998" color="white" width="5" wrap-count="180" position="-.95 .03 -.3" rotation="-90 0 0" ></a-text>
+            <a-text value="2000" color="white" width="5" wrap-count="180" position="-.95 .03 -.38" rotation="-90 0 0" ></a-text>
+            <a-text value="2002" color="white" width="5" wrap-count="180" position="-.95 .03 -.46" rotation="-90 0 0" ></a-text>
+            <a-text value="2004" color="white" width="5" wrap-count="180" position="-.95 .03 -.54" rotation="-90 0 0" ></a-text>
+            <a-text value="2006" color="white" width="5" wrap-count="180" position="-.95 .03 -.62" rotation="-90 0 0" ></a-text>
+            <a-text value="2008" color="white" width="5" wrap-count="180" position="-.95 .03 -.7" rotation="-90 0 0" ></a-text>
+            <a-text value="2010" color="white" width="5" wrap-count="180" position="-.95 .03 -.8" rotation="-90 0 0" ></a-text>
+            <a-text value="Academic Year" color="white"  width="5" wrap-count="180"  position="-1.1 .03 .19" rotation="-90 90 0" ></a-text>
+          </a-entity>
+
+          <!-- Le sol et la bordure -->
+          <a-entity class="solGraphe" static-body >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
+            <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
+          </a-entity>
+
+          <!-- La ligne du graphe de gauche -->
+          <a-entity class="ligneGraphe" position="-0.3 0.53 0.75"></a-entity>
+
+          <a-entity class="ligneGraphe" position="0 1 0.75"></a-entity>
+
+          <a-entity class="ligneGraphe" position="0.3 0.65 0.75"></a-entity>
+
+
+        </a-entity>
+      </a-entity>
+
+      <!-- Collider du sol pour empêcher les blocs de tomber -->
+      <a-box static-body width=100 height=0.001 depth=100 visible="false"></a-box>
+
+      <!-- Son -->
+      <a-entity sound="src:#foret" position="0 0 0"></a-entity>
+
+      <!-- Lumière pour la nuit -->
+      <a-entity id="lumiereNuit" lumiere-nuit position="0 0.82 0"></a-entity>
+    </a-scene>
+
+</html>
