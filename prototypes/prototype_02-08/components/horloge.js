@@ -61,7 +61,7 @@ AFRAME.registerComponent('horloge', {
 
       if(this.el.getAttribute("data-am-pm") == "AM") {
 
-        scene.setAttribute("environment","lightPosition", {x:0,y:-0.1,z:0});
+        scene.setAttribute("environment","lightPosition", {x:0,y:0,z:0});
 
       }
 

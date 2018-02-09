@@ -14,6 +14,7 @@
     <script src="components/ui-widget.js"></script>
     <script src="components/phase-shift.js"></script>
     <!--<script src="components/changement-outil.js"></script>-->
+    <script src="components/rafraichissement.js"></script>
     <script src="components/bouton-generate.js"></script>
     <script src="components/horloge.js"></script>
     <script src="components/jour-clickable.js"></script>
@@ -141,7 +142,7 @@
       </a-assets>
 
       <!-- Les mains -->
-      <a-entity id="player" progressive-controls="controllerModel:false;
+      <a-entity id="player" rafraichissement progressive-controls="controllerModel:false;
                 maxLevel:point;pointMixin:mypoint;touchMixin:mytouch;">
         <a-entity id="lhand" hand-controls="left"
                   teleport-controls="type:parabolic;"></a-entity>
@@ -355,7 +356,7 @@
       <!-- Ensemble graphes -->
       <!-- Graphe avec une ligne -->
       <a-entity class="graphe" position="-1.3 0.04 -2" scale="0.2 0.2 0.2"
-                grabbable stretchable >
+                grabbable stretchable hoverable>
 
         <!-- le graphe -->
         <a-entity scale="2 2 2" rotation="0 90 0">
@@ -451,8 +452,9 @@
           </a-entity>
 
           <!-- Le sol et la bordure -->
-          <a-entity class="solGraphe" static-body>
-            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0"></a-box>
+          <a-entity class="solGraphe" static-body  >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
             <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
           </a-entity>
 
@@ -463,7 +465,7 @@
 
       <!-- Graphe avec 3 lignes -->
       <a-entity class="graphe" position="0 0.04 -2" scale="0.2 0.2 0.2"
-                grabbable stretchable >
+                grabbable stretchable hoverable>
 
         <!-- le graphe -->
         <a-entity scale="2 2 2" rotation="0 90 0">
@@ -559,8 +561,9 @@
           </a-entity>
 
           <!-- Le sol et la bordure -->
-          <a-entity class="solGraphe" static-body>
-            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0"></a-box>
+          <a-entity class="solGraphe" static-body >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
             <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
           </a-entity>
 
@@ -578,7 +581,7 @@
 
       <!-- Graphe avec 3 tubes -->
       <a-entity class="graphe" position="1.30 0.04 -2" scale="0.2 0.2 0.2"
-                grabbable stretchable >
+                grabbable stretchable hoverable>
 
         <!-- le graphe -->
         <a-entity scale="2 2 2" rotation="0 90 0">
@@ -674,8 +677,9 @@
           </a-entity>
 
           <!-- Le sol et la bordure -->
-          <a-entity class="solGraphe" static-body>
-            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0"></a-box>
+          <a-entity class="solGraphe" static-body >
+            <a-box depth="2.3" height=".1" width="2.3" opacity="1" color="#333333" position="0 -.02 0" event-set__hover-start="material.opacity: 0.4;"
+            event-set__hover-end="material.opacity:1;"></a-box>
             <a-box depth="1.6" height=".07" width="1.6" opacity="1" color="white" position="0 0 0"></a-box>
           </a-entity>
 
@@ -697,7 +701,7 @@
       <a-entity sound="src:#foret" position="0 0 0"></a-entity>
 
       <!-- Lumière pour la nuit -->
-      <a-entity id="lumiereNuit" lumiere-nuit ></a-entity>
+      <a-entity id="lumiereNuit" lumiere-nuit position="0 0.82 0"></a-entity>
     </a-scene>
 
 </html>

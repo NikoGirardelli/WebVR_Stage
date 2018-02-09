@@ -12,7 +12,8 @@ AFRAME.registerComponent("lumiere-nuit", {
 				groundColor: "#ff0000",
 				type: "point",
 				distance: 20,
-				intensity: 1.5
+				intensity: 1.5,
+				decay:2.98
 
 			});
 
