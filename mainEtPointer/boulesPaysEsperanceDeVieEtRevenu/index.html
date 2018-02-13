@@ -14,7 +14,7 @@
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
     <script src="components/ui-widget.js"></script>
     <script src="components/phase-shift.js"></script>
-    <!--<script src="components/changement-outil.js"></script>-->
+    <script src="components/changement-outil.js"></script>
     <script src="components/rafraichissement.js"></script>
     <!--<script src="components/bouton-generate.js"></script>
     <script src="components/horloge.js"></script>
@@ -24,6 +24,7 @@
     <script src="components/lumiere-nuit.js"></script>-->
     <script src="components/pays-selection.js"></script>
     <script src="components/annee-selection.js"></script>
+    <script src="components/changer-annee.js"></script>
   </head>
   <body>
     <a-scene stats physics environment="preset:forest; shadow:false;
@@ -40,7 +41,9 @@
         <a-mixin id="mypoint" phase-shift
                  raycaster="showLine:true;far:5;interval:100;
                             objects:.panneauSelectionPays,
-                                    .panneauSelectionAnnees;"
+                                    .panneauSelectionAnnees,
+                                    .zonePremiereAnnee,
+                                    .zoneDeuxiemeAnnee;"
                  super-hands="colliderEvent:raycaster-intersection;
                               colliderEventProperty:els;
                               colliderEndEvent:raycaster-intersection-cleared;
@@ -71,6 +74,28 @@
                       anchor:center;
                       baseline:center;
                       letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="btnAnnee"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 1;
+                      baseline: top; wrapCount: 12;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="texteAnnee"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 1.5;
+                      baseline: top; wrapCount: 12;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="zoneBtnAnnee" hoverable
+                material="opacity:1;color:grey;"
+                geometry="primitive:plane;height:0.15;width:0.15;"></a-mixin>
+
        <a-mixin id="Americas" hoverable
                 material="opacity:1;color:grey;" pays-selection
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
@@ -144,7 +169,6 @@
         <!-- Textures jour -->
         <!-- Textures mois -->
         <img id="jan" src="img/mois/jan.png">
-
       </a-assets>
 
       <!-- UI -->
@@ -284,27 +308,148 @@
                           color:white;padding:0.02">
           <a-entity class="panneauSelectionAnnees"
                     mixin="panneauSelectionAnnees" data-appuyer="true"
-                    position="-1.05 0.1 0.001" data-annee="Only">
+                    position="-1.05 0.1 0.001" data-btn-annee="Only">
             <a-text mixin="textContinent"
                     value="Only for"></a-text>
           </a-entity>
+
           <a-entity class="panneauSelectionAnnees"
                     mixin="panneauSelectionAnnees" data-appuyer="false"
-                    position="-1.05 -0.1 0.001" data-annee="From">
+                    position="-1.05 -0.1 0.001" data-btn-annee="From">
             <a-text mixin="textContinent"
                     value="Between"></a-text>
           </a-entity>
+          <!-- 0.7 pour la 2e annees -->
+          <a-entity id="premierAnnee" position="-0.6 0 0"
+                    data-annee="1950"  >
+
+            <!-- Premier chiffre -->
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0 0.2 0.001" data-changement-annee="1">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="1" mixin="texteAnnee"
+                    position="0 0 0" data-changement-annee="1"></a-text>
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0 -0.2 0.001" data-changement-annee="1">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Deuxième chiffre -->
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.2 0.2 0.001" data-changement-annee="2">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="9" mixin="texteAnnee"
+                    position="0.2 0 0" data-changement-annee="2"></a-text>
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.2 -0.2 0.001" data-changement-annee="2">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Troisième chiffre -->
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.4 0.2 0.001" data-changement-annee="3">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="5" mixin="texteAnnee"
+                    position="0.4 0 0" data-changement-annee="3"></a-text>
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.4 -0.2 0.001" data-changement-annee="3">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Quatrième chiffre -->
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.6 0.2 0.001" data-changement-annee="4">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="0" mixin="texteAnnee"
+                    position="0.6 0 0" data-changement-annee="4"></a-text>
+            <a-entity class="zonePremiereAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.6 -0.2 0.001" data-changement-annee="4">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+          </a-entity>
+
+          <a-text class="texteAnnee" value="To" mixin="texteAnnee"
+                  position="0.35 0 0"></a-text>
+
+          <a-entity id="DeuxiemeAnnee" position="0.7 0 0"
+                    data-annee="1950">
+
+            <!-- Premier chiffre -->
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0 0.2 0.001" data-changement-annee="1">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="1" mixin="texteAnnee"
+                    position="0 0 0" data-changement-annee="1"></a-text>
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0 -0.2 0.001" data-changement-annee="1">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Deuxième chiffre -->
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.2 0.2 0.001" data-changement-annee="2">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="9" mixin="texteAnnee"
+                    position="0.2 0 0" data-changement-annee="2"></a-text>
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.2 -0.2 0.001" data-changement-annee="2">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Troisième chiffre -->
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.4 0.2 0.001" data-changement-annee="3">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="5" mixin="texteAnnee"
+                    position="0.4 0 0" data-changement-annee="3"></a-text>
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.4 -0.2 0.001" data-changement-annee="3">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+            <!-- Quatrième chiffre -->
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.6 0.2 0.001" data-changement-annee="4">
+              <a-text value="+" mixin="btnAnnee"></a-text>
+            </a-entity>
+            <a-text class="texteAnnee" value="0" mixin="texteAnnee"
+                    position="0.6 0 0" data-changement-annee="4"></a-text>
+            <a-entity class="zoneDeuxiemeAnnee" mixin="zoneBtnAnnee" changer-annee
+                      position="0.6 -0.2 0.001" data-changement-annee="4">
+                      <a-text value="_" mixin="btnAnnee"
+                              text="baseline:bottom;"></a-text>
+            </a-entity>
+
+          </a-entity>
+
         </a-entity>
 
       </a-entity>
 
       <!-- Les mains -->
       <a-entity id="player" rafraichissement
-                progressive-controls="controllerModel:false;
-                                      maxLevel:point;touchMixin:mytouch;pointMixin:mypoint;">
+                progressive-controls="controllerModel:false;override:true;
+                                      maxLevel:point;touchMixin:mytouch;
+                                      pointMixin:mypoint;">
         <a-entity id="lhand" hand-controls="left"
                   teleport-controls="type:parabolic;"></a-entity>
-        <a-entity id="rhand" hand-controls="right" >
+        <a-entity id="rhand" hand-controls="right"
+                   changement-outil>
         </a-entity>
       </a-entity>
 
@@ -373,7 +518,7 @@
 
       <!-- Ensemble graphes -->
       <!-- Graphe avec une ligne -->
-      <a-entity class="graphe" position="0 1 -2" scale="0.2 0.2 0.2"
+      <a-entity class="graphe" position="-2 1 -2" scale="0.2 0.2 0.2"
                 grabbable stretchable hoverable>
 
         <!-- le graphe -->

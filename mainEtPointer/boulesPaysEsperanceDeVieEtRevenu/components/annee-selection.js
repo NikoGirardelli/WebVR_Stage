@@ -8,14 +8,12 @@ AFRAME.registerComponent("annee-selection", {
 			/* Pays */
 			var el = this.el,
 					anim = document.createElement('a-animation'),
-					els = document.querySelectorAll(".panneauSelectionAnnees");
+					els = document.querySelectorAll(".panneauSelectionAnnees"),
+					deuxièmeAnneeChiffre = document.querySelectorAll(".zoneDeuxiemeAnnee");
 
 			anim.setAttribute("mixin","fadeAnnee");
 
 			el.appendChild(anim);
-
-
-
 
 			/* Hover-start */
 			this.eventScalingBegining = function() {
@@ -31,12 +29,32 @@ AFRAME.registerComponent("annee-selection", {
 
       };
 
-			/* Ajoute ou supprime le pays */
-			this.anneeAction = function() {
+			this.deuxiemeAnneeActiver = function() {
+
+				for(var j=0;j < deuxièmeAnneeChiffre.length;j++) {
+
+					deuxièmeAnneeChiffre[j].setAttribute("material","color","grey");
+					deuxièmeAnneeChiffre[j].setAttribute("changer-annee","");
+
+				}
+
+			};
+
+			this.deuxiemeAnneeDesactiver = function() {
+
+				for(var k=0;k < deuxièmeAnneeChiffre.length;k++) {
+
+					deuxièmeAnneeChiffre[k].setAttribute("material","color","red");
+					deuxièmeAnneeChiffre[k].removeAttribute("changer-annee");
+
+				}
+
+			};
+
+			/* Permet d'avoir une année ou plusieurs */
+			this.boutonAnneeSelection = function() {
 
 				if(el.getAttribute("data-appuyer") == "false") {
-
-					var paysChoisi = JSON.parse(sessionStorage.getItem('paysChoisi'));
 
 					/* S'occupe de mettre le data de l'autre bouton à false */
 					for(var i = 0; i < els.length; i++) {
@@ -44,67 +62,46 @@ AFRAME.registerComponent("annee-selection", {
 						if(els[i].getAttribute("data-appuyer") == "true") {
 
 							els[i].setAttribute("data-appuyer","false");
-							els[i].emit("playFadeAnnee");
-							els[i].setAttribute("material","color","grey");
 
 						}
+
+						els[i].emit("playFadeAnnee");
 
 					}
 
 					el.setAttribute("data-appuyer","true");
 
-					/* Si on ne aucun pays choisi dernièrement */
-					if(paysChoisi == null) {
+					/* Si le bouton 'From' est choisi on rend la deuxième année active */
+					if(el.getAttribute("data-btn-annee") == "From") {
 
-						paysChoisi = new Array();
-
-					}
-
-					/* Cherche notre pays dans le tableau */
-					if(paysChoisi.indexOf(el.getAttribute("data-pays")) == -1) {
-
-						/* Ajout du pays dans notre tableau */
-						paysChoisi.push(el.getAttribute("data-pays"));
-
-					}
-					/* Si le pays est déjà dans le tableau */
-					else if(paysChoisi.indexOf(el.getAttribute("data-pays")) != -1) {
-
-						/* Supprime le pays */
-						var posPays = paysChoisi.indexOf(el.getAttribute("data-pays"));
-						paysChoisi.splice(posPays,1);
+						this.components["annee-selection"].deuxiemeAnneeActiver();
 
 					}
 
-					/* Joue l'animation de fade-in/fade-out */
-					el.emit("playFadeAnnee");
+					else if(el.getAttribute("data-btn-annee") == "Only") {
 
-					/* Enregistrement de la variable paysChoisi dans la sessionStorage */
-					sessionStorage.setItem("paysChoisi", JSON.stringify(paysChoisi));
+						this.components["annee-selection"].deuxiemeAnneeDesactiver();
 
-				}
+					}
 
-				else {
-					console.log('test')
 				}
 
 			};
-
-			/* Joue l'animation au bouton 'One year' */
-			if(el.getAttribute("data-appuyer") == "true") {
-
-				el.emit("playFadeAnnee");
-				el.setAttribute("material","color","white");
-
-
-			}
 
 	  },
 
 		play:function () {
 
+			/* Joue l'animation au bouton 'One year' */
+			if(this.el.getAttribute("data-appuyer") == "true") {
+
+				this.el.emit("playFadeAnnee");
+				this.deuxiemeAnneeDesactiver();
+
+			}
+
 			/* Lorsqu'on clique le jour */
-			this.el.addEventListener("click",this.anneeAction);
+			this.el.addEventListener("click",this.boutonAnneeSelection);
 
 			/* Lorsque qu'on hover le bouton */
       this.el.addEventListener('hover-start', this.eventScalingBegining);
@@ -116,7 +113,7 @@ AFRAME.registerComponent("annee-selection", {
 
 		pause:function() {
 
-			this.el.removeEventListener("click",this.anneeAction);
+			this.el.removeEventListener("click",this.boutonAnneeSelection);
 			this.el.removeEventListener("hover-start",this.eventScalingBegining);
 			this.el.removeEventListener("hover-end",this.eventScalingEnding);
 
@@ -124,7 +121,7 @@ AFRAME.registerComponent("annee-selection", {
 
 		remove:function() {
 
-			this.el.removeEventListener("click",this.anneeAction);
+			this.el.removeEventListener("click",this.boutonAnneeSelection);
 			this.el.removeEventListener("hover-start",this.eventScalingBegining);
 			this.el.removeEventListener("hover-end",this.eventScalingEnding);
 
