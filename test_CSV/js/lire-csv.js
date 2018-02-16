@@ -1,50 +1,69 @@
 /* Papa Bless */
-document.addEventListener("DOMContentLoaded", function(event) {
+var url1 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
+    url2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
+    creationFini = false,
+    dataLife = {};
 
-  var url = ".../csv/indicator gapminder gdp_per_capita_ppp.csv";
+/* S'occupe de copier le JSON -
+*  http://outset.ws/blog/article/clone-duplicate-json-object-in-javascript
+*/
+function clone(obj) {
+  var outpurArr = new Array();
+  for (var i in obj) {
+    outpurArr[i] = typeof (obj[i]) == 'object' ? this.clone(obj[i]) : obj[i];
+  }
+  return outpurArr;
+}
 
-  Papa.parse(url, {
+function premierFichier(){
+
+  /* Pour l'axe des X - Life Expectency */
+  Papa.parse(url2, {
 
     download:true,
 
     complete: function (results,file){
-/*
-              	var lignesGraphe = "<table class='table'>";
-              	var data = results.data;
 
-              	for(i=0;i<data.length;i++){
-              		lignesGraphe+= "<tr>";
-              		var row = data[i];
-              		var cells = row.join(",").split(",");
+                var data = results.data;
+                dataLife = clone(data);
+                deuxiemeFichier();
 
-              		for(j=0;j<cells.length;j++){
-              			lignesGraphe+= "<td>";
-              			console.log(cells[j]);
-              			lignesGraphe+= cells[j];
-              			lignesGraphe+= "</th>";
-              		}
-              		lignesGraphe+= "</tr>";
-              	}
-              	lignesGraphe+= "</table>";
+    },
 
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
 
-              	document.querySelector("a-scene").innerHTML = lignesGraphe;*/
+  });
+
+}
+
+function deuxiemeFichier(){
+
+  /* Pour l'axe de z et y - Years And Incomes */
+  Papa.parse(url1, {
+
+    download:true,
+
+    complete: function (results,file){
 
                 var lignesGraphe = document.createElement("a-entity");
                 lignesGraphe.setAttribute("id","leslignesGraphe");
                 var data = results.data;
-
-
-                for(i=1;i<2;i++) {
+                //console.log(dataLife)
+                for(i=1;i<20;i++) {
 
                   /* Crée le parent de la ligne pour le pays */
                   ligneGraphe = document.createElement("a-entity");
-                  ligneGraphe.setAttribute("id","ligneGraphe");
-                  ligneGraphe.setAttribute("position",{x:0,y:0,z:0.9});
+                  ligneGraphe.setAttribute("class","ligneGraphe");
+                  ligneGraphe.setAttribute("position",{x:-0.81,y:0,z:0.9});
                   lignesGraphe.appendChild(ligneGraphe);
 
                   var row = data[i];
                   var cells = row.join(",").split(",");
+                  var rowLife = dataLife[i];
+                  var cellsLife = rowLife.join(",").split(",");
 
                   for(j=0;j<cells.length -1;j++) {
 
@@ -54,17 +73,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     if(j==0) {
 
                       /* Est le titre du pays */
-                      console.log(cells[j +1]);
+                      //console.log(cells[j +1]);
 
                     }
                     else {
 
-                      debut.y = (cells[j] * 0.05)/100; //629
-                      fin.y = (cells[j + 1] * 0.05)/100; //633
-                      debut.z = (j * -0.1); //629
-                      fin.z = ((j + 1) * -0.1); //633
-                      console.log(debut)
-                      console.log(fin)
+                      debut.x = ((cellsLife[j] * 0.05) - 1)/350;
+                      fin.x = ((cellsLife[j + 1] * 0.05) - 1)/350;
+                      debut.y = cells[j]/4000; //629
+                      fin.y = cells[j + 1]/4000; //633
+                      debut.z = (j * -0.1)/2; //629
+                      fin.z = ((j + 1) * -0.1)/2; //633
+
+                      //console.log(debut.y)
+                      //console.log(fin.y)
 
                       ligneGraphe.setAttribute("line__" + j, {
 
@@ -74,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                       });
 
+                      ligneGraphe.setAttribute("visible","false");
 
                     }
 
@@ -92,5 +115,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
   });
+
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+      premierFichier();
 
 });
