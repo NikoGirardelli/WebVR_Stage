@@ -13,9 +13,10 @@
         <!--<script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>-->
         <script src="js/papaparse.min.js"></script>
         <script src="js/lire-csv.js"></script>
+        <script src="js/graphe-creation.js"></script>
         </head>
         <body>
-          <a-scene stats stats-in-vr>
+          <a-scene stats stats-in-vr environment="preset:egypt;">
             <a-assets>
               <!-- to change touch mode collider -->
               <a-mixin id="mytouch" physics-collider phase-shift
@@ -24,6 +25,7 @@
                        super-hands="colliderEvent: collisions; colliderEventProperty: els;
                                     colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
                                     colliderState:"></a-mixin>
+              <img id="grid" src="textures/grid_2.png">
             </a-assets>
 
             <!-- Les mains -->
@@ -38,441 +40,62 @@
               </a-entity>
             </a-entity>
 
-            <!-- Graphe avec une ligne -->
-            <a-entity class="grapheParent" position="0 1 0" scale="0.2 0.2 0.2"
-                      grabbable stretchable hoverable>
+            <!-- Graphe -->
+            <a-entity class="graphe" scale="1 1 1" rotation="0 0 0" graphe-creation>
 
-              <!-- le graphe -->
-              <a-entity id="graphe" scale="2 2 2" rotation="0 90 0">
+              <!-- Axe Y - Incomes
+              <a-entity>
+                <a-entity line__1a="start: -.8  0.25  .8;  end: -.8 0.25 -.8; color: white"
+                          line__1b="start: -.8  0.25  -.8;  end: .8 0.25 -.8; color: white"
+                          line__1c="start:  .8  0.25  .8; end: .8 0.25 -.8; color: white"
+                          line__2a="start: -.8  0.5  .8;  end: -.8 0.5 -.8; color: white"
+                          line__2b="start: -.8  0.5  -.8;  end: .8 0.5 -.8; color: white"
+                          line__2c="start:  .8  0.5  .8; end: .8 0.5 -.8; color: white"
+                          line__3a="start: -.8  0.75  .8; end: -.8 0.75 -.8; color: white"
+                          line__3b="start: -.8  0.75  -.8; end: .8 0.75 -.8; color: white"
+                          line__3c="start:  .8  0.75  .8; end: .8 0.75 -.8; color: white"
+                          line__4a="start: -.8  1  .8;    end: -.8 1 -.8; color: white"
+                          line__4b="start: -.8  1  -.8;    end: .8 1 -.8; color: white"
+                          line__4c="start:  .8  1  .8; end: .8 1 -.8; color: white"
+                          line__5a="start: -.8  1.25  .8;    end: -.8 1.25 -.8; color: white"
+                          line__5b="start: -.8  1.25  -.8;    end: .8 1.25 -.8; color: white"
+                          line__5c="start:  .8  1.25  .8; end: .8 1.25 -.8; color: white"
+                          line__6a="start: -.8  1.5  .8;  end: -.8 1.5 -.8; color: white"
+                          line__6b="start: -.8  1.5  -.8;  end: .8 1.5 -.8; color: white"
+                          line__6c="start:  .8  1.5  .8; end: .8 1.5 -.8; color: white"
+                          line__7a="start: -.8  1.75  .8; end: -.8 1.75 -.8; color: white"
+                          line__7b="start: -.8  1.75  -.8; end: .8 1.75 -.8; color: white"
+                          line__7c="start:  .8  1.75  .8; end: .8 1.75 -.8; color: white"
+                          line__8a="start: -.8  2  .8;    end: -.8 2 -.8; color: white"
+                          line__8b="start: -.8  2  -.8;    end: .8 2 -.8; color: white"
+                          line__8c="start:  .8  2  .8; end: .8 2 -.8; color: white"
+                          line__9a="start: -.8  2.25  .8;    end: -.8 2.25 -.8; color: white"
+                          line__9b="start: -.8  2.25  -.8;    end: .8 2.25 -.8; color: white"
+                          line__9c="start:  .8  2.25  .8; end: .8 2.25 -.8; color: white"></a-entity>
+                <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 90 0" ></a-text>
+                <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 -90 0" ></a-text>
+                <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 90 0" ></a-text>
+                <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 -90 0" ></a-text>
+                <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 90 0" ></a-text>
+                <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 -90 0" ></a-text>
+                <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 90 0" ></a-text>
+                <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 -90 0" ></a-text>
+                <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 90 0" ></a-text>
+                <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 -90 0" ></a-text>
+                <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 90 0" ></a-text>
+                <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 -90 0" ></a-text>
+                <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 90 0" ></a-text>
+                <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 -90 0" ></a-text>
+                <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 90 0" ></a-text>
+                <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 -90 0" ></a-text>
+                <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 90 0" ></a-text>
+                <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 -90 0" ></a-text>
+                <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 90 90" ></a-text>
+                <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 -90 90" ></a-text>
+              </a-entity>-->
 
-                <!-- Axe Y - Incomes
-                <a-entity>
-                  <a-entity line__1a="start: -.8  0.25  .8;  end: -.8 0.25 -.8; color: white"
-                            line__1b="start: -.8  0.25  -.8;  end: .8 0.25 -.8; color: white"
-                            line__1c="start:  .8  0.25  .8; end: .8 0.25 -.8; color: white"
-                            line__2a="start: -.8  0.5  .8;  end: -.8 0.5 -.8; color: white"
-                            line__2b="start: -.8  0.5  -.8;  end: .8 0.5 -.8; color: white"
-                            line__2c="start:  .8  0.5  .8; end: .8 0.5 -.8; color: white"
-                            line__3a="start: -.8  0.75  .8; end: -.8 0.75 -.8; color: white"
-                            line__3b="start: -.8  0.75  -.8; end: .8 0.75 -.8; color: white"
-                            line__3c="start:  .8  0.75  .8; end: .8 0.75 -.8; color: white"
-                            line__4a="start: -.8  1  .8;    end: -.8 1 -.8; color: white"
-                            line__4b="start: -.8  1  -.8;    end: .8 1 -.8; color: white"
-                            line__4c="start:  .8  1  .8; end: .8 1 -.8; color: white"
-                            line__5a="start: -.8  1.25  .8;    end: -.8 1.25 -.8; color: white"
-                            line__5b="start: -.8  1.25  -.8;    end: .8 1.25 -.8; color: white"
-                            line__5c="start:  .8  1.25  .8; end: .8 1.25 -.8; color: white"
-                            line__6a="start: -.8  1.5  .8;  end: -.8 1.5 -.8; color: white"
-                            line__6b="start: -.8  1.5  -.8;  end: .8 1.5 -.8; color: white"
-                            line__6c="start:  .8  1.5  .8; end: .8 1.5 -.8; color: white"
-                            line__7a="start: -.8  1.75  .8; end: -.8 1.75 -.8; color: white"
-                            line__7b="start: -.8  1.75  -.8; end: .8 1.75 -.8; color: white"
-                            line__7c="start:  .8  1.75  .8; end: .8 1.75 -.8; color: white"
-                            line__8a="start: -.8  2  .8;    end: -.8 2 -.8; color: white"
-                            line__8b="start: -.8  2  -.8;    end: .8 2 -.8; color: white"
-                            line__8c="start:  .8  2  .8; end: .8 2 -.8; color: white"
-                            line__9a="start: -.8  2.25  .8;    end: -.8 2.25 -.8; color: white"
-                            line__9b="start: -.8  2.25  -.8;    end: .8 2.25 -.8; color: white"
-                            line__9c="start:  .8  2.25  .8; end: .8 2.25 -.8; color: white"></a-entity>
-                  <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 90 0" ></a-text>
-                  <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 90 0" ></a-text>
-                  <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 90 0" ></a-text>
-                  <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 90 0" ></a-text>
-                  <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 90 0" ></a-text>
-                  <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 90 0" ></a-text>
-                  <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 90 0" ></a-text>
-                  <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 90 0" ></a-text>
-                  <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 -90 0" ></a-text>
-                  <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 90 0" ></a-text>
-                  <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 -90 0" ></a-text>
-                  <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 90 90" ></a-text>
-                  <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 -90 90" ></a-text>
-                </a-entity>-->
-
-                <!-- Axe Z - Années -->
-                <a-entity position="0 0 0.9">
-                  <a-text
-                  value= "1914
-                          1915
-                          1916
-                          1917
-                          1918
-                          1919
-                          1920
-                          1921
-                          1922
-                          1923
-                          1924
-                          1925
-                          1926
-                          1927
-                          1928
-                          1929
-                          1930
-                          1931
-                          1932
-                          1933
-                          1934
-                          1935
-                          1936
-                          1937
-                          1938
-                          1939
-                          1940
-                          1941
-                          1942
-                          1943
-                          1944
-                          1945
-                          1946
-                          1947
-                          1948
-                          1949
-                          1950
-                          1951
-                          1952
-                          1953
-                          1954
-                          1955
-                          1956
-                          1957
-                          1958
-                          1959
-                          1960
-                          1961
-                          1962
-                          1963
-                          1964
-                          1965
-                          1966
-                          1967
-                          1968
-                          1949
-                          1950
-                          1951
-                          1952
-                          1953
-                          1954
-                          1955
-                          1956
-                          1957
-                          1958
-                          1959
-                          1960
-                          1961
-                          1962
-                          1963
-                          1964
-                          1965
-                          1966
-                          1967
-                          1968
-                          1981
-                          1982
-                          1983
-                          1984
-                          1985
-                          1986
-                          1987
-                          1988
-                          1989
-                          1990
-                          1991
-                          1992
-                          1993
-                          1994
-                          1995
-                          1996
-                          1997
-                          1998
-                          1999
-                          2000
-                          2001
-                          2002
-                          2003
-                          2004
-                          2005
-                          2006
-                          2007
-                          2008
-                          2009
-                          2010
-                          2011
-                          2012
-                          2013
-                          2014" color="white" width="2" wrap-count="180" position="-.95 .03 -0.03" rotation="-90 0 0" ></a-text>
-                  <!--<a-text value="1915" color="white" width="2" wrap-count="180" position="-.95 .03 -0.06" rotation="-90 0 0" ></a-text>
-                  <a-text value="1916" color="white" width="2" wrap-count="180" position="-.95 .03 -0.09" rotation="-90 0 0" ></a-text>
-                  <a-text value="1917" color="white" width="2" wrap-count="180" position="-.95 .03 -0.12" rotation="-90 0 0" ></a-text>
-                  <a-text value="1918" color="white" width="2" wrap-count="180" position="-.95 .03 -0.15" rotation="-90 0 0" ></a-text>
-                  <a-text value="1919" color="white" width="2" wrap-count="180" position="-.95 .03 -0.18" rotation="-90 0 0" ></a-text>
-                  <a-text value="1920" color="white" width="2" wrap-count="180" position="-.95 .03 -0.21" rotation="-90 0 0" ></a-text>
-                  <a-text value="1921" color="white" width="2" wrap-count="180" position="-.95 .03 -0.24" rotation="-90 0 0" ></a-text>
-                  <a-text value="1922" color="white" width="2" wrap-count="180" position="-.95 .03 -0.27" rotation="-90 0 0" ></a-text>
-                  <a-text value="1923" color="white" width="2" wrap-count="180" position="-.95 .03 -0.3"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1924" color="white" width="2" wrap-count="180" position="-.95 .03 -0.33" rotation="-90 0 0" ></a-text>
-                  <a-text value="1925" color="white" width="2" wrap-count="180" position="-.95 .03 -0.36" rotation="-90 0 0" ></a-text>
-                  <a-text value="1926" color="white" width="2" wrap-count="180" position="-.95 .03 -0.39" rotation="-90 0 0" ></a-text>
-                  <a-text value="1927" color="white" width="2" wrap-count="180" position="-.95 .03 -0.42" rotation="-90 0 0" ></a-text>
-                  <a-text value="1928" color="white" width="2" wrap-count="180" position="-.95 .03 -0.45" rotation="-90 0 0" ></a-text>
-                  <a-text value="1929" color="white" width="2" wrap-count="180" position="-.95 .03 -0.48" rotation="-90 0 0" ></a-text>
-                  <a-text value="1930" color="white" width="2" wrap-count="180" position="-.95 .03 -0.51" rotation="-90 0 0" ></a-text>
-                  <a-text value="1931" color="white" width="2" wrap-count="180" position="-.95 .03 -0.54" rotation="-90 0 0" ></a-text>
-                  <a-text value="1932" color="white" width="2" wrap-count="180" position="-.95 .03 -0.57" rotation="-90 0 0" ></a-text>
-                  <a-text value="1933" color="white" width="2" wrap-count="180" position="-.95 .03 -0.6"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1934" color="white" width="2" wrap-count="180" position="-.95 .03 -0.63" rotation="-90 0 0" ></a-text>
-                  <a-text value="1935" color="white" width="2" wrap-count="180" position="-.95 .03 -0.66" rotation="-90 0 0" ></a-text>
-                  <a-text value="1936" color="white" width="2" wrap-count="180" position="-.95 .03 -0.69" rotation="-90 0 0" ></a-text>
-                  <a-text value="1937" color="white" width="2" wrap-count="180" position="-.95 .03 -0.72" rotation="-90 0 0" ></a-text>
-                  <a-text value="1938" color="white" width="2" wrap-count="180" position="-.95 .03 -0.75" rotation="-90 0 0" ></a-text>
-                  <a-text value="1939" color="white" width="2" wrap-count="180" position="-.95 .03 -0.78" rotation="-90 0 0" ></a-text>
-                  <a-text value="1940" color="white" width="2" wrap-count="180" position="-.95 .03 -0.81" rotation="-90 0 0" ></a-text>
-                  <a-text value="1941" color="white" width="2" wrap-count="180" position="-.95 .03 -0.84" rotation="-90 0 0" ></a-text>
-                  <a-text value="1942" color="white" width="2" wrap-count="180" position="-.95 .03 -0.87" rotation="-90 0 0" ></a-text>
-                  <a-text value="1943" color="white" width="2" wrap-count="180" position="-.95 .03 -0.9"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1944" color="white" width="2" wrap-count="180" position="-.95 .03 -0.93" rotation="-90 0 0" ></a-text>
-                  <a-text value="1945" color="white" width="2" wrap-count="180" position="-.95 .03 -0.96" rotation="-90 0 0" ></a-text>
-                  <a-text value="1946" color="white" width="2" wrap-count="180" position="-.95 .03 -0.99" rotation="-90 0 0" ></a-text>
-                  <a-text value="1947" color="white" width="2" wrap-count="180" position="-.95 .03 -1.02" rotation="-90 0 0" ></a-text>
-                  <a-text value="1948" color="white" width="2" wrap-count="180" position="-.95 .03 -1.05" rotation="-90 0 0" ></a-text>
-                  <a-text value="1949" color="white" width="2" wrap-count="180" position="-.95 .03 -1.08" rotation="-90 0 0" ></a-text>
-                  <a-text value="1950" color="white" width="2" wrap-count="180" position="-.95 .03 -1.11" rotation="-90 0 0" ></a-text>
-                  <a-text value="1951" color="white" width="2" wrap-count="180" position="-.95 .03 -1.14" rotation="-90 0 0" ></a-text>
-                  <a-text value="1952" color="white" width="2" wrap-count="180" position="-.95 .03 -1.17" rotation="-90 0 0" ></a-text>
-                  <a-text value="1953" color="white" width="2" wrap-count="180" position="-.95 .03 -1.2"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1954" color="white" width="2" wrap-count="180" position="-.95 .03 -1.23" rotation="-90 0 0" ></a-text>
-                  <a-text value="1955" color="white" width="2" wrap-count="180" position="-.95 .03 -1.26" rotation="-90 0 0" ></a-text>
-                  <a-text value="1956" color="white" width="2" wrap-count="180" position="-.95 .03 -1.29" rotation="-90 0 0" ></a-text>
-                  <a-text value="1957" color="white" width="2" wrap-count="180" position="-.95 .03 -1.32" rotation="-90 0 0" ></a-text>
-                  <a-text value="1958" color="white" width="2" wrap-count="180" position="-.95 .03 -1.35" rotation="-90 0 0" ></a-text>
-                  <a-text value="1959" color="white" width="2" wrap-count="180" position="-.95 .03 -1.38" rotation="-90 0 0" ></a-text>
-                  <a-text value="1960" color="white" width="2" wrap-count="180" position="-.95 .03 -1.41" rotation="-90 0 0" ></a-text>
-                  <a-text value="1961" color="white" width="2" wrap-count="180" position="-.95 .03 -1.44" rotation="-90 0 0" ></a-text>
-                  <a-text value="1962" color="white" width="2" wrap-count="180" position="-.95 .03 -1.47" rotation="-90 0 0" ></a-text>
-                  <a-text value="1963" color="white" width="2" wrap-count="180" position="-.95 .03 -1.5"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1964" color="white" width="2" wrap-count="180" position="-.95 .03 -1.53" rotation="-90 0 0" ></a-text>
-                  <a-text value="1965" color="white" width="2" wrap-count="180" position="-.95 .03 -1.56" rotation="-90 0 0" ></a-text>
-                  <a-text value="1966" color="white" width="2" wrap-count="180" position="-.95 .03 -1.59" rotation="-90 0 0" ></a-text>
-                  <a-text value="1967" color="white" width="2" wrap-count="180" position="-.95 .03 -1.62" rotation="-90 0 0" ></a-text>
-                  <a-text value="1968" color="white" width="2" wrap-count="180" position="-.95 .03 -1.65" rotation="-90 0 0" ></a-text>
-                  <a-text value="1949" color="white" width="2" wrap-count="180" position="-.95 .03 -1.68" rotation="-90 0 0" ></a-text>
-                  <a-text value="1950" color="white" width="2" wrap-count="180" position="-.95 .03 -1.71" rotation="-90 0 0" ></a-text>
-                  <a-text value="1951" color="white" width="2" wrap-count="180" position="-.95 .03 -1.74" rotation="-90 0 0" ></a-text>
-                  <a-text value="1952" color="white" width="2" wrap-count="180" position="-.95 .03 -1.77" rotation="-90 0 0" ></a-text>
-                  <a-text value="1953" color="white" width="2" wrap-count="180" position="-.95 .03 -1.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="1954" color="white" width="2" wrap-count="180" position="-.95 .03 -1.83" rotation="-90 0 0" ></a-text>
-                  <a-text value="1955" color="white" width="2" wrap-count="180" position="-.95 .03 -1.86" rotation="-90 0 0" ></a-text>
-                  <a-text value="1956" color="white" width="2" wrap-count="180" position="-.95 .03 -1.89" rotation="-90 0 0" ></a-text>
-                  <a-text value="1957" color="white" width="2" wrap-count="180" position="-.95 .03 -1.92" rotation="-90 0 0" ></a-text>
-                  <a-text value="1958" color="white" width="2" wrap-count="180" position="-.95 .03 -1.95" rotation="-90 0 0" ></a-text>
-                  <a-text value="1959" color="white" width="2" wrap-count="180" position="-.95 .03 -1.98" rotation="-90 0 0" ></a-text>
-                  <a-text value="1960" color="white" width="2" wrap-count="180" position="-.95 .03 -2.01" rotation="-90 0 0" ></a-text>
-                  <a-text value="1961" color="white" width="2" wrap-count="180" position="-.95 .03 -2.04" rotation="-90 0 0" ></a-text>
-                  <a-text value="1962" color="white" width="2" wrap-count="180" position="-.95 .03 -2.07" rotation="-90 0 0" ></a-text>
-                  <a-text value="1963" color="white" width="2" wrap-count="180" position="-.95 .03 -2.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="1964" color="white" width="2" wrap-count="180" position="-.95 .03 -2.13"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1965" color="white" width="2" wrap-count="180" position="-.95 .03 -2.16" rotation="-90 0 0" ></a-text>
-                  <a-text value="1966" color="white" width="2" wrap-count="180" position="-.95 .03 -2.19" rotation="-90 0 0" ></a-text>
-                  <a-text value="1967" color="white" width="2" wrap-count="180" position="-.95 .03 -2.22" rotation="-90 0 0" ></a-text>
-                  <a-text value="1968" color="white" width="2" wrap-count="180" position="-.95 .03 -2.25" rotation="-90 0 0" ></a-text>
-                  <a-text value="1981" color="white" width="2" wrap-count="180" position="-.95 .03 -2.28" rotation="-90 0 0" ></a-text>
-                  <a-text value="1982" color="white" width="2" wrap-count="180" position="-.95 .03 -2.31" rotation="-90 0 0" ></a-text>
-                  <a-text value="1983" color="white" width="2" wrap-count="180" position="-.95 .03 -2.34" rotation="-90 0 0" ></a-text>
-                  <a-text value="1984" color="white" width="2" wrap-count="180" position="-.95 .03 -2.37"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1985" color="white" width="2" wrap-count="180" position="-.95 .03 -2.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="1986" color="white" width="2" wrap-count="180" position="-.95 .03 -2.43" rotation="-90 0 0" ></a-text>
-                  <a-text value="1987" color="white" width="2" wrap-count="180" position="-.95 .03 -2.46" rotation="-90 0 0" ></a-text>
-                  <a-text value="1988" color="white" width="2" wrap-count="180" position="-.95 .03 -2.49" rotation="-90 0 0" ></a-text>
-                  <a-text value="1989" color="white" width="2" wrap-count="180" position="-.95 .03 -2.52" rotation="-90 0 0" ></a-text>
-                  <a-text value="1990" color="white" width="2" wrap-count="180" position="-.95 .03 -2.55" rotation="-90 0 0" ></a-text>
-                  <a-text value="1991" color="white" width="2" wrap-count="180" position="-.95 .03 -2.58" rotation="-90 0 0" ></a-text>
-                  <a-text value="1992" color="white" width="2" wrap-count="180" position="-.95 .03 -2.61" rotation="-90 0 0" ></a-text>
-                  <a-text value="1993" color="white" width="2" wrap-count="180" position="-.95 .03 -2.64" rotation="-90 0 0" ></a-text>
-                  <a-text value="1994" color="white" width="2" wrap-count="180" position="-.95 .03 -2.67"   rotation="-90 0 0" ></a-text>
-                  <a-text value="1995" color="white" width="2" wrap-count="180" position="-.95 .03 -2.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="1996" color="white" width="2" wrap-count="180" position="-.95 .03 -2.73" rotation="-90 0 0" ></a-text>
-                  <a-text value="1997" color="white" width="2" wrap-count="180" position="-.95 .03 -2.76" rotation="-90 0 0" ></a-text>
-                  <a-text value="1998" color="white" width="2" wrap-count="180" position="-.95 .03 -2.79" rotation="-90 0 0" ></a-text>
-                  <a-text value="1999" color="white" width="2" wrap-count="180" position="-.95 .03 -2.82" rotation="-90 0 0" ></a-text>
-                  <a-text value="2000" color="white" width="2" wrap-count="180" position="-.95 .03 -2.85" rotation="-90 0 0" ></a-text>
-                  <a-text value="2001" color="white" width="2" wrap-count="180" position="-.95 .03 -2.88" rotation="-90 0 0" ></a-text>
-                  <a-text value="2002" color="white" width="2" wrap-count="180" position="-.95 .03 -2.91" rotation="-90 0 0" ></a-text>
-                  <a-text value="2003" color="white" width="2" wrap-count="180" position="-.95 .03 -2.94" rotation="-90 0 0" ></a-text>
-                  <a-text value="2004" color="white" width="2" wrap-count="180" position="-.95 .03 -2.97"   rotation="-90 0 0" ></a-text>
-                  <a-text value="2005" color="white" width="2" wrap-count="180" position="-.95 .03 -3.0" rotation="-90 0 0" ></a-text>
-                  <a-text value="2006" color="white" width="2" wrap-count="180" position="-.95 .03 -3.03" rotation="-90 0 0" ></a-text>
-                  <a-text value="2007" color="white" width="2" wrap-count="180" position="-.95 .03 -3.06" rotation="-90 0 0" ></a-text>
-                  <a-text value="2008" color="white" width="2" wrap-count="180" position="-.95 .03 -3.09" rotation="-90 0 0" ></a-text>
-                  <a-text value="2009" color="white" width="2" wrap-count="180" position="-.95 .03 -3.12" rotation="-90 0 0" ></a-text>
-                  <a-text value="2010" color="white" width="2" wrap-count="180" position="-.95 .03 -3.15" rotation="-90 0 0" ></a-text>
-                  <a-text value="2011" color="white" width="2" wrap-count="180" position="-.95 .03 -3.18" rotation="-90 0 0" ></a-text>
-                  <a-text value="2012" color="white" width="2" wrap-count="180" position="-.95 .03 -3.21" rotation="-90 0 0" ></a-text>
-                  <a-text value="2013" color="white" width="2" wrap-count="180" position="-.95 .03 -3.24" rotation="-90 0 0" ></a-text>
-                  <a-text value="2014" color="white" width="2" wrap-count="180" position="-.95 .03 -3.27"   rotation="-90 0 0" ></a-text>-->
-                  <a-text align="center" value="Years" color="white"  width="5" wrap-count="180"  position="-1.1 .03 0" rotation="-90 90 0" ></a-text>
-                </a-entity>
-
-                <!-- Axe X - Life Expectency
-                <a-entity rotation="0 270 0" position="-0.9 0 1.78">
-                  <a-text value="0" color="white" width="5" wrap-count="180" position="-.95 .03 -0.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="1" color="white" width="5" wrap-count="180" position="-.95 .03 -0.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="2" color="white" width="5" wrap-count="180" position="-.95 .03 -0.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="3" color="white" width="5" wrap-count="180" position="-.95 .03 -0.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="4" color="white" width="5" wrap-count="180" position="-.95 .03 -0.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="5" color="white" width="5" wrap-count="180" position="-.95 .03 -0.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="6" color="white" width="5" wrap-count="180" position="-.95 .03 -0.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="7" color="white" width="5" wrap-count="180" position="-.95 .03 -0.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="8" color="white" width="5" wrap-count="180" position="-.95 .03 -0.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="9" color="white" width="5" wrap-count="180" position="-.95 .03 -1"   rotation="-90 0 0" ></a-text>
-                  <a-text value="10" color="white" width="5" wrap-count="180" position="-.95 .03 -1.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="11" color="white" width="5" wrap-count="180" position="-.95 .03 -1.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="12" color="white" width="5" wrap-count="180" position="-.95 .03 -1.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="13" color="white" width="5" wrap-count="180" position="-.95 .03 -1.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="14" color="white" width="5" wrap-count="180" position="-.95 .03 -1.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="15" color="white" width="5" wrap-count="180" position="-.95 .03 -1.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="16" color="white" width="5" wrap-count="180" position="-.95 .03 -1.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="17" color="white" width="5" wrap-count="180" position="-.95 .03 -1.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="18" color="white" width="5" wrap-count="180" position="-.95 .03 -1.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="19" color="white" width="5" wrap-count="180" position="-.95 .03 -6"   rotation="-90 0 0" ></a-text>
-                  <a-text value="20" color="white" width="5" wrap-count="180" position="-.95 .03 -6.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="21" color="white" width="5" wrap-count="180" position="-.95 .03 -6.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="22" color="white" width="5" wrap-count="180" position="-.95 .03 -6.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="23" color="white" width="5" wrap-count="180" position="-.95 .03 -7.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="24" color="white" width="5" wrap-count="180" position="-.95 .03 -7.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="25" color="white" width="5" wrap-count="180" position="-.95 .03 -7.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="26" color="white" width="5" wrap-count="180" position="-.95 .03 -8.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="27" color="white" width="5" wrap-count="180" position="-.95 .03 -8.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="28" color="white" width="5" wrap-count="180" position="-.95 .03 -8.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="29" color="white" width="5" wrap-count="180" position="-.95 .03 -9"   rotation="-90 0 0" ></a-text>
-                  <a-text value="30" color="white" width="5" wrap-count="180" position="-.95 .03 -9.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="31" color="white" width="5" wrap-count="180" position="-.95 .03 -9.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="32" color="white" width="5" wrap-count="180" position="-.95 .03 -9.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="33" color="white" width="5" wrap-count="180" position="-.95 .03 -10.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="34" color="white" width="5" wrap-count="180" position="-.95 .03 -10.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="35" color="white" width="5" wrap-count="180" position="-.95 .03 -10.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="36" color="white" width="5" wrap-count="180" position="-.95 .03 -11.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="37" color="white" width="5" wrap-count="180" position="-.95 .03 -11.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="38" color="white" width="5" wrap-count="180" position="-.95 .03 -11.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="39" color="white" width="5" wrap-count="180" position="-.95 .03 -12"   rotation="-90 0 0" ></a-text>
-                  <a-text value="40" color="white" width="5" wrap-count="180" position="-.95 .03 -12.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="41" color="white" width="5" wrap-count="180" position="-.95 .03 -12.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="42" color="white" width="5" wrap-count="180" position="-.95 .03 -12.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="43" color="white" width="5" wrap-count="180" position="-.95 .03 -13.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="44" color="white" width="5" wrap-count="180" position="-.95 .03 -13.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="45" color="white" width="5" wrap-count="180" position="-.95 .03 -13.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="46" color="white" width="5" wrap-count="180" position="-.95 .03 -14.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="47" color="white" width="5" wrap-count="180" position="-.95 .03 -14.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="48" color="white" width="5" wrap-count="180" position="-.95 .03 -14.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="49" color="white" width="5" wrap-count="180" position="-.95 .03 -15"   rotation="-90 0 0" ></a-text>
-                  <a-text value="50" color="white" width="5" wrap-count="180" position="-.95 .03 -15.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="51" color="white" width="5" wrap-count="180" position="-.95 .03 -15.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="52" color="white" width="5" wrap-count="180" position="-.95 .03 -15.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="53" color="white" width="5" wrap-count="180" position="-.95 .03 -16.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="54" color="white" width="5" wrap-count="180" position="-.95 .03 -16.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="55" color="white" width="5" wrap-count="180" position="-.95 .03 -16.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="56" color="white" width="5" wrap-count="180" position="-.95 .03 -17.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="57" color="white" width="5" wrap-count="180" position="-.95 .03 -17.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="58" color="white" width="5" wrap-count="180" position="-.95 .03 -17.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="59" color="white" width="5" wrap-count="180" position="-.95 .03 -18" rotation="-90 0 0" ></a-text>
-                  <a-text value="60" color="white" width="5" wrap-count="180" position="-.95 .03 -18.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="61" color="white" width="5" wrap-count="180" position="-.95 .03 -18.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="62" color="white" width="5" wrap-count="180" position="-.95 .03 -18.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="63" color="white" width="5" wrap-count="180" position="-.95 .03 -19.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="64" color="white" width="5" wrap-count="180" position="-.95 .03 -19.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="65" color="white" width="5" wrap-count="180" position="-.95 .03 -19.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="66" color="white" width="5" wrap-count="180" position="-.95 .03 -20.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="67" color="white" width="5" wrap-count="180" position="-.95 .03 -20.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="68" color="white" width="5" wrap-count="180" position="-.95 .03 -20.7" rotation="-90 0 0" ></a-text>
-                  <a-text value="69" color="white" width="5" wrap-count="180" position="-.95 .03 -21." rotation="-90 0 0" ></a-text>
-                  <a-text value="70" color="white" width="5" wrap-count="180" position="-.95 .03 -21.3"   rotation="-90 0 0" ></a-text>
-                  <a-text value="71" color="white" width="5" wrap-count="180" position="-.95 .03 -21.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="72" color="white" width="5" wrap-count="180" position="-.95 .03 -21.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="73" color="white" width="5" wrap-count="180" position="-.95 .03 -22.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="74" color="white" width="5" wrap-count="180" position="-.95 .03 -22.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="75" color="white" width="5" wrap-count="180" position="-.95 .03 -22.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="76" color="white" width="5" wrap-count="180" position="-.95 .03 -23.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="77" color="white" width="5" wrap-count="180" position="-.95 .03 -23.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="78" color="white" width="5" wrap-count="180" position="-.95 .03 -23.7"   rotation="-90 0 0" ></a-text>
-                  <a-text value="79" color="white" width="5" wrap-count="180" position="-.95 .03 -24" rotation="-90 0 0" ></a-text>
-                  <a-text value="80" color="white" width="5" wrap-count="180" position="-.95 .03 -24.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="81" color="white" width="5" wrap-count="180" position="-.95 .03 -24.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="82" color="white" width="5" wrap-count="180" position="-.95 .03 -24.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="83" color="white" width="5" wrap-count="180" position="-.95 .03 -25.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="84" color="white" width="5" wrap-count="180" position="-.95 .03 -25.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="85" color="white" width="5" wrap-count="180" position="-.95 .03 -25.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="86" color="white" width="5" wrap-count="180" position="-.95 .03 -26.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="87" color="white" width="5" wrap-count="180" position="-.95 .03 -26.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="88" color="white" width="5" wrap-count="180" position="-.95 .03 -26.7"   rotation="-90 0 0" ></a-text>
-                  <a-text value="89" color="white" width="5" wrap-count="180" position="-.95 .03 -27" rotation="-90 0 0" ></a-text>
-                  <a-text value="90" color="white" width="5" wrap-count="180" position="-.95 .03 -27.3" rotation="-90 0 0" ></a-text>
-                  <a-text value="91" color="white" width="5" wrap-count="180" position="-.95 .03 -27.6" rotation="-90 0 0" ></a-text>
-                  <a-text value="92" color="white" width="5" wrap-count="180" position="-.95 .03 -27.9" rotation="-90 0 0" ></a-text>
-                  <a-text value="93" color="white" width="5" wrap-count="180" position="-.95 .03 -28.2" rotation="-90 0 0" ></a-text>
-                  <a-text value="94" color="white" width="5" wrap-count="180" position="-.95 .03 -28.5" rotation="-90 0 0" ></a-text>
-                  <a-text value="95" color="white" width="5" wrap-count="180" position="-.95 .03 -28.8" rotation="-90 0 0" ></a-text>
-                  <a-text value="96" color="white" width="5" wrap-count="180" position="-.95 .03 -29.1" rotation="-90 0 0" ></a-text>
-                  <a-text value="97" color="white" width="5" wrap-count="180" position="-.95 .03 -29.4" rotation="-90 0 0" ></a-text>
-                  <a-text value="98" color="white" width="5" wrap-count="180" position="-.95 .03 -29.7"   rotation="-90 0 0" ></a-text>
-                  <a-text value="99" color="white" width="5" wrap-count="180" position="-.95 .03 -30" rotation="-90 0 0" ></a-text>
-                  <a-text value="100" color="white" width="5" wrap-count="180" position="-.95 .03 -30.3" rotation="-90 0 0" ></a-text>
-
-                  <a-text align="center" value="Life Expectency" color="white"  width="5" wrap-count="180"  position="-0.7 .03 -2.05" rotation="-90 90 0" ></a-text>
-                </a-entity>-->
-
-                <!-- Ligne noir au sol
-                <a-entity>
-                  <a-entity line__a="start: -.8  0.05  -.8; end: .8 0.05 -.8; color: black"
-                            line__b="start: -.8  0.05  -.7; end: .8 0.05 -.7; color: black"
-                            line__c="start: -.8  0.05  -.6; end: .8 0.05 -.6; color: black"
-                            line__d="start: -.8  0.05  -.5; end: .8 0.05 -.5; color: black"
-                            line__e="start: -.8  0.05  -.4; end: .8 0.05 -.4; color: black"
-                            line__f="start: -.8  0.05  -.3; end: .8 0.05 -.3; color: black"
-                            line__g="start: -.8  0.05  -.2; end: .8 0.05 -.2; color: black"
-                            line__h="start: -.8  0.05  -.1; end: .8 0.05 -.1; color: black"
-                            line__i="start: -.8  0.05  0;   end: .8 0.05 0;   color: black"
-                            line__j="start: -.8  0.05  .8; end: .8 0.05 .8; color: black"
-                            line__k="start: -.8  0.05  .7; end: .8 0.05 .7; color: black"
-                            line__l="start: -.8  0.05  .6; end: .8 0.05 .6; color: black"
-                            line__m="start: -.8  0.05  .5; end: .8 0.05 .5; color: black"
-                            line__n="start: -.8  0.05  .4; end: .8 0.05 .4; color: black"
-                            line__o="start: -.8  0.05  .3; end: .8 0.05 .3; color: black"
-                            line__p="start: -.8  0.05  .2; end: .8 0.05 .2; color: black"
-                            line__q="start: -.8  0.05  .1; end: .8 0.05 .1; color: black"
-                            line__r="start: -.8  0.05  -.8;  end: -.8 0.05 .8; color: black"
-                            line__s="start: -.7  0.05  -.8;  end: -.7 0.05 .8; color: black"
-                            line__t="start: -.6  0.05  -.8;  end: -.6 0.05 .8; color: black"
-                            line__u="start: -.5  0.05  -.8;  end: -.5 0.05 .8; color: black"
-                            line__v="start: -.4  0.05  -.8;  end: -.4 0.05 .8; color: black"
-                            line__w="start: -.3  0.05  -.8;  end: -.3 0.05 .8; color: black"
-                            line__y="start: -.2  0.05  -.8;  end: -.2 0.05 .8; color: black"
-                            line__z="start: -.1  0.05  -.8;  end: -.1 0.05 .8; color: black"
-                            line__aa="start: 0  0.05  -.8;    end: 0 0.05 .8; color: black"
-                            line__ba="start: .8  0.05  -.8;  end: .8 0.05 .8; color: black"
-                            line__ca="start: .7  0.05  -.8;  end: .7 0.05 .8; color: black"
-                            line__da="start: .6  0.05  -.8;  end: .6 0.05 .8; color: black"
-                            line__ea="start: .5  0.05  -.8;  end: .5 0.05 .8; color: black"
-                            line__fa="start: .4  0.05  -.8;  end: .4 0.05 .8; color: black"
-                            line__ga="start: .3  0.05  -.8;  end: .3 0.05 .8; color: black"
-                            line__ha="start: .2  0.05  -.8;  end: .2 0.05 .8; color: black"
-                            line__ja="start: .1  0.05  -.8;  end: .1 0.05 .8; color: black"></a-entity>
-                </a-entity>-->
-
-                <!-- Le sol et la bordure -->
-                <a-entity class="solGraphe" static-body position="1.87 0 0">
-                  <a-box depth="6.04" height=".1" width="6.04" opacity="1" color="#333333" position="0 -.02 -1.867" event-set__hover-start="material.opacity: 0.4;"
-                  event-set__hover-end="material.opacity:1;"></a-box>
-                  <a-box depth="5.34" height=".07" width="5.34" opacity="1" color="white" position="0 0 -1.867"></a-box>
-                </a-entity>
-
-              </a-entity>
             </a-entity>
+
           </a-scene>
         </body>
     </html>
