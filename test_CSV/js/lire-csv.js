@@ -7,6 +7,8 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     dataLife = {},
     dataIncome = {};
 
+const couleurContinent = [0x9ef03e,0x33dded,0xfff37a,0xff798e]; // Am, Af, Eu, As
+
 /* S'occupe de copier le JSON -
 *  http://outset.ws/blog/article/clone-duplicate-json-object-in-javascript
 */
@@ -27,7 +29,7 @@ function clone(obj) {
 function premierFichier() {
 
   /* Pour l'axe des X - Life Expectency */
-  Papa.parse(url_3, {
+  Papa.parse(url_1, {
 
     download:true,
 
@@ -51,7 +53,7 @@ function premierFichier() {
 function deuxiemeFichier() {
 
   /* Pour l'axe de z et y - Years And Incomes */
-  Papa.parse(url_4, {
+  Papa.parse(url_2, {
 
     download:true,
 
@@ -78,10 +80,10 @@ function CreerLignes() {
 
   var lignesGraphe = document.createElement("a-entity");
   lignesGraphe.setAttribute("id","leslignesGraphe");
-  lignesGraphe.setAttribute("position",{x:-0.24,y:0.3,z:1});
+  lignesGraphe.setAttribute("position",{x:-0.24,y:0.3,z:1.03});
 
   var i;
-  var income_l = 30//dataIncome.length;
+  var income_l = 25//dataIncome.length - 1;
 
   /* Parcourt les pays */
   for(i=1;i<income_l;i++) {
@@ -98,30 +100,92 @@ function CreerLignes() {
     ligneGraphe.setAttribute("scale",{x:1,y:1,z:-1});
   //ligneGraphe.setAttribute("position",{x:-0.3,y:1,z:-1});
     lignesGraphe.appendChild(ligneGraphe);
+    ligneGraphe.setAttribute("data-pays",cellsLife[0]);
 
+    var couleurLigne;
     var geometry = new THREE.BufferGeometry();
-    var material = new THREE.LineBasicMaterial( { color:makeRandomColor()} );
+    var material = new THREE.LineBasicMaterial();
     var income_cell_l = cellsIncome.length;
     var positions = new Float32Array((income_cell_l-1)*3);
+    var debut = {x:-0.8, y:0.05, z:0.8};
+    var texte = document.createElement("a-text");
 
-    /* Parcourt les années  j : 1 => 1800, 115 => 1915*/
-    for(j=115;j<income_cell_l;j++) {
+    // position de la ligne = continent
+    if(i < 6) {
 
-      var debut = {x:-0.8, y:0.05, z:0.8};
-
-      /* Formule pour les positions sur les axes */
-      debut.x = cellsLife[j]/200;
-      debut.y = cellsIncome[j]/100000;
-      debut.z = j/100;
-
-      /* Affectation des valeurs dans notre tableau de position */
-      //console.log(cellsIncome[j]);
-      positions[3*(j-1)] = debut.x;
-      positions[3*(j-1)+1] = debut.y;
-      positions[3*(j-1)+2] = debut.z;
+      couleurLigne = couleurContinent[0];
 
     }
-  //  console.log(positions);
+
+    else if(i > 5 && i < 12) {
+
+      couleurLigne = couleurContinent[1];
+
+    }
+
+    else if(i > 11 && i < 18) {
+
+      couleurLigne = couleurContinent[2];
+
+    }
+
+    else {
+
+      couleurLigne = couleurContinent[3];
+
+    }
+
+    material.color.set(couleurLigne);
+
+    /* Parcourt les années  j : 1 => 1800, 115 => 1915*/
+    for(j=0;j<income_cell_l;j++) {
+
+        if(j == 0) {
+
+          texte.setAttribute("text", {
+            zOffset:0,
+            yOffset:0,
+            color:couleurLigne,
+            baseline:"bottom",
+            anchor:"right",
+            align:"right",
+            width:0.79,
+            whiteSpace:"pre",
+            tabSize:2.83,
+            lineHeight:0.1,
+            height:0.09,
+            value:cellsIncome[0],
+            wrapCount:39.79
+          })
+
+          /* Formule pour les positions sur les axes */
+          debut.x = cellsLife[income_cell_l - 1]/200;
+          debut.y = cellsIncome[income_cell_l - 1]/45000;
+          debut.z = (income_cell_l -1)/48;
+          texte.setAttribute("position",{x:debut.x,y:debut.y,z:debut.z});
+          texte.setAttribute("rotation",{x:0,y:90,z:0});
+          ligneGraphe.appendChild(texte);
+
+        }
+
+        else {
+
+          /* Formule pour les positions sur les axes */
+          debut.x = cellsLife[j]/200;
+          debut.y = cellsIncome[j]/45000;
+          debut.z = j/48;
+
+          /* Affectation des valeurs dans notre tableau de position */
+          //console.log(cellsIncome[j]);
+          positions[3*(j-1)] = debut.x;
+          positions[3*(j-1)+1] = debut.y;
+          positions[3*(j-1)+2] = debut.z;
+
+        }
+
+
+    }
+
     geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
     geometry.computeBoundingSphere();
 

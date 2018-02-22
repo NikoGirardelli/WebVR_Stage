@@ -124,7 +124,6 @@ function creerAxeZ(graphe,callback) {
 		}
 
 		textY.setAttribute("value", value);
-console.log("z");
 		graphe.appendChild(textY);
 		graphe.appendChild(textT);
 		callback(graphe);
@@ -133,19 +132,99 @@ console.log("z");
 
 function creerAxeY(graphe) {
 
-	console.log("y");
-/*
-	var textX = document.createElement("a-text");
+	var textY = document.createElement("a-text");
+	textY.setAttribute("rotation",{x:0,y:270,z:0});
+	textY.setAttribute("position",{x:-0.5,y:1.724,z:1.25});
+	textY.setAttribute("text",{
 
-	textX.setAttribute("value", 0 );
-	for(var i = 1; i < 101;i++) {
+		color:"black",
+		width:0.17,
+		wrapCount:4,
+		lineHeight:141
 
-		textX.setAttribute("value", textX.getAttribute("value") + " " + i );
+	});
+
+	var textYD = document.createElement("a-text");
+	textYD.setAttribute("rotation",{x:0,y:90,z:0});
+	textYD.setAttribute("position",{x:-0.5,y:1.724,z:1.35});
+	textYD.setAttribute("text",{
+
+		color:"black",
+		width:0.17,
+		wrapCount:4,
+		lineHeight:141
+
+	});
+
+	var textT = document.createElement("a-text");
+	textT.setAttribute("rotation",{x:0,y:270,z:90});
+	textT.setAttribute("position",{x:-0.50,y:1.724,z:1.5});
+	textT.setAttribute("text",{
+
+		color:"black",
+		align:"center",
+		width:0.8,
+		wrapCount:16,
+		lineHeight:80,
+		value:"Income"
+
+	});
+
+	var textTD = document.createElement("a-text");
+	textTD.setAttribute("rotation",{x:0,y:90,z:90});
+	textTD.setAttribute("position",{x:-0.50,y:1.724,z:1.5});
+	textTD.setAttribute("text",{
+
+		color:"black",
+		align:"center",
+		width:0.8,
+		wrapCount:16,
+		lineHeight:80,
+		value:"Income"
+
+	});
+
+	var value = "";
+
+	/* On écrit tous les chiffres de 0 à 100 */
+	for(var i = 130; i >= 0;i--) {
+
+		/* Si modulo de i par 5 et que le restant de la divison est pair */
+		if(i%5 == 0 && (i/5) % 2 == 0) {
+			/* On ajoute la valeur */
+			value += " " + i + "k";
+
+		}
 
 	}
 
-	graphe.appendChild(textX);
-	callback(graphe,creerLignesSol);*/
+	textY.setAttribute("value", value);
+	textYD.setAttribute("value", value);
+	graphe.appendChild(textY);
+	graphe.appendChild(textYD);
+	graphe.appendChild(textT);
+	graphe.appendChild(textTD);
+
+	var positions = new Float32Array([
+		  0.5,0.25, 1.2,
+			0.5,0.25,-1.2,
+		 -0.5,0.25,-1.2,
+		 -0.5,0.25, 1.2
+	]);
+
+	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
+	var geometry = new THREE.BufferGeometry();
+	/* Parcourt les pays */
+  for(var j = 0;j<14;j++) {
+
+    geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
+    geometry.computeBoundingSphere();
+
+    mesh = new THREE.Line(geometry, materialBlanc);
+		mesh.position.set(0,(j/4.4),0);
+    graphe.object3D.add(mesh);
+
+  }
 
 }
 

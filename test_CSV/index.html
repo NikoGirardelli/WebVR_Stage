@@ -25,7 +25,6 @@
                        super-hands="colliderEvent: collisions; colliderEventProperty: els;
                                     colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
                                     colliderState:"></a-mixin>
-              <img id="grid" src="textures/grid_2.png">
             </a-assets>
 
             <!-- Les mains -->
@@ -41,60 +40,7 @@
             </a-entity>
 
             <!-- Graphe -->
-            <a-entity class="graphe" scale="1 1 1" rotation="0 0 0" graphe-creation>
-
-              <!-- Axe Y - Incomes
-              <a-entity>
-                <a-entity line__1a="start: -.8  0.25  .8;  end: -.8 0.25 -.8; color: white"
-                          line__1b="start: -.8  0.25  -.8;  end: .8 0.25 -.8; color: white"
-                          line__1c="start:  .8  0.25  .8; end: .8 0.25 -.8; color: white"
-                          line__2a="start: -.8  0.5  .8;  end: -.8 0.5 -.8; color: white"
-                          line__2b="start: -.8  0.5  -.8;  end: .8 0.5 -.8; color: white"
-                          line__2c="start:  .8  0.5  .8; end: .8 0.5 -.8; color: white"
-                          line__3a="start: -.8  0.75  .8; end: -.8 0.75 -.8; color: white"
-                          line__3b="start: -.8  0.75  -.8; end: .8 0.75 -.8; color: white"
-                          line__3c="start:  .8  0.75  .8; end: .8 0.75 -.8; color: white"
-                          line__4a="start: -.8  1  .8;    end: -.8 1 -.8; color: white"
-                          line__4b="start: -.8  1  -.8;    end: .8 1 -.8; color: white"
-                          line__4c="start:  .8  1  .8; end: .8 1 -.8; color: white"
-                          line__5a="start: -.8  1.25  .8;    end: -.8 1.25 -.8; color: white"
-                          line__5b="start: -.8  1.25  -.8;    end: .8 1.25 -.8; color: white"
-                          line__5c="start:  .8  1.25  .8; end: .8 1.25 -.8; color: white"
-                          line__6a="start: -.8  1.5  .8;  end: -.8 1.5 -.8; color: white"
-                          line__6b="start: -.8  1.5  -.8;  end: .8 1.5 -.8; color: white"
-                          line__6c="start:  .8  1.5  .8; end: .8 1.5 -.8; color: white"
-                          line__7a="start: -.8  1.75  .8; end: -.8 1.75 -.8; color: white"
-                          line__7b="start: -.8  1.75  -.8; end: .8 1.75 -.8; color: white"
-                          line__7c="start:  .8  1.75  .8; end: .8 1.75 -.8; color: white"
-                          line__8a="start: -.8  2  .8;    end: -.8 2 -.8; color: white"
-                          line__8b="start: -.8  2  -.8;    end: .8 2 -.8; color: white"
-                          line__8c="start:  .8  2  .8; end: .8 2 -.8; color: white"
-                          line__9a="start: -.8  2.25  .8;    end: -.8 2.25 -.8; color: white"
-                          line__9b="start: -.8  2.25  -.8;    end: .8 2.25 -.8; color: white"
-                          line__9c="start:  .8  2.25  .8; end: .8 2.25 -.8; color: white"></a-entity>
-                <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 90 0" ></a-text>
-                <a-text value="500"  color="white"  width="5" wrap-count="180"  position="-.8  0.25  1" rotation="0 -90 0" ></a-text>
-                <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 90 0" ></a-text>
-                <a-text value="1000"  color="white"  width="5" wrap-count="180"  position="-.8  0.5  1" rotation="0 -90 0" ></a-text>
-                <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 90 0" ></a-text>
-                <a-text value="2000"  color="white"  width="5" wrap-count="180"  position="-.8  0.75  1" rotation="0 -90 0" ></a-text>
-                <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 90 0" ></a-text>
-                <a-text value="4000"  color="white"  width="5" wrap-count="180"  position="-.8  1  1" rotation="0 -90 0" ></a-text>
-                <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 90 0" ></a-text>
-                <a-text value="8000"  color="white"  width="5" wrap-count="180"  position="-.8  1.25  1" rotation="0 -90 0" ></a-text>
-                <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 90 0" ></a-text>
-                <a-text value="16k"  color="white"  width="5" wrap-count="180"  position="-.8  1.5  1" rotation="0 -90 0" ></a-text>
-                <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 90 0" ></a-text>
-                <a-text value="32k"  color="white"  width="5" wrap-count="180"  position="-.8  1.75  1" rotation="0 -90 0" ></a-text>
-                <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 90 0" ></a-text>
-                <a-text value="64k"  color="white"  width="5" wrap-count="180"  position="-.8  2  1" rotation="0 -90 0" ></a-text>
-                <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 90 0" ></a-text>
-                <a-text value="128k"  color="white"  width="5" wrap-count="180"  position="-.8 2.25  1" rotation="0 -90 0" ></a-text>
-                <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 90 90" ></a-text>
-                <a-text align="center" value="Income"  color="white"  width="5" wrap-count="180"  position="-.8  1.125  1.2" rotation="0 -90 90" ></a-text>
-              </a-entity>-->
-
-            </a-entity>
+            <a-entity class="graphe" scale="1 1 1" rotation="0 0 0" graphe-creation></a-entity>
 
           </a-scene>
         </body>
