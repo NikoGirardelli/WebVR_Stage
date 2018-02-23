@@ -80,7 +80,7 @@ function CreerLignes() {
 
   var lignesGraphe = document.createElement("a-entity");
   lignesGraphe.setAttribute("id","leslignesGraphe");
-  lignesGraphe.setAttribute("position",{x:-0.24,y:0.3,z:1.03});
+  lignesGraphe.setAttribute("position",{x:-0.3,y:0.3,z:1.03});
 
   var i;
   var income_l = 25//dataIncome.length - 1;
