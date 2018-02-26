@@ -38,7 +38,7 @@ AFRAME.registerComponent("pays-selection", {
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
-				console.log(el)
+				//console.log(el)
 				el.setAttribute("scale","1.2 1.2 1.2");
 
       };
