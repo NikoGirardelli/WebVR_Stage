@@ -61,7 +61,8 @@ function deuxiemeFichier() {
 
                 var data = results.data;
                 dataIncome = clone(data);
-                CreerLignes();
+                //CreerLignes();
+                CreerSpheres();
 
     },
 
@@ -80,7 +81,7 @@ function CreerLignes() {
 
   var lignesGraphe = document.createElement("a-entity");
   lignesGraphe.setAttribute("id","leslignesGraphe");
-  lignesGraphe.setAttribute("position",{x:-0.315,y:0.171,z:0.45});
+  lignesGraphe.setAttribute("position",{x:-0.5,y:-0.5,z:-1.45});
 
   var i;
   var income_l = 25//dataIncome.length - 1;
@@ -96,7 +97,6 @@ function CreerLignes() {
     /* Crée le parent de la ligne pour le pays */
     var ligneGraphe = document.createElement("a-entity");
     ligneGraphe.setAttribute("class","ligneGraphe");
-    ligneGraphe.setAttribute("grabbable","");
     ligneGraphe.setAttribute("scale",{x:1,y:1,z:-1});
   //ligneGraphe.setAttribute("position",{x:-0.3,y:1,z:-1});
     lignesGraphe.appendChild(ligneGraphe);
@@ -177,14 +177,14 @@ function CreerLignes() {
 
 
           /* Formule pour positionner les noms à la fin des lignes */
-          debut.x = cellsLife[income_cell_l - 1]/200;
+          debut.z = cellsLife[income_cell_l - 1]/200;
           debut.y = cellsIncome[income_cell_l - 1]/130000;
-          debut.z = (income_cell_l - 1)/100;
+          debut.x = (income_cell_l - 1)/100;
 
           texte.setAttribute("position",{x:debut.x,y:debut.y,z:debut.z});
           texteD.setAttribute("position",{x:debut.x,y:debut.y,z:debut.z});
-          texte.setAttribute("rotation",{x:0,y:90,z:0});
-          texteD.setAttribute("rotation",{x:0,y:270,z:0});
+          texte.setAttribute("rotation",{x:0,y:0,z:0});
+          texteD.setAttribute("rotation",{x:0,y:180,z:0});
           ligneGraphe.appendChild(texte);
           ligneGraphe.appendChild(texteD);
 
@@ -193,9 +193,9 @@ function CreerLignes() {
         else {
 
           /* Formule pour les positions sur les axes */
-          debut.x = cellsLife[j]/200;
+          debut.z = cellsLife[j]/200;
           debut.y = cellsIncome[j]/132000;
-          debut.z = j/100;
+          debut.x = j/100;
 
           /* Affectation des valeurs dans notre tableau de position */
           positions[3*(j-1)] = debut.x;
@@ -212,11 +212,126 @@ function CreerLignes() {
 
     mesh = new THREE.Line( geometry, material);
     ligneGraphe.object3D.add(mesh);
-    ligneGraphe.setAttribute("visible",false);
+    //ligneGraphe.setAttribute("visible",false);
+    console.log(ligneGraphe.object3D)
+  }
+
+  document.querySelector("#head").appendChild(lignesGraphe);
+
+}
+
+/* S'occupe de créer des spheres pour chaque pays */
+function CreerSpheres() {
+
+  var spheresGraphe = document.createElement("a-entity");
+  spheresGraphe.setAttribute("id","lesSpheresGraphe");
+  spheresGraphe.setAttribute("position",{x:-15,y:0,z:0.5});
+
+  var i;
+  var income_l = 25//dataIncome.length - 1;
+
+  /* Supprime l'ancienne sauvegarde */
+  sessionStorage.clear();
+
+  /* Enregistrement de la variable paysChoisi dans la sessionStorage*/
+  sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
+  sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
+  /* Parcourt les pays */
+  for(i=1;i<income_l;i++) {
+
+    var rowIncome = dataIncome[i];
+    var cellsIncome = rowIncome.join(",").split(",");
+    var rowLife = dataLife[i];
+    var cellsLife = rowLife.join(",").split(",");
+
+    /* Crée le parent de la ligne pour le pays */
+    var sphereGraphe = document.createElement("a-entity");
+    sphereGraphe.setAttribute("class","sphereGraphe");
+  //sphereGraphe.setAttribute("position",{x:-0.3,y:1,z:-1});
+    spheresGraphe.appendChild(sphereGraphe);
+    sphereGraphe.setAttribute("data-pays-ligne",cellsLife[0]);
+
+    var couleurLigne;
+    var geometry = new THREE.SphereBufferGeometry(0.28, 16, 16 );
+    var material = new THREE.MeshBasicMaterial();
+    var income_cell_l = cellsIncome.length;
+    var positions = new Float32Array((income_cell_l-1)*3);
+    var debut = {x:-0.8, y:0.05, z:0.8};
+    var texte = document.createElement("a-text");
+
+    // position de la ligne = continent
+    if(i < 6) {
+
+      couleurLigne = couleurContinent[0];
+
+    }
+
+    else if(i > 5 && i < 12) {
+
+      couleurLigne = couleurContinent[2];
+
+    }
+
+    else if(i > 11 && i < 19) {
+
+      couleurLigne = couleurContinent[3];
+
+    }
+
+    else {
+
+      couleurLigne = couleurContinent[1];
+
+    }
+
+    material.color.set(couleurLigne);
+
+    texte.setAttribute("text", {
+      zOffset:0,
+      yOffset:0,
+      color:couleurLigne,
+      baseline:"top",
+      anchor:"center",
+      align:"center",
+      width:1.5,
+      whiteSpace:"pre",
+      tabSize:2.83,
+      lineHeight:35,
+      height:0.5,
+      value:cellsIncome[0],
+      wrapCount:9
+    });
+
+    /* Formule pour positionner les noms à la fin des lignes */
+    debut.x = 0;//[income_cell_l - 1]/200;
+    debut.y = -1;//cellsIncome[income_cell_l - 1]/130000;
+    debut.z = 0;//(income_cell_l - 1)/100;
+
+    texte.setAttribute("position",{x:debut.x,y:debut.y,z:debut.z});
+    texte.setAttribute("rotation",{x:0,y:0,z:0});
+    sphereGraphe.appendChild(texte);
+
+    /* Radius du cylindre = Life Expectency
+    *  Height = Incomes
+    *  Positionner par continent autour du joueur.
+
+    debut.x = cellsLife[j]/200;
+    debut.y = cellsIncome[j]/132000;
+    debut.z = j/100;
+
+     Affectation des valeurs dans notre tableau de position
+    positions[3*(j-1)] = debut.x;
+    positions[3*(j-1)+1] = debut.y;
+    positions[3*(j-1)+2] = debut.z;*/
+
+    mesh = new THREE.Mesh( geometry, material);
+    sphereGraphe.setAttribute("position",{x:i*1.25,y:1,z:-10});
+    sphereGraphe.object3D.add(mesh);
+    //sphereGraphe.setAttribute("visible",false);
 
   }
 
-  document.querySelector(".graphe").appendChild(lignesGraphe);
+  document.querySelector("#head").appendChild(spheresGraphe);
 
 }
 
