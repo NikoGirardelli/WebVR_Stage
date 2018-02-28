@@ -1,52 +1,121 @@
-var vieillePositionX;
+var vieillePositionX,
+    annee = 0,
+    dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
+    dataLife = JSON.parse(sessionStorage.getItem('dataLife'));
 
 AFRAME.registerComponent('interaction-graphe', {
 
   init: function () {
 
-    //this.rafraichir = function() { location.reload(); };
-
     vieillePositionX = document.querySelector("#head").getAttribute("position").x;
 
     this.calculerDistanceX = function(positionJoueurX,positionX) {
 
-      return (Math.sqrt(Math.pow((positionJoueurX - positionX),2)));
+      return Math.round(Math.sqrt(Math.pow((positionJoueurX - positionX),2))*1000)/1000;
 
     };
 
+    this.verifierDistance = function() {
+
+      var head = document.querySelector("#head"),
+          positionTete = head.getAttribute("position").x;
+
+      if(positionTete > 0) {
+
+          positionTete = Math.floor(positionTete*10)/10;
+      }
+
+      else if(positionTete < 0) {
+
+        positionTete = Math.ceil(positionTete*10)/10;
+
+      }
+
+      /* On calcule la distance entre notre dernière position et notre nouvelle */
+      var distance = this.calculerDistanceX(positionTete,vieillePositionX);
+
+      /* Si on a fait un déplacement de 0.3 */
+      if(distance >= 0.3) {
+
+        vieillePositionX = positionTete;
+        this.modifierDonnee(positionTete);
+
+      }
+
+    };
+
+  //  this.modifierDonnee(0);
+
   },
 
-  play: function () {
+  modifierDonnee:function(positionJoueurX) {
 
-    // Rafraîchit la page
-  //  this.el.addEventListener("menudown",this.rafraichir);
-    /*this.el.addEventListener("trackpaddown",function(){
-
-
-    });*/
-
-
-  },
-
-  pause: function () {
-
-    //this.el.removeEventListener("menudown",this.rafraichir);
-
-  },
-
-  modifierDonnee:function(annee) {
-
-    var dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
-        dataLife = JSON.parse(sessionStorage.getItem('dataLife')),
-        ensembleSphereGraphe = document.querySelectorAll(".sphereGraphe"),
+    var ensembleSphereGraphe = document.querySelectorAll(".sphereGraphe"),
         ensembleSphereGraphe_l =  ensembleSphereGraphe.length + 1,
-        texteAnnee = document.querySelector("#anneeTexte");
+        texteAnnee = document.querySelector("#anneeTexte"),
+        ligneTemps = document.querySelectorAll(".ligneTemps");
 
-    /* Modifie le texte de l'année */
-    //texteAnnee.setAttribute("value",(income_cell_l - 1)/100;);
-    //console.log(dataIncome[0])
+    /* Mets les lignes du temps blanches */
+    for(var j = 0;j < 11;j++) {
+
+      ligneTemps[j].setAttribute("material",{color:0xFFFFFF});
+
+    }
+
+    // Notre position affecte l'année
+    switch(positionJoueurX) {
+
+      case -1.5:
+        annee = 2;
+        ligneTemps[10].setAttribute("material",{color:0x22D1EE});
+        break;
+      case -1.2:
+        annee = 12;
+        ligneTemps[9].setAttribute("material",{color:0x22D1EE});
+        break;
+      case -0.9:
+        annee = 22;
+        ligneTemps[8].setAttribute("material",{color:0x22D1EE});
+        break;
+      case -0.6:
+        annee = 32;
+        ligneTemps[7].setAttribute("material",{color:0x22D1EE});
+        break;
+      case -0.3:
+        annee = 42
+        ligneTemps[6].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 0:
+        annee = 52;
+        ligneTemps[5].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 0.3:
+        annee = 62;
+        ligneTemps[4].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 0.6:
+        annee = 72;
+        ligneTemps[3].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 0.9:
+        annee = 82;
+        ligneTemps[2].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 1.2:
+        annee = 92;
+        ligneTemps[1].setAttribute("material",{color:0x22D1EE});
+        break;
+      case 1.5:
+        annee = 102;
+        ligneTemps[0].setAttribute("material",{color:0x22D1EE});
+        break;
+
+    }
+
     /* Parcourt les pays */
-    for(i=1;i<ensembleSphereGraphe_l;i++) {
+    var scale = 1;
+    var position = {x:1.25, y:0.05, z:-10};
+    for(i=0;i<ensembleSphereGraphe_l;i++) {
 
       /*1 a 24*/
       var rowIncome = dataIncome[i];
@@ -54,130 +123,33 @@ AFRAME.registerComponent('interaction-graphe', {
       var cellsIncome = rowIncome.join(",").split(",");
       var rowLife = dataLife[i];
       var cellsLife = rowLife.join(",").split(",");
-      var position = {x:-0.8, y:0.05, z:-10};
-      var scale = 1;
-      var anneeAfficher;
 
-      //console.log(Math.floor(annee)/100);
-      //(100/annee)
-      scale = cellsLife[i]/200;
-      //scale.y = cellsLife[i+1]/200;
-      //scale.z = cellsLife[i+1]/200;
-      position.y = cellsIncome[i]/132000;
-      //debut.z = -10;
+      /* Modifie le texte de l'année */
+      if(i == 0) {
 
-      /* Pour les années, on fais un saut*/
+        texteAnnee.setAttribute("value",cellsLife[annee]);
 
-      ensembleSphereGraphe[i - 1].setAttribute("position",{y:position.y});
-      ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,scale);
-      //console.log(scale);
+      }
 
-      /* Radius du cylindre = Life Expectency
-      *  Height = Incomes
-      *  Positionner par continent autour du joueur.
+      /* Modifie les sphères des pays */
+      else {
 
+        scale = cellsLife[annee]/100;
+        position.y = cellsIncome[annee]/13200;
+        position.x = i*1.25;
+        ensembleSphereGraphe[i - 1].setAttribute("position",position);
+        ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,scale);
 
-
-       Affectation des valeurs dans notre tableau de position
-      positions[3*(j-1)] = debut.x;
-      positions[3*(j-1)+1] = debut.y;
-      positions[3*(j-1)+2] = debut.z;*/
-
-      //sphereGraphe.setAttribute("visible",false);
+      }
 
     }
 
   },
 
   tick:function() {
-    /* Permet d'avoir les positions des manettes
-        et celle du casque ainsi que sa rotation.*/
-  //  var controllers = document.querySelectorAll("[vive-controls]");
 
-    var head = document.querySelector("#head"),
-        positionTete = Math.round(head.getAttribute("position").x*1000)/1000,
-        origine = 1.5,
-        distance = this.calculerDistanceX(positionTete,Math.round(vieillePositionX*1000)/1000,).toFixed(3);
+    this.verifierDistance();
 
-
-  //  console.log();
-  //  console.log(positionTete);
-    //console.log(head.getAttribute("position"));
-    //console.log(vieillePositionX);
-    /* si nous sommes déplacé de 0.3*/
-    //console.log(positionTete)
-  //  console.log(Math.floor(positionTete)/100);
-    if(distance > 0.299) {
-
-      //console.log(positionTete)
-      vieillePositionX = positionTete;
-      this.modifierDonnee(positionTete);
-      //console.log(vieillePositionX)
-
-    }
-
-/*
-    if(head.getAttribute("position").x > -1.2 && head.getAttribute("position").x <= -1) {
-
-      this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > -1 && head.getAttribute("position").x <= -0.8) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > -0.8 && head.getAttribute("position").x <= -0.6) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > -0.6 && head.getAttribute("position").x <= -0.4) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > -0.4 && head.getAttribute("position").x <= -0.2) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > -0.2 && head.getAttribute("position").x <= 0) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 0 && head.getAttribute("position").x <= 0.2) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 0.2 && head.getAttribute("position").x <= 0.4) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 0.4 && head.getAttribute("position").x <= 0.6) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 0.6 && head.getAttribute("position").x <= 0.8) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 0.8 && head.getAttribute("position").x <= 1) {
-
-      //this.modifierDonnee();
-
-    }
-    else if(head.getAttribute("position").x > 1 && head.getAttribute("position").x <= 1.2) {
-
-    //this.modifierDonnee();
-
-    }
-*/
   }
 
 });

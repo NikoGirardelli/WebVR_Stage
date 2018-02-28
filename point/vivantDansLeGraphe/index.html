@@ -25,22 +25,20 @@
     <script src="js/graphe-creation.js"></script>
   </head>
   <body>
-    <a-scene stats environment="grid: 1x1; dressingUniformScale: false;
+    <a-scene stats environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat; skyColor: #ffffff;
                                 active: true;gridColor: #ffffff;
                                 horizonColor: #ddd; fog: 0.1;
-                                groundColor: #454545; groundColor2: #5d5d5d;
+                                groundColor: #808080; groundColor2: #5d5d5d;
                                 groundTexture:none;
                                 skyType:gradient;
-                                ground:none">
+                                ground:flat">
 
       <a-assets>
         <!-- Repère timeline -->
-        <a-mixin id="ligneTemps"
-                 geometry="primitive: box; height: 1; width: 0.25; depth: 0.25"
-                 material="color:orange;shader: standard;"
-                 snap="offset: 0.125 0.125 0.125; snap: 0.25 0.25 0.25"></a-mixin>
+        <a-mixin id="ligneTemps" geometry="height:0.05;width:0.05;depth:0.5"
+                 material="color:#ffffff"></a-mixin>
 
         <!-- Ui texte -->
         <a-mixin id="textContinent"
@@ -119,7 +117,6 @@
         <audio id="desert" loop='true' autoplay="true"
         src="audio/Desert sound - Sound effect.mp3"></audio>-->
         <img id="gapminder" src="img/gap.png">
-        <img id="uv_grid_lrg" src="img/UV_Grid_Lrg.jpg">
       </a-assets>
 
       <!-- Les mains -->
@@ -127,16 +124,16 @@
                 progressive-controls="controllerModel:false;override:true;
                                       maxLevel:point;touchMixin:mytouch;
                                       pointMixin:mypoint;">
-        <a-camera id="head" camera="far:5000;"wasd-controls look-controls>
+        <a-camera id="head" camera="far:500;"wasd-controls look-controls>
           <!-- Annee texte -->
           <a-text id="anneeTexte"
                    text="alphaTest:0.6;
                          tabSize: 0; width: 10;
                          baseline: top; wrapCount: 4;
                          letterSpacing: 0.3;
-                         align:center;color:#808080;
+                         align:center;color:#ffffff;
                          anchor:center;zOffset:-30;
-                         baseline:center;value:2018;"></a-text>
+                         baseline:center;value:1965;"></a-text>
         </a-camera>
         <a-entity id="lhand" vive-controls="hand: left;model:false">
           <!-- UI -->
@@ -296,7 +293,7 @@
                   ></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 
-      <!-- Graphe -->
+      <!-- Graphe
       <a-entity class="graphe" scale="1 1 1" stretchable hoverable grabbable
                 position="2 0 0" rotation="0 0 0" >
         <a-box position="0 1.55 0"
@@ -307,20 +304,24 @@
         fog: false; color: #ffffff;
         flatShading: true; depthWrite: false;
         depthTest: false;"></a-box>
+      </a-entity>-->
+      <a-entity id="graphe" position="0 1.5 0"></a-entity>
+
+      <!-- Ligne du temps -->
+      <a-entity>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="1.5 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="1.2 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.9 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.6 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.3 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="0 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.3 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.6 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.9 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-1.2 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="-1.5 0.25 0"></a-box>
       </a-entity>
 
-
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:red"position="1.5 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:blue"position="1.2 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:yellow"position="0.9 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:green"position="0.6 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:purple"position="0.3 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:pink"position="0 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:red"position="-0.3 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:blue"position="-0.6 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:grey"position="-0.9 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:pink"position="-1.2 0.25 0"></a-box>
-      <a-box geometry="heigth:1.5;width:0.25;depth:0.5" material="color:black"position="-1.5 0.25 0"></a-box>
 
       <!-- Titre du graphe -->
       <a-sphere scale="0.4 0.4 0.4" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
@@ -330,10 +331,6 @@
         <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
                 position="1.8 -1.8 0" text="color:#d9ad28;wrapCount:25.68;side: double;align:center;"></a-text>
       </a-sphere>
-
-      <a-cylinder  radius="30" height="0.1"
-      material="src:url(https://cdn.rawgit.com/donmccurdy/aframe-extras/v1.16.3/assets/grid.png);
-      repeat:120.0 120.0;"></a-cylinder>
 
       <!-- Son -->
       <a-entity sound="src:#desert" position="0 0 0"></a-entity>
