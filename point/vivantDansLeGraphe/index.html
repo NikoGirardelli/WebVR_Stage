@@ -12,17 +12,17 @@
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
     <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
     <script src="components/rafraichissement.js"></script>
     <!--    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
-    <script src="components/changement-outil.js"></script>-->
+    <script src="components/changement-outil.js"></script>
+  <script src="components/ligne-du-temps.js"></script>-->
     <script src="components/pays-selection.js"></script>
-    <script src="components/snap.js"></script>
-    <script src="components/ligne-du-temps.js"></script>
+    <script src="components/sphere-hover.js"></script>
     <script src="components/interaction-graphe.js"></script>
-    <script src="js/papaparse.min.js"></script>
-    <script src="js/lire-csv.js"></script>
-    <script src="js/graphe-creation.js"></script>
+    <script src="js/graphe-2D-creation.js"></script>
   </head>
   <body>
     <a-scene stats environment="grid: none; dressingUniformScale: false;
@@ -33,7 +33,7 @@
                                 groundColor: #808080; groundColor2: #5d5d5d;
                                 groundTexture:none;
                                 skyType:gradient;
-                                ground:flat">
+                                ground:none">
 
       <a-assets>
         <!-- Repère timeline -->
@@ -129,11 +129,11 @@
           <a-text id="anneeTexte"
                    text="alphaTest:0.6;
                          tabSize: 0; width: 10;
-                         baseline: top; wrapCount: 4;
+                         baseline: top; wrapCount: 12;
                          letterSpacing: 0.3;
                          align:center;color:#ffffff;
                          anchor:center;zOffset:-30;
-                         baseline:center;value:1965;"></a-text>
+                         baseline:center;value:;"></a-text>
         </a-camera>
         <a-entity id="lhand" vive-controls="hand: left;model:false">
           <!-- UI -->
@@ -287,10 +287,7 @@
             </a-entity>
           </a-entity>
         </a-entity>
-        <a-entity id="rhand" laser-controls="hands:right"
-
-                  line="color: #22D1EE; opacity: 0.75"
-                  ></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
+        <a-entity id="rhand" laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 
       <!-- Graphe
@@ -305,7 +302,7 @@
         flatShading: true; depthWrite: false;
         depthTest: false;"></a-box>
       </a-entity>-->
-      <a-entity id="graphe" position="0 1.5 0"></a-entity>
+      <a-entity id="graphe"></a-entity>
 
       <!-- Ligne du temps -->
       <a-entity>
@@ -324,13 +321,37 @@
 
 
       <!-- Titre du graphe -->
-      <a-sphere scale="0.4 0.4 0.4" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
-                position="-0.75 3.1 -3.1" geometry="primitive:circle;radius:1.04">
+      <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
+                position="-10 2 2.125" rotation="0 90 0" geometry="primitive:circle;radius:1.04">
         <a-text value="Life Expectency and Incomes/Years since 1915 to 2015"
                 position="1.224 0 0" text="color:#d9ad28;wrapCount:20.68;side: double;"></a-text>
         <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
                 position="1.8 -1.8 0" text="color:#d9ad28;wrapCount:25.68;side: double;align:center;"></a-text>
       </a-sphere>
+
+      <!-- Instruction -->
+      <a-text text="alphaTest:0.6;
+                    tabSize: 0; width: 5;
+                    baseline: top; wrapCount: 12;
+                    letterSpacing: 0.3;
+                    align:center;color:#d9ad28;
+                    anchor:center;zOffset:0;
+                    baseline:center;value:Use your feet on the timeline to see the data move.;"
+                    position="0 1.5 -10"></a-text>
+      <a-text text="alphaTest:0.6;
+                    tabSize: 0; width: 7;
+                    baseline: top; wrapCount: 20;
+                    letterSpacing: 0.3;
+                    align:center;color:#d9ad28;
+                    anchor:center;zOffset:0;
+                    baseline:center;value:Use your pointer to choose a country from the menu on your left hand, and if you hover over a sphere you'll see more details about the country.;"
+                    position="0 1.5 10" rotation="0 180 0"></a-text>
+
+
+      <!-- Plateforme -->
+      <a-box id='plateforme' position="0 0.1 0"
+             geometry="depth:1.5;width:3.5;height:0.25"
+             material="color:#c0c0c0;"></a-box>
 
       <!-- Son -->
       <a-entity sound="src:#desert" position="0 0 0"></a-entity>

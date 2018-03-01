@@ -131,51 +131,26 @@ function creerAxeZ(graphe,callback) {
 function creerAxeY(graphe) {
 
 	var texteY = document.createElement("a-text");
-	texteY.setAttribute("rotation",{x:0,y:270,z:0});
-	texteY.setAttribute("position",{x:-0.5,y:0.63,z:0.5});
+	texteY.setAttribute("rotation",{x:0,y:0,z:0});
+	texteY.setAttribute("position",{x:10,y:4.875,z:0.5});
 	texteY.setAttribute("text",{
 
 		color:"black",
-		width:0.14,
+		width:1,
 		wrapCount:4,
-		lineHeight:54
+		lineHeight:78
 
 	});
 
-	var texteYD = document.createElement("a-text");
-	texteYD.setAttribute("rotation",{x:0,y:90,z:0});
-	texteYD.setAttribute("position",{x:-0.5,y:0.63,z:0.6});
-	texteYD.setAttribute("text",{
-
-		color:"black",
-		width:0.14,
-		wrapCount:4,
-		lineHeight:54
-
-	});
 
 	var texteT = document.createElement("a-text");
-	texteT.setAttribute("rotation",{x:0,y:270,z:90});
-	texteT.setAttribute("position",{x:-0.50,y:0.63,z:0.75});
+	texteT.setAttribute("rotation",{x:0,y:0,z:90});
+	texteT.setAttribute("position",{x:11.25,y:4.875,z:0.75});
 	texteT.setAttribute("text",{
 
 		color:"black",
 		align:"center",
-		width:0.8,
-		wrapCount:16,
-		lineHeight:80,
-		value:"Income"
-
-	});
-
-	var texteTD = document.createElement("a-text");
-	texteTD.setAttribute("rotation",{x:0,y:90,z:90});
-	texteTD.setAttribute("position",{x:-0.50,y:0.63,z:0.75});
-	texteTD.setAttribute("text",{
-
-		color:"black",
-		align:"center",
-		width:0.8,
+		width:5,
 		wrapCount:16,
 		lineHeight:80,
 		value:"Income"
@@ -197,29 +172,22 @@ function creerAxeY(graphe) {
 	}
 
 	texteY.setAttribute("value", value);
-	texteYD.setAttribute("value", value);
 	graphe.appendChild(texteY);
-	graphe.appendChild(texteYD);
 	graphe.appendChild(texteT);
-	graphe.appendChild(texteTD);
 
-	var positions = new Float32Array([
-		  0.5,0.15, 0.5,
-			0.5,0.15,-0.5,
-		 -0.5,0.15,-0.5,
-		 -0.5,0.15, 0.5
-	]);
+	var positions = new Float32Array([-0.5,-0.125,0,
+																	 	 10,-0.125,0]);
 
 	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
 	var geometry = new THREE.BufferGeometry();
-	/* Parcourt les pays */
+
   for(var j = 0;j<14;j++) {
 
     geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
     geometry.computeBoundingSphere();
 
     mesh = new THREE.Line(geometry, materialBlanc);
-		mesh.position.set(0,(j/13.75),0);
+		mesh.position.set(0,(j/1.28),0);
     graphe.object3D.add(mesh);
 
   }
@@ -229,7 +197,7 @@ function creerAxeY(graphe) {
 /* Dès le chargement de la page, on crée le graphe en commencant par le sol */
 document.addEventListener("DOMContentLoaded", function(event) {
 
-	var graphe = document.querySelector(".graphe");
-  creerSol(graphe, creerAxeX);
+	var graphe = document.querySelector("#graphe");
+  creerAxeY(graphe);
 
 });

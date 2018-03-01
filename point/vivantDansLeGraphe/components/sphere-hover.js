@@ -1,52 +1,53 @@
-/* S'occupe de savoir quel journée est saisie
- * lorsque les boutons sont cliqué
- */
-AFRAME.registerComponent("pays-selection", {
+/* S'occupe de montrer le texte de tous les pays
+*  appartenant au continent choisi et affiche les données du pays visé.
+*/
+AFRAME.registerComponent("sphere-hover", {
 
 		init: function () {
 
 			/* Référence à l'écran */
       //var txtJour = document.querySelector("#textJour"),
 
-			/* Pays */
+			/* Sphere */
 			var el = this.el,
-					anim = document.createElement('a-animation'),
-					animText = document.createElement('a-animation');
-
-			switch(el.attributes[1].nodeValue) {
+					continentAppartenant;
+					//anim = document.createElement('a-animation'),
+					//animText = document.createElement('a-animation');
+					//console.log(el)
+			switch(el.parentEl.getAttribute("data-mur-continent")) {
 
 				case "Americas":
-				anim.setAttribute("mixin","fadeAmericas");
+				continentAppartenant = el.parentEl.getAttribute("data-mur-continent");
 				break;
 
 				case "Africa":
-				anim.setAttribute("mixin","fadeAfrica");
+				continentAppartenant = el.parentEl.getAttribute("data-mur-continent");
 				break;
 
 				case "Europe":
-				anim.setAttribute("mixin","fadeEurope");
+				continentAppartenant = el.parentEl.getAttribute("data-mur-continent");
 				break;
 
 				case "Asia":
-				anim.setAttribute("mixin","fadeAsia");
+				continentAppartenant = el.parentEl.getAttribute("data-mur-continent");
 				break;
 
-			}
+			}/*
 			animText.setAttribute("mixin","fadeCouleur");
 			el.firstElementChild.appendChild(animText);
-			el.appendChild(anim);
+			el.appendChild(anim);*/
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
 				//console.log(el)
-				el.setAttribute("scale","1.2 1.2 1.2");
+				console.log(continentAppartenant.children)
 
       };
 
 			/* Raycaster-intersected-cleared */
 			this.eventScalingEnding = function() {
 
-				el.setAttribute("scale","1 1 1");
+				//el.setAttribute("scale","1 1 1");
 
       };
 
@@ -99,7 +100,7 @@ AFRAME.registerComponent("pays-selection", {
 
 				el.firstElementChild.emit("playFadeCouleur");
 				var maSphere = document.querySelector('[data-pays-sphere="'+ el.getAttribute("data-pays")+'"]');
-				console.log(maSphere);
+				//console.log(maSphere);
 
 				var visible = maSphere.getAttribute("visible");
 				maSphere.setAttribute("visible",!visible);
@@ -113,20 +114,16 @@ AFRAME.registerComponent("pays-selection", {
 
 		play:function () {
 
-			/* Lorsqu'on clique le jour */
-			this.el.addEventListener("click",this.selectionnerPays);
-
-			/* Lorsque qu'on hover le bouton */
+			/* Lorsque qu'on hover le sphere */
       this.el.addEventListener('raycaster-intersected', this.eventScalingBegining);
 
-			/* Lorsque qu'on ne hover plus le bouton */
+			/* Lorsque qu'on ne hover plus le sphere */
       this.el.addEventListener('raycaster-intersected-cleared', this.eventScalingEnding);
 
 		},
 
 		pause:function() {
 
-			this.el.removeEventListener("click",this.selectionnerPays);
 			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
 			this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 
@@ -134,7 +131,6 @@ AFRAME.registerComponent("pays-selection", {
 
 		remove:function() {
 
-			this.el.removeEventListener("click",this.selectionnerPays);
 			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
 			this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 

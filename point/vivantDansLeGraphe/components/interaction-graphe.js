@@ -110,11 +110,18 @@ AFRAME.registerComponent('interaction-graphe', {
         ligneTemps[0].setAttribute("material",{color:0x22D1EE});
         break;
 
+        default:
+          annee = null;
+          texteAnnee.setAttribute("value","Go back on the plateform");
+          texteAnnee.setAttribute("text",{wrapCount:8});
+          break;
+
     }
 
     /* Parcourt les pays */
     var scale = 1;
-    var position = {x:1.25, y:0.05, z:-10};
+    var position = {x:1.25, y:0.05, z:0};
+
     for(i=0;i<ensembleSphereGraphe_l;i++) {
 
       /*1 a 24*/
@@ -125,15 +132,16 @@ AFRAME.registerComponent('interaction-graphe', {
       var cellsLife = rowLife.join(",").split(",");
 
       /* Modifie le texte de l'année */
-      if(i == 0) {
+      if(i == 0 && annee != null) {
 
         texteAnnee.setAttribute("value",cellsLife[annee]);
+        texteAnnee.setAttribute("text",{wrapCount:4});
 
       }
 
       /* Modifie les sphères des pays */
-      else {
-
+      else if(i > 0) {
+        
         scale = cellsLife[annee]/100;
         position.y = cellsIncome[annee]/13200;
         position.x = i*1.25;

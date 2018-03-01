@@ -233,6 +233,8 @@ function CreerSpheres() {
   sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
   sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
 
+  var graphe = document.querySelector("#graphe");
+
   /* Mur contenant les pays d'un continent */
   var tabMurs = [];
 
@@ -241,18 +243,18 @@ function CreerSpheres() {
     var spheresGraphe = document.createElement("a-entity");
     spheresGraphe.setAttribute("class","murSpheres");
     tabMurs.push(spheresGraphe);
-    document.querySelector("#graphe").appendChild(tabMurs[k]);
+    graphe.appendChild(tabMurs[k]);
 
   }
 
-  tabMurs[0].setAttribute("position",{x:-3,y:0,z:0});
-  tabMurs[1].setAttribute("position",{x:10,y:0,z:0});
-  tabMurs[2].setAttribute("position",{x:0,y:0,z:19});
-  tabMurs[3].setAttribute("position",{x:0,y:0,z:-27});
-  tabMurs[0].setAttribute("rotation",{x:0,y:0,z:0});
-  tabMurs[1].setAttribute("rotation",{x:0,y:180,z:0});
-  tabMurs[2].setAttribute("rotation",{x:0,y:90,z:0});
-  tabMurs[3].setAttribute("rotation",{x:0,y:270,z:0});
+  tabMurs[0].setAttribute("position",{x:0,y:0,z:0});
+  tabMurs[1].setAttribute("position",{x:-7,y:0,z:0});
+  tabMurs[2].setAttribute("position",{x:-14,y:0,z:0});
+  tabMurs[3].setAttribute("position",{x:-21,y:0,z:0});
+
+  graphe.setAttribute("position",{x:10,y:-1.5,z:-4.5});
+  graphe.setAttribute("rotation",{x:0,y:270,z:0});
+
   /* Parcourt les pays */
   for(i=1;i<income_l;i++) {
 
@@ -264,19 +266,20 @@ function CreerSpheres() {
     /* Crée le parent de la ligne pour le pays */
     var sphereGraphe = document.createElement("a-entity");
     sphereGraphe.setAttribute("class","sphereGraphe");
-    sphereGraphe.setAttribute("data-pays-ligne",cellsLife[0]);
+    sphereGraphe.setAttribute("data-pays-sphere",cellsLife[0]);
 
     var couleurLigne;
-    var geometry = new THREE.SphereBufferGeometry(0.5, 16, 16 );
+    var geometry = new THREE.SphereGeometry(cellsLife[52]/100, 16, 16 );
     var material = new THREE.MeshBasicMaterial();
     var income_cell_l = cellsIncome.length;
-    var positions = new Float32Array((income_cell_l-1)*3);
+    var position = {x:-0.8, y:0.05, z:0};
     var debut = {x:-0.8, y:0.05, z:0.8};
     var texte = document.createElement("a-text");
 
     /* Americas */
     if(i < 6) {
 
+      tabMurs[0].setAttribute("data-mur-continent","Americas");
       tabMurs[0].appendChild(sphereGraphe);
       couleurLigne = couleurContinent[0];
 
@@ -284,6 +287,7 @@ function CreerSpheres() {
     /* Europe */
     else if(i > 5 && i < 12) {
 
+      tabMurs[1].setAttribute("data-mur-continent","Europe");
       tabMurs[1].appendChild(sphereGraphe);
       couleurLigne = couleurContinent[2];
 
@@ -291,13 +295,15 @@ function CreerSpheres() {
     /* Asia */
     else if(i > 11 && i < 19) {
 
+      tabMurs[2].setAttribute("data-mur-continent","Asia");
       tabMurs[2].appendChild(sphereGraphe);
       couleurLigne = couleurContinent[3];
 
     }
-    /* Africas */
+    /* Africa */
     else {
 
+      tabMurs[3].setAttribute("data-mur-continent","Africa");
       tabMurs[3].appendChild(sphereGraphe);
       couleurLigne = couleurContinent[1];
 
@@ -326,14 +332,20 @@ function CreerSpheres() {
     debut.y = -1;
     debut.z = 0;
 
-    texte.setAttribute("position",{x:debut.x,y:debut.y,z:debut.z});
+    texte.setAttribute("position",debut);
     texte.setAttribute("rotation",{x:0,y:0,z:0});
+    texte.setAttribute("visible",false);
     sphereGraphe.appendChild(texte);
-
+    geometry.computeBoundingSphere();
+    console.log(geometry.boundingSphere)
     mesh = new THREE.Mesh( geometry, material);
-    sphereGraphe.setAttribute("position",{x:i*1.25,y:1,z:0});
+
+    position.x = i*1.5;
+    position.y = cellsIncome[52]/13200;
+    sphereGraphe.setAttribute("position",position);
+    sphereGraphe.setAttribute("sphere-hover","");
     sphereGraphe.object3D.add(mesh);
-    //sphereGraphe.setAttribute("visible",false);
+  //  sphereGraphe.setAttribute("visible",false);
 
   }
 
