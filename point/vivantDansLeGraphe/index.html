@@ -29,7 +29,7 @@
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat; skyColor: #ffffff;
                                 active: true;gridColor: #ffffff;
-                                horizonColor: #ddd; fog: 0.1;
+                                horizonColor: #2f2f2f; fog: 0.1;
                                 groundColor: #808080; groundColor2: #5d5d5d;
                                 groundTexture:none;
                                 skyType:gradient;
@@ -39,6 +39,12 @@
         <!-- Repère timeline -->
         <a-mixin id="ligneTemps" geometry="height:0.05;width:0.05;depth:0.5"
                  material="color:#ffffff"></a-mixin>
+        <!-- Panneau hover pays du graphe -->
+        <a-mixin id="ui-hover-pays" position="0 0 0"
+                 slice9="width:3.2;height:0.95;bottom:43.81;left:20;
+                         right:43;top:20;src:img/slice9_texture/tooltip.png;
+                         color:white;padding:0.02;
+                         side:double;"></a-mixin>
 
         <!-- Ui texte -->
         <a-mixin id="textContinent"
@@ -287,7 +293,9 @@
             </a-entity>
           </a-entity>
         </a-entity>
-        <a-entity id="rhand" laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
+        <a-entity id="rhand" data-hover-en-cours="false" laser-controls="hands:right"
+
+        line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 
       <!-- Graphe

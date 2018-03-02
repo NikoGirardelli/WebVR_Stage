@@ -268,13 +268,17 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("class","sphereGraphe");
     sphereGraphe.setAttribute("data-pays-sphere",cellsLife[0]);
 
-    var couleurLigne;
-    var geometry = new THREE.SphereGeometry(cellsLife[52]/100, 16, 16 );
-    var material = new THREE.MeshBasicMaterial();
-    var income_cell_l = cellsIncome.length;
-    var position = {x:-0.8, y:0.05, z:0};
-    var debut = {x:-0.8, y:0.05, z:0.8};
-    var texte = document.createElement("a-text");
+    var couleurLigne,
+        scale = cellsLife[52]/100,
+        geometry = new THREE.SphereBufferGeometry(0.4, 16, 16),
+        material = new THREE.MeshBasicMaterial(),
+        income_cell_l = cellsIncome.length,
+        position = {x:-0.8, y:0.05, z:0},
+        debut = {x:-0.8, y:0.05, z:0.8},
+        texte = document.createElement("a-text"),
+        textLife = document.createElement("a-text"),
+        textIncome = document.createElement("a-text"),
+        ui = document.createElement("a-entity");
 
     /* Americas */
     if(i < 6) {
@@ -310,6 +314,41 @@ function CreerSpheres() {
     }
 
     material.color.set(couleurLigne);
+    ui.setAttribute("mixin","ui-hover-pays");
+
+    textIncome.setAttribute("text", {
+      zOffset:0.02,
+      yOffset:0,
+      color:0xffffff,
+      baseline:"top",
+      anchor:"center",
+      align:"center",
+      width:2.2,
+      whiteSpace:"pre",
+      tabSize:2.83,
+      lineHeight:35,
+      height:0.5,
+      value:"Income: " + cellsIncome[52] + " $",
+      wrapCount:15,
+      alphaTest:1
+    });
+
+    textLife.setAttribute("text", {
+      zOffset:0.02,
+      yOffset:0,
+      color:0xffffff,
+      baseline:"top",
+      anchor:"center",
+      align:"center",
+      width:3.5,
+      whiteSpace:"pre",
+      tabSize:2.83,
+      lineHeight:35,
+      height:0.5,
+      value:"Life Expectency: " + cellsLife[52] + " years",
+      wrapCount:25,
+      alphaTest:1
+    });
 
     texte.setAttribute("text", {
       zOffset:0,
@@ -335,16 +374,26 @@ function CreerSpheres() {
     texte.setAttribute("position",debut);
     texte.setAttribute("rotation",{x:0,y:0,z:0});
     texte.setAttribute("visible",false);
-    sphereGraphe.appendChild(texte);
-    geometry.computeBoundingSphere();
-    console.log(geometry.boundingSphere)
+    sphereGraphe.appendChild(texte)
+    ui.appendChild(textIncome);
+    ui.appendChild(textLife);
+    ui.setAttribute("position",{x:0,y:0,z:0.3});
+    textIncome.setAttribute("position",{x:0,y:0.25,z:0});
+    textLife.setAttribute("position",{x:0,y:-0.15,z:0});
+    sphereGraphe.appendChild(ui);
+    ui.setAttribute("visible",false);
+    //geometry.computeBoundingSphere();
     mesh = new THREE.Mesh( geometry, material);
 
-    position.x = i*1.5;
+    position.x = i*1.25;
     position.y = cellsIncome[52]/13200;
     sphereGraphe.setAttribute("position",position);
     sphereGraphe.setAttribute("sphere-hover","");
+
+    sphereGraphe.setAttribute("material",{color:0x000000,shader:"flat",fog:false,visible:false});
+    sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*0.25})
     sphereGraphe.object3D.add(mesh);
+    sphereGraphe.object3D.children[0].scale.set(scale,scale,scale);
   //  sphereGraphe.setAttribute("visible",false);
 
   }

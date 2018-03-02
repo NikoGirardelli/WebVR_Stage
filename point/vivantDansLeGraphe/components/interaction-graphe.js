@@ -1,5 +1,4 @@
 var vieillePositionX,
-    annee = 0,
     dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
     dataLife = JSON.parse(sessionStorage.getItem('dataLife'));
 
@@ -19,7 +18,7 @@ AFRAME.registerComponent('interaction-graphe', {
 
       var head = document.querySelector("#head"),
           positionTete = head.getAttribute("position").x;
-
+//console.log(vieillePositionX);
       if(positionTete > 0) {
 
           positionTete = Math.floor(positionTete*10)/10;
@@ -35,7 +34,10 @@ AFRAME.registerComponent('interaction-graphe', {
       var distance = this.calculerDistanceX(positionTete,vieillePositionX);
 
       /* Si on a fait un déplacement de 0.3 */
-      if(distance >= 0.3) {
+      if(distance >= 0.3 &&
+        (positionTete % 0.3 == 0 ||
+         positionTete % 0.3 == 5.551115123125783e-17 ||
+         positionTete % 0.3 == -5.551115123125783e-17)) {
 
         vieillePositionX = positionTete;
         this.modifierDonnee(positionTete);
@@ -44,8 +46,6 @@ AFRAME.registerComponent('interaction-graphe', {
 
     };
 
-  //  this.modifierDonnee(0);
-
   },
 
   modifierDonnee:function(positionJoueurX) {
@@ -53,7 +53,8 @@ AFRAME.registerComponent('interaction-graphe', {
     var ensembleSphereGraphe = document.querySelectorAll(".sphereGraphe"),
         ensembleSphereGraphe_l =  ensembleSphereGraphe.length + 1,
         texteAnnee = document.querySelector("#anneeTexte"),
-        ligneTemps = document.querySelectorAll(".ligneTemps");
+        ligneTemps = document.querySelectorAll(".ligneTemps"),
+        annee;
 
     /* Mets les lignes du temps blanches */
     for(var j = 0;j < 11;j++) {
@@ -62,7 +63,15 @@ AFRAME.registerComponent('interaction-graphe', {
 
     }
 
-    // Notre position affecte l'année
+    /* Si on sort de la plateforme
+    if(positionJoueurX > 1.5 || positionJoueurX < -1.5) {
+
+      annee = null;
+      texteAnnee.setAttribute("value","Go back on the plateform");
+      texteAnnee.setAttribute("text",{wrapCount:8});
+
+    }*/
+    // Ligne de temps
     switch(positionJoueurX) {
 
       case -1.5:
@@ -109,12 +118,11 @@ AFRAME.registerComponent('interaction-graphe', {
         annee = 102;
         ligneTemps[0].setAttribute("material",{color:0x22D1EE});
         break;
-
-        default:
-          annee = null;
-          texteAnnee.setAttribute("value","Go back on the plateform");
-          texteAnnee.setAttribute("text",{wrapCount:8});
-          break;
+      default:
+        annee = null;
+        ligneTemps[5].setAttribute("material",{color:0x22D1EE});
+        texteAnnee.setAttribute("value",positionJoueurX);
+        break;
 
     }
 
@@ -141,11 +149,12 @@ AFRAME.registerComponent('interaction-graphe', {
 
       /* Modifie les sphères des pays */
       else if(i > 0) {
-        
+
         scale = cellsLife[annee]/100;
         position.y = cellsIncome[annee]/13200;
         position.x = i*1.25;
         ensembleSphereGraphe[i - 1].setAttribute("position",position);
+        ensembleSphereGraphe[i - 1].setAttribute("geometry",{primitive:"circle",radius:scale*0.5})
         ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,scale);
 
       }

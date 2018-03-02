@@ -5,13 +5,11 @@ AFRAME.registerComponent("pays-selection", {
 
 		init: function () {
 
-			/* Référence à l'écran */
-      //var txtJour = document.querySelector("#textJour"),
-
 			/* Pays */
 			var el = this.el,
 					anim = document.createElement('a-animation'),
-					animText = document.createElement('a-animation');
+					animText = document.createElement('a-animation'),
+					leThis = this;
 
 			switch(el.attributes[1].nodeValue) {
 
@@ -38,7 +36,7 @@ AFRAME.registerComponent("pays-selection", {
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
-				//console.log(el)
+
 				el.setAttribute("scale","1.2 1.2 1.2");
 
       };
@@ -78,8 +76,24 @@ AFRAME.registerComponent("pays-selection", {
 
 				}*/
 
-				/* Joue l'animation de fade-in/fade-out */
-				switch(el.attributes[1].nodeValue) {
+				leThis.animPanneau();
+				var maSphere = document.querySelector('[data-pays-sphere="'+ el.getAttribute("data-pays")+'"]');
+				var visible = maSphere.getAttribute("visible");
+				maSphere.setAttribute("visible",!visible);
+
+				/* Enregistrement de la variable paysChoisi dans la sessionStorage
+				sessionStorage.setItem("paysChoisi", JSON.stringify(paysChoisi));*/
+
+			};
+
+	  },
+
+	 animPanneau:function() {
+
+			 var el = this.el;
+
+			 /* Joue l'animation de fade-in/fade-out */
+			 switch(el.attributes[1].nodeValue) {
 					case "Americas":
 					el.emit("playFadeAmericas");
 					break;
@@ -95,23 +109,15 @@ AFRAME.registerComponent("pays-selection", {
 					case "Asia":
 					el.emit("playFadeAsia");
 					break;
-				}
+			 }
 
-				el.firstElementChild.emit("playFadeCouleur");
-				var maSphere = document.querySelector('[data-pays-sphere="'+ el.getAttribute("data-pays")+'"]');
-				console.log(maSphere);
+			 //el.firstElementChild.emit("playFadeCouleur");
 
-				var visible = maSphere.getAttribute("visible");
-				maSphere.setAttribute("visible",!visible);
-
-				/* Enregistrement de la variable paysChoisi dans la sessionStorage
-				sessionStorage.setItem("paysChoisi", JSON.stringify(paysChoisi));*/
-
-			};
-
-	  },
+		},
 
 		play:function () {
+
+			this.animPanneau();
 
 			/* Lorsqu'on clique le jour */
 			this.el.addEventListener("click",this.selectionnerPays);
