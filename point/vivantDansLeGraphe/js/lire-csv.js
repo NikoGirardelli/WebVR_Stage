@@ -252,7 +252,7 @@ function CreerSpheres() {
   tabMurs[2].setAttribute("position",{x:-14,y:0,z:0});
   tabMurs[3].setAttribute("position",{x:-21,y:0,z:0});
 
-  graphe.setAttribute("position",{x:10,y:-1.5,z:-4.5});
+  graphe.setAttribute("position",{x:10,y:-1.5,z:-7});
   graphe.setAttribute("rotation",{x:0,y:270,z:0});
 
   /* Parcourt les pays */
@@ -276,8 +276,9 @@ function CreerSpheres() {
         position = {x:-0.8, y:0.05, z:0},
         debut = {x:-0.8, y:0.05, z:0.8},
         texte = document.createElement("a-text"),
-        textLife = document.createElement("a-text"),
-        textIncome = document.createElement("a-text"),
+        texteLife = document.createElement("a-text"),
+        texteIncome = document.createElement("a-text"),
+        texteNom = document.createElement("a-text"),
         ui = document.createElement("a-entity");
 
     /* Americas */
@@ -316,7 +317,24 @@ function CreerSpheres() {
     material.color.set(couleurLigne);
     ui.setAttribute("mixin","ui-hover-pays");
 
-    textIncome.setAttribute("text", {
+    texteNom.setAttribute("text", {
+      zOffset:0.02,
+      yOffset:0,
+      color:0xffffff,
+      baseline:"top",
+      anchor:"center",
+      align:"center",
+      width:2.3,
+      whiteSpace:"pre",
+      tabSize:2.83,
+      lineHeight:35,
+      height:0.5,
+      value:cellsIncome[0],
+      wrapCount:15,
+      alphaTest:1
+    });
+
+    texteIncome.setAttribute("text", {
       zOffset:0.02,
       yOffset:0,
       color:0xffffff,
@@ -333,7 +351,7 @@ function CreerSpheres() {
       alphaTest:1
     });
 
-    textLife.setAttribute("text", {
+    texteLife.setAttribute("text", {
       zOffset:0.02,
       yOffset:0,
       color:0xffffff,
@@ -353,7 +371,7 @@ function CreerSpheres() {
     texte.setAttribute("text", {
       zOffset:0,
       yOffset:0,
-      color:couleurLigne,
+      color:0x191919,
       baseline:"top",
       anchor:"center",
       align:"center",
@@ -368,25 +386,27 @@ function CreerSpheres() {
 
     /* Formule pour positionner les noms à la fin des lignes */
     debut.x = 0;
-    debut.y = -1;
+    debut.y = -0.5;
     debut.z = 0;
 
     texte.setAttribute("position",debut);
     texte.setAttribute("rotation",{x:0,y:0,z:0});
     texte.setAttribute("visible",false);
     sphereGraphe.appendChild(texte)
-    ui.appendChild(textIncome);
-    ui.appendChild(textLife);
-    ui.setAttribute("position",{x:0,y:0,z:0.3});
-    textIncome.setAttribute("position",{x:0,y:0.25,z:0});
-    textLife.setAttribute("position",{x:0,y:-0.15,z:0});
+    ui.appendChild(texteIncome);
+    ui.appendChild(texteLife);
+    ui.appendChild(texteNom);
+    ui.setAttribute("position",{x:0,y:1,z:0.5});
+    texteIncome.setAttribute("position",{x:0,y:0.05,z:0});
+    texteLife.setAttribute("position",{x:0,y:-0.35,z:0});
+    texteNom.setAttribute("position",{x:0,y:0.5,z:0});
     sphereGraphe.appendChild(ui);
     ui.setAttribute("visible",false);
     //geometry.computeBoundingSphere();
     mesh = new THREE.Mesh( geometry, material);
 
-    position.x = i*1.25;
-    position.y = cellsIncome[52]/13200;
+    position.x = cellsIncome[52]/90;
+    position.y = cellsLife[52]/900;
     sphereGraphe.setAttribute("position",position);
     sphereGraphe.setAttribute("sphere-hover","");
 
@@ -394,7 +414,7 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*0.25})
     sphereGraphe.object3D.add(mesh);
     sphereGraphe.object3D.children[0].scale.set(scale,scale,scale);
-  //  sphereGraphe.setAttribute("visible",false);
+  //sphereGraphe.setAttribute("visible",false);
 
   }
 

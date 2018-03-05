@@ -151,10 +151,12 @@ AFRAME.registerComponent('interaction-graphe', {
       else if(i > 0) {
 
         scale = cellsLife[annee]/100;
-        position.y = cellsIncome[annee]/13200;
-        position.x = i*1.25;
+        position.y = cellsLife[annee]/10;
+        position.x = cellsIncome[annee]/12300;
         ensembleSphereGraphe[i - 1].setAttribute("position",position);
-        ensembleSphereGraphe[i - 1].setAttribute("geometry",{primitive:"circle",radius:scale*0.5})
+        ensembleSphereGraphe[i - 1].setAttribute("geometry",{primitive:"circle",radius:scale*0.5});
+        ensembleSphereGraphe[i - 1].children[1].children[0].setAttribute("text",{value:"Income: " + cellsIncome[annee] + " $"});
+        ensembleSphereGraphe[i - 1].children[1].children[1].setAttribute("text",{value:"Life Expectency: " + cellsLife[annee] + " years"});
         ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,scale);
 
       }

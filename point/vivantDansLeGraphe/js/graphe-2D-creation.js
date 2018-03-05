@@ -32,50 +32,103 @@ function creerSol(graphe,callback) {
 
 function creerAxeX(graphe,callback) {
 
-	var texteX = document.createElement("a-text");
-	texteX.setAttribute("rotation",{x:270,y:0,z:270});
-	texteX.setAttribute("position",{x:0,y:0.13,z:0.51});
-	texteX.setAttribute("text",{
-
-		color:"black",
-		width:0.1,
-		wrapCount:3,
-		lineHeight:82
-
-	});
+	var parent = document.createElement("a-entity");
+	//var texteX = document.createElement("a-text");
 
 	var texteT = document.createElement("a-text");
-	texteT.setAttribute("rotation",{x:270,y:90,z:270});
-	texteT.setAttribute("position",{x:0,y:0.13,z:0.62});
+	texteT.setAttribute("rotation",{x:0,y:0,z:0});
+	texteT.setAttribute("position",{x:7.5,y:0.25,z:0});
 	texteT.setAttribute("text",{
 
 		color:"black",
 		align:"center",
-		width:0.4,
+		width:5,
 		wrapCount:16,
 		lineHeight:80,
-		value:"Life Expectency"
+		value:"Income"
 
 	});
 
 	var value = "";
 
-	/* On écrit tous les chiffres de 0 à 100 */
-	for(var i = 100; i >= 0;i--) {
+	/* On écrit tous les chiffres de 0 à 100
+	for(var i = 130; i >= 0;i--) {
 
-		/* Si modulo de i par 5 et que le restant de la divison est pair */
+		/* Si modulo de i par 5 et que le restant de la divison est pair
 		if(i%5 == 0 && (i/5) % 2 == 0) {
-			/* On ajoute la valeur */
-			value += " " + i;
+			 /*On ajoute la valeur
+			value += " " + i + "k";
 
 		}
 
-	}
+	}*/
 
-	texteX.setAttribute("value", value);
-	graphe.appendChild(texteX);
-	graphe.appendChild(texteT);
-	callback(graphe,creerAxeY);
+	var positions = new Float32Array([0,1.45,0,
+																	 	 0,7.7,0]);
+
+	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
+	var geometry = new THREE.BufferGeometry();
+
+  for(var j = 1;j<11;j++) {
+
+		var texteX = document.createElement("a-text");
+		texteX.setAttribute("rotation",{x:0,y:0,z:0});
+		texteX.setAttribute("position",{x:j*1.25,y:1,z:0});
+		texteX.setAttribute("text",{
+
+			color:"black",
+			width:1,
+			wrapCount:4,
+			lineHeight:82,
+			align:"center"
+
+		});
+
+		/* Le texte de l'axe */
+		switch (j) {
+			case 2:
+				texteX.setAttribute("value", 500);
+				break;
+			case 3:
+				texteX.setAttribute("value", 1000);
+				break;
+			case 4:
+				texteX.setAttribute("value", 2000);
+				break;
+			case 5:
+				texteX.setAttribute("value", 4000);
+				break;
+			case 6:
+				texteX.setAttribute("value", 8000);
+				break;
+			case 7:
+				texteX.setAttribute("value", "16k");
+				break;
+			case 8:
+				texteX.setAttribute("value", "32k");
+				break;
+			case 9:
+				texteX.setAttribute("value", "64k");
+				break;
+			case 10:
+				texteX.setAttribute("value", "128k");
+				break;
+
+		}
+		parent.appendChild(texteX);
+
+    geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
+    geometry.computeBoundingSphere();
+
+    mesh = new THREE.Line(geometry, materialBlanc);
+		mesh.position.set((j*1.25),0,0);
+    graphe.object3D.add(mesh);
+
+  }
+
+	parent.appendChild(texteT);
+	graphe.appendChild(parent)
+	callback(graphe);
 
 }
 
@@ -130,9 +183,10 @@ function creerAxeZ(graphe,callback) {
 
 function creerAxeY(graphe) {
 
+	var parent = document.createElement("a-entity");
 	var texteY = document.createElement("a-text");
 	texteY.setAttribute("rotation",{x:0,y:0,z:0});
-	texteY.setAttribute("position",{x:10,y:4.875,z:0.5});
+	texteY.setAttribute("position",{x:12.75,y:4.875,z:0});
 	texteY.setAttribute("text",{
 
 		color:"black",
@@ -145,7 +199,7 @@ function creerAxeY(graphe) {
 
 	var texteT = document.createElement("a-text");
 	texteT.setAttribute("rotation",{x:0,y:0,z:90});
-	texteT.setAttribute("position",{x:11.25,y:4.875,z:0.75});
+	texteT.setAttribute("position",{x:13.75,y:4.875,z:0});
 	texteT.setAttribute("text",{
 
 		color:"black",
@@ -153,35 +207,65 @@ function creerAxeY(graphe) {
 		width:5,
 		wrapCount:16,
 		lineHeight:80,
-		value:"Income"
+		value:"Life Expectency"
+
+	});
+
+	var texteYD = document.createElement("a-text");
+	texteYD.setAttribute("rotation",{x:0,y:0,z:0});
+	texteYD.setAttribute("position",{x:0.5,y:4.875,z:0});
+	texteYD.setAttribute("text",{
+
+		color:"black",
+		width:1,
+		wrapCount:4,
+		lineHeight:78
+
+	});
+
+
+	var texteTD = document.createElement("a-text");
+	texteTD.setAttribute("rotation",{x:0,y:0,z:90});
+	texteTD.setAttribute("position",{x:0,y:4.875,z:0});
+	texteTD.setAttribute("text",{
+
+		color:"black",
+		align:"center",
+		width:5,
+		wrapCount:16,
+		lineHeight:80,
+		value:"Life Expectency"
 
 	});
 
 	var value = "";
 
 	/* On écrit tous les chiffres de 0 à 100 */
-	for(var i = 130; i >= 0;i--) {
+	for(var i = 90; i >= 20;i--) {
 
 		/* Si modulo de i par 5 et que le restant de la divison est pair */
 		if(i%5 == 0 && (i/5) % 2 == 0) {
 			/* On ajoute la valeur */
-			value += " " + i + "k";
+			value += " " + i;
 
 		}
 
 	}
 
 	texteY.setAttribute("value", value);
-	graphe.appendChild(texteY);
-	graphe.appendChild(texteT);
-
-	var positions = new Float32Array([-0.5,-0.125,0,
-																	 	 10,-0.125,0]);
+	texteYD.setAttribute("value", value);
+	parent.appendChild(texteY);
+	parent.appendChild(texteT);
+	parent.appendChild(texteYD);
+	parent.appendChild(texteTD);
+	graphe.appendChild(parent);
+	var positions = new Float32Array([1.25,-0.125,0,
+																	 	 12.5,-0.125,0]);
 
 	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
 	var geometry = new THREE.BufferGeometry();
 
-  for(var j = 0;j<14;j++) {
+  for(var j = 2;j<11;j++) {
 
     geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
     geometry.computeBoundingSphere();
@@ -198,6 +282,6 @@ function creerAxeY(graphe) {
 document.addEventListener("DOMContentLoaded", function(event) {
 
 	var graphe = document.querySelector("#graphe");
-  creerAxeY(graphe);
+  creerAxeX(graphe, creerAxeY);
 
 });

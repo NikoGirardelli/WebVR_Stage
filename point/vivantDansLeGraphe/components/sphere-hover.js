@@ -26,9 +26,9 @@ AFRAME.registerComponent("sphere-hover", {
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
 
-				hoverEnCours = true;
+				leThis.peutHover();//hoverEnCours = true;
 				leThis.selectionnerPays();
-				el.setAttribute("material",{visible:true});
+				//el.setAttribute("material",{visible:true});
 
       };
 
@@ -37,11 +37,11 @@ AFRAME.registerComponent("sphere-hover", {
 
 				hoverEnCours = false;
 				leThis.selectionnerPays();
-				el.setAttribute("material",{visible:false});
+				//el.setAttribute("material",{visible:false});
 
       };
 
-			/* Ajoute ou supprime le pays */
+			/* Afficher ou ne pas afficher le nom des pays */
 			this.selectionnerPays = function() {
 
 				var l = continentAppartenant.children.length;
@@ -54,7 +54,9 @@ AFRAME.registerComponent("sphere-hover", {
 
 					}
 
-					el.children[1].setAttribute("visible",true)
+					el.children[1].setAttribute("visible",true);
+          el.children[0].setAttribute("visible",false);
+          el.setAttribute("material",{visible:true});
 
 				}
 
@@ -67,6 +69,8 @@ AFRAME.registerComponent("sphere-hover", {
 					}
 
 					el.children[1].setAttribute("visible",false);
+          el.children[0].setAttribute("visible",false);
+          el.setAttribute("material",{visible:false});
 
 				}
 
@@ -125,7 +129,28 @@ AFRAME.registerComponent("sphere-hover", {
 
 			};
 
-	  },
+      /* Si on a compté au moins pays de survoler,
+      *  on ne peut pas hover un autre.
+      */
+      this.peutHover = function() {
+
+        var mainPointeur = document.querySelector("#rhand");
+
+          if(mainPointeur.components['raycaster'].intersectedEls.length == 1) {
+
+            hoverEnCours = true;
+
+          }
+
+          if(mainPointeur.components['raycaster'].intersectedEls.length > 1) {
+
+            hoverEnCours = false;
+
+          }
+
+      };
+
+    },
 
 		play:function () {
 

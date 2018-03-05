@@ -8,7 +8,7 @@ AFRAME.registerComponent("pays-selection", {
 			/* Pays */
 			var el = this.el,
 					anim = document.createElement('a-animation'),
-					animText = document.createElement('a-animation'),
+					//animText = document.createElement('a-animation'),
 					leThis = this;
 
 			switch(el.attributes[1].nodeValue) {
@@ -30,8 +30,8 @@ AFRAME.registerComponent("pays-selection", {
 				break;
 
 			}
-			animText.setAttribute("mixin","fadeCouleur");
-			el.firstElementChild.appendChild(animText);
+			//animText.setAttribute("mixin","fadeCouleur");
+			//el.firstElementChild.appendChild(animText);
 			el.appendChild(anim);
 
 			/* Raycaster-intersected */
@@ -110,8 +110,6 @@ AFRAME.registerComponent("pays-selection", {
 					el.emit("playFadeAsia");
 					break;
 			 }
-
-			 //el.firstElementChild.emit("playFadeCouleur");
 
 		},
 
