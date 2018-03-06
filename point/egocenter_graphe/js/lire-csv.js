@@ -1,13 +1,18 @@
 /* Papa Bless */
 var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
-    url_3 = ".../csv/test_birth.csv",
-    url_4 = ".../csv/test_income.csv",
-    creationFini = false,
+    url_3 = ".../csv/indicator gapminder population.csv",
+    url_4=".../csv/Rayon des spheres Population Pays.csv",
     dataLife = {},
-    dataIncome = {};
+    dataIncome = {},
+    dataPopulation = {};
 
-const couleurContinent = [0x9ef03e,0x33dded,0xfff37a,0xff798e]; // Am, Af, Eu, As
+/* Constantes */
+const COULEUR_CONTINENT = [0x9ef03e,0x33dded,0xfff37a,0xff798e]; // Am, Af, Eu, As
+const ANNEE_PAR_DEFAUT = 52;
+const A_REGLE_POSITION = [0.0025,0.00125,0.000625,0.000313,
+                              0.000156,0.000078,0.000039,0.00002];
+const B_REGLE_POSITION = [0,1.25,2.5,3.75,5,6.25,75,8.75];
 
 /* S'occupe de copier le JSON -
 *  http://outset.ws/blog/article/clone-duplicate-json-object-in-javascript
@@ -26,9 +31,9 @@ function clone(obj) {
 
 }
 
+/* Pour l'axe des y - Life Expectency */
 function premierFichier() {
 
-  /* Pour l'axe des X - Life Expectency */
   Papa.parse(url_1, {
 
     download:true,
@@ -50,9 +55,9 @@ function premierFichier() {
 
 }
 
+/* Pour l'axe de z et x - Years And Incomes */
 function deuxiemeFichier() {
 
-  /* Pour l'axe de z et y - Years And Incomes */
   Papa.parse(url_2, {
 
     download:true,
@@ -61,6 +66,31 @@ function deuxiemeFichier() {
 
                 var data = results.data;
                 dataIncome = clone(data);
+                //CreerLignes();
+                troisiemeFichier();
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour le radius - Population */
+function troisiemeFichier() {
+
+  Papa.parse(url_4, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataPopulation = clone(data);
                 //CreerLignes();
                 CreerSpheres();
 
@@ -114,25 +144,25 @@ function CreerLignes() {
     // position de la ligne = continent
     if(i < 6) {
 
-      couleurLigne = couleurContinent[0];
+      couleurLigne = COULEUR_CONTINENT[0];
 
     }
 
     else if(i > 5 && i < 12) {
 
-      couleurLigne = couleurContinent[2];
+      couleurLigne = COULEUR_CONTINENT[2];
 
     }
 
     else if(i > 11 && i < 19) {
 
-      couleurLigne = couleurContinent[3];
+      couleurLigne = COULEUR_CONTINENT[3];
 
     }
 
     else {
 
-      couleurLigne = couleurContinent[1];
+      couleurLigne = COULEUR_CONTINENT[1];
 
     }
 
@@ -232,6 +262,7 @@ function CreerSpheres() {
   /* Enregistrement de la variable paysChoisi dans la sessionStorage*/
   sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
   sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
+  sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
 
   var graphe = document.querySelector("#graphe");
 
@@ -247,10 +278,10 @@ function CreerSpheres() {
 
   }
 
-  tabMurs[0].setAttribute("position",{x:0,y:0,z:0});
-  tabMurs[1].setAttribute("position",{x:-7,y:0,z:0});
-  tabMurs[2].setAttribute("position",{x:-14,y:0,z:0});
-  tabMurs[3].setAttribute("position",{x:-21,y:0,z:0});
+  tabMurs[0].setAttribute("position",{x:1.25,y:0,z:0.1});
+  tabMurs[1].setAttribute("position",{x:1.25,y:0,z:0.1});
+  tabMurs[2].setAttribute("position",{x:1.25,y:0,z:0.1});
+  tabMurs[3].setAttribute("position",{x:1.25,y:0,z:0.1});
 
   graphe.setAttribute("position",{x:10,y:-1.5,z:-7});
   graphe.setAttribute("rotation",{x:0,y:270,z:0});
@@ -262,6 +293,8 @@ function CreerSpheres() {
     var cellsIncome = rowIncome.join(",").split(",");
     var rowLife = dataLife[i];
     var cellsLife = rowLife.join(",").split(",");
+    var rowPopulation = dataPopulation[i];
+    var cellsPopulation = rowLife.join(",").split(",");
 
     /* Crée le parent de la ligne pour le pays */
     var sphereGraphe = document.createElement("a-entity");
@@ -269,8 +302,8 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("data-pays-sphere",cellsLife[0]);
 
     var couleurLigne,
-        scale = cellsLife[52]/100,
-        geometry = new THREE.SphereBufferGeometry(0.4, 16, 16),
+        scale = dataPopulation[i][ANNEE_PAR_DEFAUT]/1.125,
+        geometry = new THREE.SphereBufferGeometry(1, 16, 16),
         material = new THREE.MeshBasicMaterial(),
         income_cell_l = cellsIncome.length,
         position = {x:-0.8, y:0.05, z:0},
@@ -286,7 +319,7 @@ function CreerSpheres() {
 
       tabMurs[0].setAttribute("data-mur-continent","Americas");
       tabMurs[0].appendChild(sphereGraphe);
-      couleurLigne = couleurContinent[0];
+      couleurLigne = COULEUR_CONTINENT[0];
 
     }
     /* Europe */
@@ -294,7 +327,7 @@ function CreerSpheres() {
 
       tabMurs[1].setAttribute("data-mur-continent","Europe");
       tabMurs[1].appendChild(sphereGraphe);
-      couleurLigne = couleurContinent[2];
+      couleurLigne = COULEUR_CONTINENT[2];
 
     }
     /* Asia */
@@ -302,7 +335,7 @@ function CreerSpheres() {
 
       tabMurs[2].setAttribute("data-mur-continent","Asia");
       tabMurs[2].appendChild(sphereGraphe);
-      couleurLigne = couleurContinent[3];
+      couleurLigne = COULEUR_CONTINENT[3];
 
     }
     /* Africa */
@@ -310,7 +343,7 @@ function CreerSpheres() {
 
       tabMurs[3].setAttribute("data-mur-continent","Africa");
       tabMurs[3].appendChild(sphereGraphe);
-      couleurLigne = couleurContinent[1];
+      couleurLigne = COULEUR_CONTINENT[1];
 
     }
 
@@ -346,7 +379,7 @@ function CreerSpheres() {
       tabSize:2.83,
       lineHeight:35,
       height:0.5,
-      value:"Income: " + cellsIncome[52] + " $",
+      value:"Income: " + cellsIncome[ANNEE_PAR_DEFAUT] + " $",
       wrapCount:15,
       alphaTest:1
     });
@@ -363,7 +396,7 @@ function CreerSpheres() {
       tabSize:2.83,
       lineHeight:35,
       height:0.5,
-      value:"Life Expectency: " + cellsLife[52] + " years",
+      value:"Life Expectency: " + cellsLife[ANNEE_PAR_DEFAUT] + " years",
       wrapCount:25,
       alphaTest:1
     });
@@ -384,7 +417,7 @@ function CreerSpheres() {
       wrapCount:9
     });
 
-    /* Formule pour positionner les noms à la fin des lignes */
+    /* Formule pour positionner les noms sous les pays */
     debut.x = 0;
     debut.y = -0.5;
     debut.z = 0;
@@ -404,14 +437,71 @@ function CreerSpheres() {
     ui.setAttribute("visible",false);
     //geometry.computeBoundingSphere();
     mesh = new THREE.Mesh( geometry, material);
+    mesh.material.opacity = 0.5;
+    mesh.material.transparent = true;
 
-    position.x = cellsIncome[52]/90;
-    position.y = cellsLife[52]/900;
+    /* Income position x*/
+    if(cellsIncome[ANNEE_PAR_DEFAUT] <= 1000) {
+
+      position.x = (A_REGLE_POSITION[0]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[0];
+
+    }
+
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 1000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 2000) {
+
+      position.x = (A_REGLE_POSITION[1]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[1];
+
+    }
+
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 2000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 4000) {
+
+      position.x = (A_REGLE_POSITION[2]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[2];
+
+    }
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 4000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 8000) {
+
+      position.x = (A_REGLE_POSITION[3]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[3];
+
+    }
+
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 8000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 16000) {
+
+      position.x = (A_REGLE_POSITION[4]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[4];
+
+    }
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 16000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 32000) {
+
+      position.x = (A_REGLE_POSITION[5]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[5];
+
+    }
+
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 32000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 64000) {
+
+      position.x = (A_REGLE_POSITION[6]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[6];
+
+    }
+    else if(cellsIncome[ANNEE_PAR_DEFAUT] >= 64000 && cellsIncome[ANNEE_PAR_DEFAUT] <= 128000) {
+
+      position.x = (A_REGLE_POSITION[7]*cellsIncome[ANNEE_PAR_DEFAUT]) +
+                    B_REGLE_POSITION[7];
+
+    }
+
+    /* Formule pour position le pays sur le Y */
+    position.y = (cellsLife[ANNEE_PAR_DEFAUT]*0.08) + 0.655;
+
     sphereGraphe.setAttribute("position",position);
     sphereGraphe.setAttribute("sphere-hover","");
 
-    sphereGraphe.setAttribute("material",{color:0x000000,shader:"flat",fog:false,visible:false});
-    sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*0.25})
+    sphereGraphe.setAttribute("material",{color:0x000000,visible:true,fog:false,transparent:true});
+    sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*1.125})
     sphereGraphe.object3D.add(mesh);
     sphereGraphe.object3D.children[0].scale.set(scale,scale,scale);
   //sphereGraphe.setAttribute("visible",false);

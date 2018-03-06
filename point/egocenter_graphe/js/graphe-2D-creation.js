@@ -63,8 +63,8 @@ function creerAxeX(graphe,callback) {
 
 	}*/
 
-	var positions = new Float32Array([0,1.45,0,
-																	 	 0,7.7,0]);
+	var positions = new Float32Array([0,1.47,0,
+																	 	 0,7.87,0]);
 
 	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
 	var geometry = new THREE.BufferGeometry();
@@ -186,13 +186,13 @@ function creerAxeY(graphe) {
 	var parent = document.createElement("a-entity");
 	var texteY = document.createElement("a-text");
 	texteY.setAttribute("rotation",{x:0,y:0,z:0});
-	texteY.setAttribute("position",{x:12.75,y:4.875,z:0});
+	texteY.setAttribute("position",{x:12.75,y:5.125,z:0});
 	texteY.setAttribute("text",{
 
 		color:"black",
 		width:1,
 		wrapCount:4,
-		lineHeight:78
+		lineHeight:85
 
 	});
 
@@ -213,13 +213,13 @@ function creerAxeY(graphe) {
 
 	var texteYD = document.createElement("a-text");
 	texteYD.setAttribute("rotation",{x:0,y:0,z:0});
-	texteYD.setAttribute("position",{x:0.5,y:4.875,z:0});
+	texteYD.setAttribute("position",{x:0.5,y:5.125,z:0});
 	texteYD.setAttribute("text",{
 
 		color:"black",
 		width:1,
 		wrapCount:4,
-		lineHeight:78
+		lineHeight:85
 
 	});
 
@@ -271,7 +271,7 @@ function creerAxeY(graphe) {
     geometry.computeBoundingSphere();
 
     mesh = new THREE.Line(geometry, materialBlanc);
-		mesh.position.set(0,(j/1.28),0);
+		mesh.position.set(0,(j/1.25),0);
     graphe.object3D.add(mesh);
 
   }

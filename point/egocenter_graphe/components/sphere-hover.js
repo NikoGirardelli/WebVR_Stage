@@ -56,7 +56,8 @@ AFRAME.registerComponent("sphere-hover", {
 
 					el.children[1].setAttribute("visible",true);
           el.children[0].setAttribute("visible",false);
-          el.setAttribute("material",{visible:true});
+        //  el.setAttribute("material",{visible:true});
+          el.object3D.children[0].material.opacity = 1;
 
 				}
 
@@ -70,7 +71,8 @@ AFRAME.registerComponent("sphere-hover", {
 
 					el.children[1].setAttribute("visible",false);
           el.children[0].setAttribute("visible",false);
-          el.setAttribute("material",{visible:false});
+        //  el.setAttribute("material",{visible:false});
+          el.object3D.children[0].material.opacity = 0.5;
 
 				}
 

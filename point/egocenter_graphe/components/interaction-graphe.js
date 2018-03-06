@@ -1,6 +1,11 @@
 var vieillePositionX,
     dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
-    dataLife = JSON.parse(sessionStorage.getItem('dataLife'));
+    dataLife = JSON.parse(sessionStorage.getItem('dataLife')),
+    dataPopulation = JSON.parse(sessionStorage.getItem('dataPopulation'));
+/*
+const A_REGLE_POSITION = [0.0025,0.00125,0.000625,0.000313,
+                              0.000156,0.000078,0.000039,0.00002];
+const B_REGLE_POSITION = [0,1.25,2.5,3.75,5,6.25,75,8.75];*/
 
 AFRAME.registerComponent('interaction-graphe', {
 
@@ -127,14 +132,12 @@ AFRAME.registerComponent('interaction-graphe', {
     }
 
     /* Parcourt les pays */
-    var scale = 1;
     var position = {x:1.25, y:0.05, z:0};
 
     for(i=0;i<ensembleSphereGraphe_l;i++) {
 
       /*1 a 24*/
       var rowIncome = dataIncome[i];
-    //  console.log(dataIncome[ensembleSphereGraphe_l])
       var cellsIncome = rowIncome.join(",").split(",");
       var rowLife = dataLife[i];
       var cellsLife = rowLife.join(",").split(",");
@@ -150,11 +153,68 @@ AFRAME.registerComponent('interaction-graphe', {
       /* Modifie les sphères des pays */
       else if(i > 0) {
 
-        scale = cellsLife[annee]/100;
-        position.y = cellsLife[annee]/10;
-        position.x = cellsIncome[annee]/12300;
+          var scale = dataPopulation[i][annee]/1.125;
+          //console.log(cellsIncome[annee] + " " + cellsPopulation[0])
+        /* Formule pour position le pays sur le Y */
+        position.y = (cellsLife[annee]*0.08) + 0.655;
+
+      //  position.x = cellsIncome[annee]/12300;
+        /* Income position x*/
+        if(cellsIncome[annee] <= 1000) {
+
+          position.x = (A_REGLE_POSITION[0]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[0];
+
+        }
+
+        else if(cellsIncome[annee] >= 1000 && cellsIncome[annee] <= 2000) {
+
+          position.x = (A_REGLE_POSITION[1]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[1];
+
+        }
+
+        else if(cellsIncome[annee] >= 2000 && cellsIncome[annee] <= 4000) {
+
+          position.x = (A_REGLE_POSITION[2]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[2];
+
+        }
+        else if(cellsIncome[annee] >= 4000 && cellsIncome[annee] <= 8000) {
+
+          position.x = (A_REGLE_POSITION[3]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[3];
+
+        }
+
+        else if(cellsIncome[annee] >= 8000 && cellsIncome[annee] <= 16000) {
+
+          position.x = (A_REGLE_POSITION[4]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[4];
+
+        }
+        else if(cellsIncome[annee] >= 16000 && cellsIncome[annee] <= 32000) {
+
+          position.x = (A_REGLE_POSITION[5]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[5];
+
+        }
+
+        else if(cellsIncome[annee] >= 32000 && cellsIncome[annee] <= 64000) {
+
+          position.x = (A_REGLE_POSITION[6]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[6];
+
+        }
+        else if(cellsIncome[annee] >= 64000 && cellsIncome[annee] <= 128000) {
+
+          position.x = (A_REGLE_POSITION[7]*cellsIncome[annee]) +
+                        B_REGLE_POSITION[7];
+
+        }
+
         ensembleSphereGraphe[i - 1].setAttribute("position",position);
-        ensembleSphereGraphe[i - 1].setAttribute("geometry",{primitive:"circle",radius:scale*0.5});
+        ensembleSphereGraphe[i - 1].setAttribute("geometry",{primitive:"circle",radius:scale*1.125});
         ensembleSphereGraphe[i - 1].children[1].children[0].setAttribute("text",{value:"Income: " + cellsIncome[annee] + " $"});
         ensembleSphereGraphe[i - 1].children[1].children[1].setAttribute("text",{value:"Life Expectency: " + cellsLife[annee] + " years"});
         ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,scale);
