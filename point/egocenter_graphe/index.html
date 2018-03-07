@@ -41,7 +41,7 @@
                  material="color:#ffffff"></a-mixin>
         <!-- Panneau hover pays du graphe -->
         <a-mixin id="ui-hover-pays" position="0 1.25 0"
-                 slice9="width:3.2;height:1.5;bottom:43.81;left:20;
+                 slice9="width:3.2;height:2;bottom:43.81;left:20;
                          right:43;top:20;src:img/slice9_texture/tooltip.png;
                          color:white;padding:0.02;transparent:false;
                          side:front;"></a-mixin>
@@ -83,42 +83,49 @@
                        anchor:center;
                        baseline:center;
                        letterSpacing: 0.3"></a-mixin>
-
+       <a-mixin id="Bouton" pays-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+       <a-mixin id="Americas" pays-selection
+               material="opacity:1;color:#4c4c4c;"
+               geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
         <a-mixin id="Americas" pays-selection
-                material="opacity:1;color:grey;"
+                material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
         <a-mixin id="Africa" pays-selection
-                material="opacity:1;color:grey;"
+                material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
         <a-mixin id="Europe" pays-selection
-                material="opacity:1;color:grey;"
+                material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
         <a-mixin id="Asia" pays-selection
-                material="opacity:1;color:grey;"
+                material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
 
         <!-- Animations-->
         <a-mixin id="fade" attribute="material.opacity" direction="alternate"
                  begin="playFade" repeat="0"
                  from="0.4" to="1" dur="500"></a-mixin>
-        <a-mixin id="fadeCouleur" attribute="text.color" direction="alternate"
-                 begin="playFadeCouleur" repeat="0"
-                 from="white" to="black" dur="500"></a-mixin>
-        <a-mixin id="fadeAnnee" attribute="material.color" direction="alternate"
-                 begin="playFadeAnnee" repeat="0"
-                 from="grey" to="white" dur="500"></a-mixin>
+        <a-mixin id="fadeCouleur" attribute="material.color" direction="reverse"
+                 begin="playFadeCouleur"
+                 to="#4c4c4c" dur="500"></a-mixin>
+        <a-mixin id="fadeBouton" attribute="material.color" direction="alternate"
+                 begin="playFadeBouton" repeat="0" fill="backwards"
+                 from="#4c4c4c" to="white" dur="500"></a-mixin>
         <a-mixin id="fadeAmericas" attribute="material.color" direction="alternate"
                  begin="playFadeAmericas" repeat="0"
-                 from="grey" to="#9ef03e" dur="500"></a-mixin>
+                 from="#4c4c4c" to="#9ef03e" dur="500"></a-mixin>
         <a-mixin id="fadeAfrica" attribute="material.color" direction="alternate"
                  begin="playFadeAfrica" repeat="0"
-                 from="grey" to="#33dded" dur="500"></a-mixin>
+                 from="#4c4c4c" to="#33dded" dur="500"></a-mixin>
         <a-mixin id="fadeEurope" attribute="material.color" direction="alternate"
                  begin="playFadeEurope" repeat="0"
-                 from="grey" to="#fff37a" dur="500"></a-mixin>
+                 from="#4c4c4c" to="#fff37a" dur="500"></a-mixin>
         <a-mixin id="fadeAsia" attribute="material.color" direction="alternate"
                  begin="playFadeAsia" repeat="0"
-                 from="grey" to="#ff798e" dur="500"></a-mixin>
+                 from="#4c4c4c" to="#ff798e" dur="500"></a-mixin>
+        <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
+                 to="#4c4c4c"dur="500"></a-mixin>
         <!-- Audio
         <audio id="desert" loop='true' autoplay="true"
         src="audio/Desert sound - Sound effect.mp3"></audio>-->
@@ -146,11 +153,21 @@
           <a-entity id="ui-parent" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
 
             <!-- Pour les pays -->
-            <a-entity id="ui-pays" position="0 -0.155 0"
-                      slice9="width:3;height:1.81;bottom:43.81;left:20;
+            <a-entity id="ui-pays" position="0 -0.3 0"
+                      slice9="width:3;height:2;bottom:43.81;left:20;
                               right:43;top:20;src:img/slice9_texture/tooltip.png;
                               color:white;padding:0.02;
                               side:double;"></a-entity>
+            <a-entity class="panneauSelectionPays" mixin="Bouton"
+                      position="-1.05 -1.05 0.001" data-pays="SelectAll">
+              <a-text class="textPays" mixin="textPays" color="#000000"
+                      value="Select All"></a-text>
+            </a-entity>
+            <a-entity class="panneauSelectionPays" mixin="Bouton"
+                      position="-0.35 -1.05 0.001" data-pays="RemoveAll">
+              <a-text class="textPays" mixin="textPays" color="#000000"
+                      value="Remove All"></a-text>
+            </a-entity>
             <!-- The Americas -->
             <a-entity position="-1.05 -0.25 0">
               <a-text class="textContinent" mixin="textContinent"

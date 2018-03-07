@@ -9,27 +9,38 @@ AFRAME.registerComponent("pays-selection", {
 			var el = this.el,
 					anim = document.createElement('a-animation'),
 					//animText = document.createElement('a-animation'),
-					leThis = this;
+					leThis = this,
+					hoverEnCours = false;
 
-			switch(el.attributes[1].nodeValue) {
+			this.animerCouleur = function(anim) {
 
-				case "Americas":
-				anim.setAttribute("mixin","fadeAmericas");
-				break;
+				switch(el.attributes[1].nodeValue) {
 
-				case "Africa":
-				anim.setAttribute("mixin","fadeAfrica");
-				break;
+					case "Americas":
+					anim.setAttribute("mixin","fadeAmericas");
+					break;
 
-				case "Europe":
-				anim.setAttribute("mixin","fadeEurope");
-				break;
+					case "Africa":
+					anim.setAttribute("mixin","fadeAfrica");
+					break;
 
-				case "Asia":
-				anim.setAttribute("mixin","fadeAsia");
-				break;
+					case "Europe":
+					anim.setAttribute("mixin","fadeEurope");
+					break;
+
+					case "Asia":
+					anim.setAttribute("mixin","fadeAsia");
+					break;
+
+					default:
+					anim.setAttribute("mixin","fadeBouton");
+					break;
+
+				}
 
 			}
+
+			this.animerCouleur(anim);
 			//animText.setAttribute("mixin","fadeCouleur");
 			//el.firstElementChild.appendChild(animText);
 			el.appendChild(anim);
@@ -37,6 +48,7 @@ AFRAME.registerComponent("pays-selection", {
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
 
+				leThis.peutHover();
 				el.setAttribute("scale","1.2 1.2 1.2");
 
       };
@@ -44,6 +56,7 @@ AFRAME.registerComponent("pays-selection", {
 			/* Raycaster-intersected-cleared */
 			this.eventScalingEnding = function() {
 
+				hoverEnCours = false;
 				el.setAttribute("scale","1 1 1");
 
       };
@@ -51,44 +64,79 @@ AFRAME.registerComponent("pays-selection", {
 			/* Ajoute ou supprime le pays */
 			this.selectionnerPays = function() {
 
-				/*var paysChoisi = JSON.parse(sessionStorage.getItem('paysChoisi'));
+				if(hoverEnCours == true) {
 
-				/* Si on ne aucun pays choisi dernièrement
-				if(paysChoisi == null) {
+					leThis.animerPanneau();
 
-					paysChoisi = new Array();
+					if(el.getAttribute("data-pays") != "SelectAll" &&
+						 el.getAttribute("data-pays") != "RemoveAll") {
+
+						var maSphere = document.querySelector('[data-pays-sphere="'+
+													 el.getAttribute("data-pays")+'"]');
+						var visible = maSphere.getAttribute("visible");
+						maSphere.setAttribute("visible",!visible);
+
+					}
+
+					else {
+
+							var lesPays = document.querySelectorAll(".sphereGraphe");
+							var lesBoutons = document.querySelectorAll(".panneauSelectionPays"); // Doit ne pas prendre les 2 premiers
+							var l = lesPays.length;
+							var couleurGrise = { r: 0.2980392156862745, g: 0.29803921568627456, b: 0.2980392156862745 }
+
+							for(var i = 0;i < l;i++) {
+
+								lesBoutons[i + 2].removeChild(lesBoutons[i + 2].children[1]);
+								var anim = document.createElement("a-animation");
+								lesBoutons[i + 2].appendChild(anim);
+
+								if(el.getAttribute("data-pays") == "SelectAll") {
+
+									lesBoutons[i + 2].components["pays-selection"].animerCouleur(anim);
+									lesPays[i].setAttribute("visible",true);
+									//console.log(lesBoutons[i + 2].lastElementChild.tween._object );
+
+								}
+
+								else {
+
+									anim.setAttribute("mixin","fadeAuGris");
+									lesPays[i].setAttribute("visible",false);
+
+								}
+
+								lesBoutons[i + 2].components["pays-selection"].animerPanneau();
+
+							}
+
+					}
 
 				}
-
-				// Cherche notre pays dans le tableau
-				if(paysChoisi.indexOf(el.getAttribute("data-pays")) == -1) {
-
-					/* Ajout du pays dans notre tableau
-					paysChoisi.push(el.getAttribute("data-pays"));
-
-				}
-				/* Si le pays est déjà dans le tableau
-				else if(paysChoisi.indexOf(el.getAttribute("data-pays")) != -1) {
-
-					/* Supprime le pays
-					var posPays = paysChoisi.indexOf(el.getAttribute("data-pays"));
-					paysChoisi.splice(posPays,1);
-
-				}*/
-
-				leThis.animPanneau();
-				var maSphere = document.querySelector('[data-pays-sphere="'+ el.getAttribute("data-pays")+'"]');
-				var visible = maSphere.getAttribute("visible");
-				maSphere.setAttribute("visible",!visible);
-
-				/* Enregistrement de la variable paysChoisi dans la sessionStorage
-				sessionStorage.setItem("paysChoisi", JSON.stringify(paysChoisi));*/
 
 			};
 
+			this.peutHover = function() {
+
+        var mainPointeur = document.querySelector("#rhand");
+
+          if(mainPointeur.components['raycaster'].intersectedEls.length == 1) {
+
+            hoverEnCours = true;
+
+          }
+
+          if(mainPointeur.components['raycaster'].intersectedEls.length > 2) {
+
+            hoverEnCours = false;
+
+          }
+
+      };
+
 	  },
 
-	 animPanneau:function() {
+	 animerPanneau:function() {
 
 			 var el = this.el;
 
@@ -109,13 +157,17 @@ AFRAME.registerComponent("pays-selection", {
 					case "Asia":
 					el.emit("playFadeAsia");
 					break;
+
+					default:
+					el.emit("playFadeBouton")
+					break;
 			 }
 
 		},
 
 		play:function () {
 
-			this.animPanneau();
+			this.animerPanneau();
 
 			/* Lorsqu'on clique le jour */
 			this.el.addEventListener("click",this.selectionnerPays);

@@ -1,8 +1,7 @@
 /* S'occupe de montrer le texte de tous les pays
 *  appartenant au continent choisi et affiche les données du pays visé.
 */
-var dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
-    dataLife = JSON.parse(sessionStorage.getItem('dataLife'));
+
 AFRAME.registerComponent("sphere-hover", {
 
 		init: function () {
@@ -72,62 +71,9 @@ AFRAME.registerComponent("sphere-hover", {
 					el.children[1].setAttribute("visible",false);
           el.children[0].setAttribute("visible",false);
         //  el.setAttribute("material",{visible:false});
-          el.object3D.children[0].material.opacity = 0.5;
+          el.object3D.children[0].material.opacity = 0.3;
 
 				}
-
-
-				/*var paysChoisi = JSON.parse(sessionStorage.getItem('paysChoisi'));
-
-				/* Si on ne aucun pays choisi dernièrement
-				if(paysChoisi == null) {
-
-					paysChoisi = new Array();
-
-				}
-
-				// Cherche notre pays dans le tableau
-				if(paysChoisi.indexOf(el.getAttribute("data-pays")) == -1) {
-
-					/* Ajout du pays dans notre tableau
-					paysChoisi.push(el.getAttribute("data-pays"));
-
-				}
-				/* Si le pays est déjà dans le tableau
-				else if(paysChoisi.indexOf(el.getAttribute("data-pays")) != -1) {
-
-					/* Supprime le pays
-					var posPays = paysChoisi.indexOf(el.getAttribute("data-pays"));
-					paysChoisi.splice(posPays,1);
-
-				}*/
-
-				/* Joue l'animation de fade-in/fade-out
-				switch(el.attributes[1].nodeValue) {
-					case "Americas":
-					el.emit("playFadeAmericas");
-					break;
-
-					case "Africa":
-					el.emit("playFadeAfrica");
-					break;
-
-					case "Europe":
-					el.emit("playFadeEurope");
-					break;
-
-					case "Asia":
-					el.emit("playFadeAsia");
-					break;
-				}
-
-				el.firstElementChild.emit("playFadeCouleur");
-				var maSphere = document.querySelector('[data-pays-sphere="'+ el.getAttribute("data-pays")+'"]');
-				var visible = maSphere.getAttribute("visible");
-				maSphere.setAttribute("visible",!visible);*/
-
-				/* Enregistrement de la variable paysChoisi dans la sessionStorage
-				sessionStorage.setItem("paysChoisi", JSON.stringify(paysChoisi));*/
 
 			};
 
@@ -135,7 +81,6 @@ AFRAME.registerComponent("sphere-hover", {
       *  on ne peut pas hover un autre.
       */
       this.peutHover = function() {
-
         var mainPointeur = document.querySelector("#rhand");
 
           if(mainPointeur.components['raycaster'].intersectedEls.length == 1) {

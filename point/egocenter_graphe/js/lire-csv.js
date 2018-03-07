@@ -5,6 +5,7 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_4=".../csv/Rayon des spheres Population Pays.csv",
     dataLife = {},
     dataIncome = {},
+    dataRayonPopulation = {},
     dataPopulation = {};
 
 /* Constantes */
@@ -80,8 +81,33 @@ function deuxiemeFichier() {
 
 }
 
-/* Pour le radius - Population */
+/* Pour le nombre de la population */
 function troisiemeFichier() {
+
+  Papa.parse(url_3, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataPopulation = clone(data);
+                //CreerLignes();
+                quatriemeFichier();
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour le radius - Population */
+function quatriemeFichier() {
 
   Papa.parse(url_4, {
 
@@ -90,7 +116,7 @@ function troisiemeFichier() {
     complete: function (results,file){
 
                 var data = results.data;
-                dataPopulation = clone(data);
+                dataRayonPopulation = clone(data);
                 //CreerLignes();
                 CreerSpheres();
 
@@ -259,10 +285,12 @@ function CreerSpheres() {
   /* Supprime l'ancienne sauvegarde */
   sessionStorage.clear();
 
-  /* Enregistrement de la variable paysChoisi dans la sessionStorage*/
+  /* Enregistrement de la variable paysChoisi dans la sessionStorage */
   sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
   sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
+  sessionStorage.setItem("dataRayonPopulation", JSON.stringify(dataRayonPopulation));
   sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
+
 
   var graphe = document.querySelector("#graphe");
 
@@ -278,10 +306,10 @@ function CreerSpheres() {
 
   }
 
-  tabMurs[0].setAttribute("position",{x:1.25,y:0,z:0.1});
-  tabMurs[1].setAttribute("position",{x:1.25,y:0,z:0.1});
+  tabMurs[0].setAttribute("position",{x:1.25,y:0,z:0.2});
+  tabMurs[1].setAttribute("position",{x:1.25,y:0,z:0.3});
   tabMurs[2].setAttribute("position",{x:1.25,y:0,z:0.1});
-  tabMurs[3].setAttribute("position",{x:1.25,y:0,z:0.1});
+  tabMurs[3].setAttribute("position",{x:1.25,y:0,z:0.4});
 
   graphe.setAttribute("position",{x:10,y:-1.5,z:-7});
   graphe.setAttribute("rotation",{x:0,y:270,z:0});
@@ -293,8 +321,6 @@ function CreerSpheres() {
     var cellsIncome = rowIncome.join(",").split(",");
     var rowLife = dataLife[i];
     var cellsLife = rowLife.join(",").split(",");
-    var rowPopulation = dataPopulation[i];
-    var cellsPopulation = rowLife.join(",").split(",");
 
     /* Crée le parent de la ligne pour le pays */
     var sphereGraphe = document.createElement("a-entity");
@@ -302,7 +328,7 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("data-pays-sphere",cellsLife[0]);
 
     var couleurLigne,
-        scale = dataPopulation[i][ANNEE_PAR_DEFAUT]/1.125,
+        scale = dataRayonPopulation[i][ANNEE_PAR_DEFAUT]/1.125,
         geometry = new THREE.SphereBufferGeometry(1, 16, 16),
         material = new THREE.MeshBasicMaterial(),
         income_cell_l = cellsIncome.length,
@@ -312,6 +338,7 @@ function CreerSpheres() {
         texteLife = document.createElement("a-text"),
         texteIncome = document.createElement("a-text"),
         texteNom = document.createElement("a-text"),
+        textePopulation = document.createElement("a-text"),
         ui = document.createElement("a-entity");
 
     /* Americas */
@@ -371,7 +398,7 @@ function CreerSpheres() {
       zOffset:0.02,
       yOffset:0,
       color:0xffffff,
-      baseline:"top",
+      baseline:"center",
       anchor:"center",
       align:"center",
       width:2.2,
@@ -388,7 +415,7 @@ function CreerSpheres() {
       zOffset:0.02,
       yOffset:0,
       color:0xffffff,
-      baseline:"top",
+      baseline:"center",
       anchor:"center",
       align:"center",
       width:3.5,
@@ -397,6 +424,23 @@ function CreerSpheres() {
       lineHeight:35,
       height:0.5,
       value:"Life Expectency: " + cellsLife[ANNEE_PAR_DEFAUT] + " years",
+      wrapCount:25,
+      alphaTest:1
+    });
+
+    textePopulation.setAttribute("text", {
+      zOffset:0.02,
+      yOffset:0,
+      color:0xffffff,
+      baseline:"center",
+      anchor:"center",
+      align:"center",
+      width:3.5,
+      whiteSpace:"pre",
+      tabSize:2.83,
+      lineHeight:35,
+      height:0.5,
+      value:"Population : " + dataPopulation[i][ANNEE_PAR_DEFAUT],
       wrapCount:25,
       alphaTest:1
     });
@@ -428,16 +472,18 @@ function CreerSpheres() {
     sphereGraphe.appendChild(texte)
     ui.appendChild(texteIncome);
     ui.appendChild(texteLife);
+    ui.appendChild(textePopulation);
     ui.appendChild(texteNom);
     ui.setAttribute("position",{x:0,y:1,z:0.5});
-    texteIncome.setAttribute("position",{x:0,y:0.05,z:0});
-    texteLife.setAttribute("position",{x:0,y:-0.35,z:0});
-    texteNom.setAttribute("position",{x:0,y:0.5,z:0});
+    texteIncome.setAttribute("position",{x:0,y:0.15,z:0});
+    texteLife.setAttribute("position",{x:0,y:-0.25,z:0});
+    textePopulation.setAttribute("position",{x:0,y:-0.65,z:0});
+    texteNom.setAttribute("position",{x:0,y:0.65,z:0});
     sphereGraphe.appendChild(ui);
     ui.setAttribute("visible",false);
     //geometry.computeBoundingSphere();
     mesh = new THREE.Mesh( geometry, material);
-    mesh.material.opacity = 0.5;
+    mesh.material.opacity = 0.3;
     mesh.material.transparent = true;
 
     /* Income position x*/
