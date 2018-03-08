@@ -5,18 +5,20 @@
     <title>Egocenter</title>
     <meta name ="description" content="Egocenter - A-Frame">
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
     <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
     <script src="components/rafraichissement.js"></script>
-    <!--    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
+    <!--
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
     <script src="components/changement-outil.js"></script>
   <script src="components/ligne-du-temps.js"></script>-->
     <script src="components/pays-selection.js"></script>
@@ -25,7 +27,7 @@
     <script src="js/graphe-2D-creation.js"></script>
   </head>
   <body>
-    <a-scene  environment="grid: none; dressingUniformScale: false;
+    <a-scene avatar-recorder environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat; skyColor: #ffffff;
                                 active: true;gridColor: #ffffff;
@@ -112,17 +114,17 @@
         <a-mixin id="fadeBouton" attribute="material.color" direction="alternate"
                  begin="playFadeBouton" repeat="0" fill="backwards"
                  from="#4c4c4c" to="white" dur="500"></a-mixin>
-        <a-mixin id="fadeAmericas" attribute="material.color" direction="alternate"
-                 begin="playFadeAmericas" repeat="0"
+        <a-mixin id="fadeAmericas" attribute="material.color" fill="both"
+                 repeat="0"
                  from="#4c4c4c" to="#9ef03e" dur="500"></a-mixin>
-        <a-mixin id="fadeAfrica" attribute="material.color" direction="alternate"
-                 begin="playFadeAfrica" repeat="0"
+        <a-mixin id="fadeAfrica" attribute="material.color" fill="both"
+                 repeat="0"
                  from="#4c4c4c" to="#33dded" dur="500"></a-mixin>
-        <a-mixin id="fadeEurope" attribute="material.color" direction="alternate"
-                 begin="playFadeEurope" repeat="0"
+        <a-mixin id="fadeEurope" attribute="material.color" fill="both"
+                  repeat="0"
                  from="#4c4c4c" to="#fff37a" dur="500"></a-mixin>
-        <a-mixin id="fadeAsia" attribute="material.color" direction="alternate"
-                 begin="playFadeAsia" repeat="0"
+        <a-mixin id="fadeAsia" attribute="material.color" fill="both"
+                 repeat="0"
                  from="#4c4c4c" to="#ff798e" dur="500"></a-mixin>
         <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
                  to="#4c4c4c"dur="500"></a-mixin>
@@ -310,8 +312,8 @@
             </a-entity>
           </a-entity>
         </a-entity>
-        <a-entity id="rhand" data-hover-en-cours="false" laser-controls="hands:right"
-        raycaster="objects:.sphereGraphe,.panneauSelectionPays"
+        <a-entity id="rhand" raycaster="objects:.sphereGraphe,.panneauSelectionPays;far:15;recursive:false;"
+        laser-controls="hands:right"
         line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 

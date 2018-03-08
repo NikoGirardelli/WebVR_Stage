@@ -6,42 +6,39 @@ AFRAME.registerComponent("sphere-hover", {
 
 		init: function () {
 
-			/* Référence à l'écran */
-      //var txtJour = document.querySelector("#textJour"),
-
 			/* Sphere */
 			var el = this.el,
 					continentAppartenant = el.parentEl,
 					leThis = this,
-					hoverEnCours = false;
-					//anim = document.createElement('a-animation'),
-					//animText = document.createElement('a-animation');
-					//console.log(el)
-			/*
-			animText.setAttribute("mixin","fadeCouleur");
-			el.firstElementChild.appendChild(animText);
-			el.appendChild(anim);*/
-			//console.log(this)
+					hoverEnCours = false,
+					mainPointeur = document.querySelector("#rhand");
+
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
 
-				leThis.peutHover();//hoverEnCours = true;
-				leThis.selectionnerPays();
-				//el.setAttribute("material",{visible:true});
+				leThis.peutHover();
+			//	mainPointeur.components.raycaster.refreshObjects();
+				/* Si le pays est visible */
+				if(this.getAttribute("visible") == true){
+
+					leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
+
+				}
 
       };
 
-			/* Raycaster-intersected-cleared */
+			/* Raycaster-intersected-cleared.
+			*  Fonctionne seulement lorsqu'on ne vise plus
+			*/
 			this.eventScalingEnding = function() {
 
 				hoverEnCours = false;
-				leThis.selectionnerPays();
-				//el.setAttribute("material",{visible:false});
+				leThis.selectionnerPays(this);
 
       };
 
 			/* Afficher ou ne pas afficher le nom des pays */
-			this.selectionnerPays = function() {
+			this.selectionnerPays = function(objetVise) {
 
 				var l = continentAppartenant.children.length;
 
@@ -49,13 +46,13 @@ AFRAME.registerComponent("sphere-hover", {
 
 					for(var i = 0;i < l;i++){
 
+						/* Titre pays du continent */
 						continentAppartenant.children[i].children[0].setAttribute("visible",true);
 
 					}
 
 					el.children[1].setAttribute("visible",true);
           el.children[0].setAttribute("visible",false);
-        //  el.setAttribute("material",{visible:true});
           el.object3D.children[0].material.opacity = 1;
 
 				}
@@ -64,13 +61,13 @@ AFRAME.registerComponent("sphere-hover", {
 
 					for(var j = 0;j < l;j++){
 
+						/* Titre pays du continent */
 						continentAppartenant.children[j].children[0].setAttribute("visible",false);
 
 					}
 
 					el.children[1].setAttribute("visible",false);
           el.children[0].setAttribute("visible",false);
-        //  el.setAttribute("material",{visible:false});
           el.object3D.children[0].material.opacity = 0.3;
 
 				}
@@ -81,19 +78,36 @@ AFRAME.registerComponent("sphere-hover", {
       *  on ne peut pas hover un autre.
       */
       this.peutHover = function() {
-        var mainPointeur = document.querySelector("#rhand");
 
-          if(mainPointeur.components['raycaster'].intersectedEls.length == 1) {
+				var lesPays = document.querySelectorAll(".sphereGraphe"),
+						l = lesPays.length,
+						compteur = 0;
 
-            hoverEnCours = true;
+				for(var i = 0;i < l;i++) {
 
-          }
+					// Si un ui est déjà visible
+					if(lesPays[i].children[1].getAttribute("visible") == true) {
 
-          if(mainPointeur.components['raycaster'].intersectedEls.length > 1) {
+						compteur ++;
 
-            hoverEnCours = false;
+					}
 
-          }
+				}
+
+				if(compteur > 1) {
+
+					hoverEnCours = false;
+					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
+
+				}
+				else if(compteur == 0) {
+
+					hoverEnCours = true;
+					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
+
+				}
+
+				return compteur;
 
       };
 
@@ -102,7 +116,7 @@ AFRAME.registerComponent("sphere-hover", {
 		play:function () {
 
 			/* Lorsque qu'on hover le sphere */
-      this.el.addEventListener('raycaster-intersected', this.eventScalingBegining);
+	    this.el.addEventListener('raycaster-intersected', this.eventScalingBegining);
 
 			/* Lorsque qu'on ne hover plus le sphere */
       this.el.addEventListener('raycaster-intersected-cleared', this.eventScalingEnding);
@@ -118,7 +132,7 @@ AFRAME.registerComponent("sphere-hover", {
 
 		remove:function() {
 
-			this.el.object3D.removeEventListener("raycaster-intersected",this.eventScalingBegining);
+			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
 			this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 
 		}

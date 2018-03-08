@@ -32,7 +32,7 @@ AFRAME.registerComponent("pays-selection", {
 					anim.setAttribute("mixin","fadeAsia");
 					break;
 
-					default:
+					case "Bouton":
 					anim.setAttribute("mixin","fadeBouton");
 					break;
 
@@ -66,15 +66,30 @@ AFRAME.registerComponent("pays-selection", {
 
 				if(hoverEnCours == true) {
 
-					leThis.animerPanneau();
-
 					if(el.getAttribute("data-pays") != "SelectAll" &&
 						 el.getAttribute("data-pays") != "RemoveAll") {
 
+						el.removeChild(el.children[1]);
+	 					var anim = document.createElement("a-animation");
+						el.components["pays-selection"].animerCouleur(anim);
+						el.appendChild(anim);
 						var maSphere = document.querySelector('[data-pays-sphere="'+
 													 el.getAttribute("data-pays")+'"]');
 						var visible = maSphere.getAttribute("visible");
 						maSphere.setAttribute("visible",!visible);
+
+						if(visible == false) {
+
+							el.children[1].setAttribute("direction","normal");
+
+						}
+						else if(visible == true) {
+
+							el.children[1].setAttribute("direction","reverse");
+
+						}
+
+						maSphere.setAttribute("material",{visible:!visible});
 
 					}
 
@@ -83,19 +98,19 @@ AFRAME.registerComponent("pays-selection", {
 							var lesPays = document.querySelectorAll(".sphereGraphe");
 							var lesBoutons = document.querySelectorAll(".panneauSelectionPays"); // Doit ne pas prendre les 2 premiers
 							var l = lesPays.length;
-							var couleurGrise = { r: 0.2980392156862745, g: 0.29803921568627456, b: 0.2980392156862745 }
 
 							for(var i = 0;i < l;i++) {
 
-								lesBoutons[i + 2].removeChild(lesBoutons[i + 2].children[1]);
 								var anim = document.createElement("a-animation");
+								lesBoutons[i + 2].removeChild(lesBoutons[i + 2].children[1]);
 								lesBoutons[i + 2].appendChild(anim);
 
 								if(el.getAttribute("data-pays") == "SelectAll") {
 
+									lesBoutons[i + 2].children[1].setAttribute("direction","alternate");
 									lesBoutons[i + 2].components["pays-selection"].animerCouleur(anim);
 									lesPays[i].setAttribute("visible",true);
-									//console.log(lesBoutons[i + 2].lastElementChild.tween._object );
+									lesPays[i].setAttribute("material",{visible:true});
 
 								}
 
@@ -103,14 +118,15 @@ AFRAME.registerComponent("pays-selection", {
 
 									anim.setAttribute("mixin","fadeAuGris");
 									lesPays[i].setAttribute("visible",false);
+									lesPays[i].setAttribute("material",{visible:false});
 
 								}
-
-								lesBoutons[i + 2].components["pays-selection"].animerPanneau();
 
 							}
 
 					}
+
+					leThis.animerPanneau();
 
 				}
 
@@ -158,9 +174,10 @@ AFRAME.registerComponent("pays-selection", {
 					el.emit("playFadeAsia");
 					break;
 
-					default:
-					el.emit("playFadeBouton")
+					case "Bouton":
+					el.emit("playFadeBouton");
 					break;
+
 			 }
 
 		},

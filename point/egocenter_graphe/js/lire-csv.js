@@ -475,10 +475,10 @@ function CreerSpheres() {
     ui.appendChild(textePopulation);
     ui.appendChild(texteNom);
     ui.setAttribute("position",{x:0,y:1,z:0.5});
-    texteIncome.setAttribute("position",{x:0,y:0.15,z:0});
-    texteLife.setAttribute("position",{x:0,y:-0.25,z:0});
-    textePopulation.setAttribute("position",{x:0,y:-0.65,z:0});
-    texteNom.setAttribute("position",{x:0,y:0.65,z:0});
+    texteIncome.setAttribute("position",{x:0,y:0.1,z:0});
+    texteLife.setAttribute("position",{x:0,y:-0.3,z:0});
+    textePopulation.setAttribute("position",{x:0,y:-0.7,z:0});
+    texteNom.setAttribute("position",{x:0,y:0.775,z:0});
     sphereGraphe.appendChild(ui);
     ui.setAttribute("visible",false);
     //geometry.computeBoundingSphere();
@@ -549,7 +549,7 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("material",{color:0x000000,visible:true,fog:false,transparent:true});
     sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*1.125})
     sphereGraphe.object3D.add(mesh);
-    sphereGraphe.object3D.children[0].scale.set(scale,scale,scale);
+    sphereGraphe.object3D.children[0].scale.set(scale,scale,0.05);
   //sphereGraphe.setAttribute("visible",false);
 
   }
