@@ -216,7 +216,7 @@ AFRAME.registerComponent('interaction-graphe', {
         ensembleSphereGraphe[i - 1].setAttribute("position",position);
         ensembleSphereGraphe[i - 1].setAttribute("geometry",{radius:scale*1.125});
         ensembleSphereGraphe[i - 1].children[1].children[0].setAttribute("text",{value:"Income: " + cellsIncome[annee] + " $"});
-        ensembleSphereGraphe[i - 1].children[1].children[1].setAttribute("text",{value:"Life Expectency: " + cellsLife[annee] + " years"});
+        ensembleSphereGraphe[i - 1].children[1].children[1].setAttribute("text",{value:"Life Expectancy: " + cellsLife[annee] + " years"});
         ensembleSphereGraphe[i - 1].children[1].children[2].setAttribute("text",{value:"Population : " + dataPopulation[i][annee]});
         ensembleSphereGraphe[i - 1].object3D.children[0].scale.set(scale,scale,0.05);
 

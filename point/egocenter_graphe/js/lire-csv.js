@@ -423,7 +423,7 @@ function CreerSpheres() {
       tabSize:2.83,
       lineHeight:35,
       height:0.5,
-      value:"Life Expectency: " + cellsLife[ANNEE_PAR_DEFAUT] + " years",
+      value:"Life Expectancy: " + cellsLife[ANNEE_PAR_DEFAUT] + " years",
       wrapCount:25,
       alphaTest:1
     });

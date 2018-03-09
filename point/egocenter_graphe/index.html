@@ -150,7 +150,8 @@
                          anchor:center;zOffset:-30;
                          baseline:center;value:;"></a-text>
         </a-camera>
-        <a-entity id="lhand" vive-controls="hand: left;model:false">
+        <a-entity id="lhand" vive-controls="hand: left;model:false"
+        motion-capture-recorder="hand: left; persistStroke:true;recordingControls: true;visibleStroke:true;">
           <!-- UI -->
           <a-entity id="ui-parent" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
 
@@ -313,7 +314,7 @@
           </a-entity>
         </a-entity>
         <a-entity id="rhand" raycaster="objects:.sphereGraphe,.panneauSelectionPays;far:15;recursive:false;"
-        laser-controls="hands:right"
+        laser-controls="hands:right" motion-capture-recorder="hand: right;  persistStroke:true;recordingControls: true;visibleStroke:true;"
         line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 

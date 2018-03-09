@@ -207,7 +207,7 @@ function creerAxeY(graphe) {
 		width:5,
 		wrapCount:16,
 		lineHeight:80,
-		value:"Life Expectency"
+		value:"Life Expectancy"
 
 	});
 
@@ -234,7 +234,7 @@ function creerAxeY(graphe) {
 		width:5,
 		wrapCount:16,
 		lineHeight:80,
-		value:"Life Expectency"
+		value:"Life Expectancy"
 
 	});
 
