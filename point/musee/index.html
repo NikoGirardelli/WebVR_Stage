@@ -20,14 +20,14 @@
     <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
     <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
     <script src="components/changement-outil.js"></script>
-  <script src="components/ligne-du-temps.js"></script>-->
+  <script src="components/ligne-du-temps.js"></script>
     <script src="components/pays-selection.js"></script>
     <script src="components/sphere-hover.js"></script>
     <script src="components/interaction-graphe.js"></script>
-    <script src="js/graphe-2D-creation.js"></script>
+    -->
   </head>
   <body>
-    <a-scene avatar-recorder environment="grid: none; dressingUniformScale: false;
+    <a-scene stats avatar-recorder environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat; skyColor: #ffffff;
                                 active: true;gridColor: #ffffff;
@@ -134,12 +134,17 @@
         <img id="gapminder" src="img/gap.png">
         <!-- Model statuette -->
         <a-asset-item id="statuette-gltf" src="model/statuette/statuette.gltf"></a-asset-item>
+        <a-asset-item id="statuette_v2-gltf" src="model/statuette/statuette_v2.gltf"></a-asset-item>
+        <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
       </a-assets>
 
-      <a-entity id="statue"  animation-mixer gltf-model="#statuette-gltf"></a-entity>
+      <!-- Statue test high res, middle res and low res
+      <a-entity position="1 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette-gltf"></a-entity>
+      <a-entity position="4 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette_v3-gltf"></a-entity>
+      <a-entity position="7 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette_v2-gltf"></a-entity>-->
 
       <!-- Les mains -->
-      <a-entity id="player" rafraichissement interaction-graphe
+      <a-entity id="player" rafraichissement
                 progressive-controls="controllerModel:false;override:true;
                                       maxLevel:point;touchMixin:mytouch;
                                       pointMixin:mypoint;">
@@ -322,46 +327,19 @@
         line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 
-      <!-- Graphe
-      <a-entity class="graphe" scale="1 1 1" stretchable hoverable grabbable
-                position="2 0 0" rotation="0 0 0" >
-        <a-box position="0 1.55 0"
-        event-set__hover-start="material.opacity: 0.3"
-        event-set__hover-end="material.opacity: 0"
-        geometry="height: 3.44; width: 1.55; depth: 3.08"
-        material="opacity: 0; transparent: true;
-        fog: false; color: #ffffff;
-        flatShading: true; depthWrite: false;
-        depthTest: false;"></a-box>
-      </a-entity>-->
-      <a-entity id="graphe"></a-entity>
+      <!-- Statues -->
+      <a-entity id="ensembleStatue"></a-entity>
 
-      <!-- Ligne du temps -->
-      <a-entity>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="1.5 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="1.2 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.9 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.6 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.3 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="0 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.3 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.6 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.9 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-1.2 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="-1.5 0.25 0"></a-box>
-      </a-entity>
-
-
-      <!-- Titre du graphe -->
+      <!-- Titre du graphe
       <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
                 position="-10 2 2.125" rotation="0 90 0" geometry="primitive:circle;radius:1.04">
         <a-text value="Life Expectency and Incomes/Years since 1915 to 2015"
                 position="1.224 0 0" text="color:#000000;wrapCount:20.68;side: double;"></a-text>
         <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
                 position="1.8 -1.8 0" text="color:#000000;wrapCount:25.68;side: double;align:center;"></a-text>
-      </a-sphere>
+      </a-sphere>-->
 
-      <!-- Instruction -->
+      <!-- Instruction
       <a-text text="alphaTest:0.6;
                     tabSize: 0; width: 5;
                     baseline: top; wrapCount: 12;
@@ -377,16 +355,10 @@
                     align:center;color:#000000;
                     anchor:center;zOffset:0;
                     baseline:center;value:Use your pointer to choose a country from the menu on your left hand, and if you hover over a sphere you'll see more details about the country.;"
-                    position="0 1.5 10" rotation="0 180 0"></a-text>
+                    position="0 1.5 10" rotation="0 180 0"></a-text>-->
 
-
-      <!-- Plateforme -->
-      <a-box id='plateforme' position="0 0.1 0"
-             geometry="depth:1.5;width:3.5;height:0.25"
-             material="color:#c0c0c0;"></a-box>
-
-      <!-- Son -->
-      <a-entity sound="src:#desert" position="0 0 0"></a-entity>
+      <!-- Son
+      <a-entity sound="src:#desert" position="0 0 0"></a-entity>-->
     </a-scene>
-
+  </body>
 </html>
