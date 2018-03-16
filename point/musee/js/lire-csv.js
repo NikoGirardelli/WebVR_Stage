@@ -2,19 +2,20 @@
 var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
     url_3 = ".../csv/indicator gapminder population.csv",
-    url_4=".../csv/Rayon des spheres Population Pays.csv",
+    url_4 = ".../csv/Rayon des spheres Population Pays.csv",
+    url_5 = ".../csv/mean-years-of-schooling-for-those-aged-15-and-older.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
-    dataPopulation = {};
+    dataPopulation = {},m
+    dataEducation = {};
 
 /* Constantes
 const COULEUR_CONTINENT = [0x9ef03e,0x33dded,0xfff37a,0xff798e]; // Am, Af, Eu, As
 const A_REGLE_POSITION = [0.0025,0.00125,0.000625,0.000313,
                               0.000156,0.000078,0.000039,0.00002];
 const B_REGLE_POSITION = [0,1.25,2.5,3.75,5,6.25,75,8.75];*/
-const ANNEE_PAR_DEFAUT = 52;
-
+const ANNEE_PAR_DEFAUT = 16; // Les données sont entre 1950 et 2010 - ANNEE_PAR_DEFAUT = 1965
 
 /* S'occupe de copier le JSON -
 *  http://outset.ws/blog/article/clone-duplicate-json-object-in-javascript
@@ -116,6 +117,31 @@ function quatriemeFichier() {
 
                 var data = results.data;
                 dataRayonPopulation = clone(data);
+                cinquiemeFichier();
+
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour le radius - Population */
+function cinquiemeFichier() {
+
+  Papa.parse(url_5, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataEducation = clone(data);
                 creationStatues();
 
 
@@ -143,7 +169,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
 	statue.appendChild(sol);
 	sol.setAttribute("position",{x:0,y:-0.55,z:0});
 	sol.setAttribute("geometry",{depth:3,height:1,width:3});
-	statue.setAttribute("scale",{x:0.25,y:0.25,z:0.25});
+	statue.setAttribute("scale",{x:0.125,y:0.125,z:0.125});
   statue.setAttribute("class","statue");
 
 	ensembleStatue.appendChild(statue);
@@ -262,15 +288,23 @@ function creerStatue(ensembleStatue,paysChoisi) {
   texteNom.setAttribute("position",{x:0,y:0.775,z:0});
   statue.setAttribute("position",{x:paysChoisi,y:0,z:0});
 
-  /* Lorsque le modèle est chargé. */
+  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphs d'activer. */
   statue.addEventListener("model-loaded",function() {
 
-      //console.log(statue.getObject3D("mesh"))
       /* Life Expectancy - costaud  */
-    	statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataLife[paysChoisi][ANNEE_PAR_DEFAUT]/100;
+    	statue.getObject3D("mesh").children[0].morphTargetInfluences[1] = dataLife[paysChoisi][ANNEE_PAR_DEFAUT]/100;
 
-      /* Income - grandeur */
-    	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = paysChoisi*0.4//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864;
+      /* Rayon Population - grandeur */
+    	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+
+      /* Année d'éducation en moyen -Rayon Population cerveau */
+    	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+
+      /* Income - nez */
+    	//statue.getObject3D("mesh").children[0].morphTargetInfluences[4] = paysChoisi*0.25//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+
+      /* Pose initiale */
+      statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
 
   });
 
@@ -284,11 +318,12 @@ function creationStatues() {
   sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
   sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
   sessionStorage.setItem("dataRayonPopulation", JSON.stringify(dataRayonPopulation));
+  sessionStorage.setItem("dataEducation", JSON.stringify(dataEducation));
 
   var ensembleStatue = document.querySelector("#ensembleStatue");
 
   /* Boucle qui parcourt tous les pays */
-	for(var i = 1; i < 25; i++) {
+	for(var i = 1; i < 100; i++) {
 
 		creerStatue(ensembleStatue,i);
 
