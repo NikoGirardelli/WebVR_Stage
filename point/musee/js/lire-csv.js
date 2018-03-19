@@ -7,14 +7,12 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
-    dataPopulation = {},m
+    dataPopulation = {},
     dataEducation = {};
 
-/* Constantes
-const COULEUR_CONTINENT = [0x9ef03e,0x33dded,0xfff37a,0xff798e]; // Am, Af, Eu, As
-const A_REGLE_POSITION = [0.0025,0.00125,0.000625,0.000313,
-                              0.000156,0.000078,0.000039,0.00002];
-const B_REGLE_POSITION = [0,1.25,2.5,3.75,5,6.25,75,8.75];*/
+/* Constantes */
+const POSITION_STATUE_X = [-5,-3,-1,1,3,5];
+const POSITION_STATUE_Z = [-5,-3,-1,1,3,5];
 const ANNEE_PAR_DEFAUT = 16; // Les données sont entre 1950 et 2010 - ANNEE_PAR_DEFAUT = 1965
 
 /* S'occupe de copier le JSON -
@@ -286,25 +284,66 @@ function creerStatue(ensembleStatue,paysChoisi) {
   texteLife.setAttribute("position",{x:0,y:-0.3,z:0});
   textePopulation.setAttribute("position",{x:0,y:-0.7,z:0});
   texteNom.setAttribute("position",{x:0,y:0.775,z:0});
-  statue.setAttribute("position",{x:paysChoisi,y:0,z:0});
+  statue.setAttribute("position",{x:paysChoisi,y:0.125,z:0});
+  statue.setAttribute('particle-system', {
+    preset: 'default',
+    color: '#808080',
+    maxParticleCount:8,
+    type:3,
+    maxAge:2,
+    size:1.5,
+    blending:2,
+    randomize:true,
+    positionSpread:{x:1,y:1,z:1},
+    texture:".../img/smoke.png"
+
+  });
+  //sol.setAttribute("particle-system","color","red");
 
   /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphs d'activer. */
   statue.addEventListener("model-loaded",function() {
 
-      /* Life Expectancy - costaud  */
-    	statue.getObject3D("mesh").children[0].morphTargetInfluences[1] = dataLife[paysChoisi][ANNEE_PAR_DEFAUT]/100;
+    var couleur = {};
 
-      /* Rayon Population - grandeur */
-    	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+    /* Association couleur - Life Expectancy */
+    if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 40) {
 
-      /* Année d'éducation en moyen -Rayon Population cerveau */
-    	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+      couleur = {r:0.33,g:0.42,b:0.18}; // Roche
 
-      /* Income - nez */
-    	//statue.getObject3D("mesh").children[0].morphTargetInfluences[4] = paysChoisi*0.25//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+    }
 
-      /* Pose initiale */
-      statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
+    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 50) {
+
+      couleur = {r:0.80,g:0.50,b:0.20}; // Bronze
+
+    }
+
+    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 70) {
+
+      couleur = {r:0.75,g:0.75,b:0.75}; // Argent
+
+    }
+
+    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] > 70) {
+
+      couleur = {r:0.85,g:0.65,b:0.13}; // Or
+
+    }
+
+    /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
+    statue.getObject3D("mesh").children[0].material.color = couleur;
+
+    /* Income - grandeur */
+  	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;
+
+    /* Année d'éducation en moyen -Rayon Population cerveau */
+  	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12;
+
+    /* Income - nez */
+  	//statue.getObject3D("mesh").children[0].morphTargetInfluences[4] = paysChoisi*0.25//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
+
+    /* Pose initiale */
+    //statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
 
   });
 
@@ -323,7 +362,7 @@ function creationStatues() {
   var ensembleStatue = document.querySelector("#ensembleStatue");
 
   /* Boucle qui parcourt tous les pays */
-	for(var i = 1; i < 100; i++) {
+	for(var i = 1; i < 2; i++) {
 
 		creerStatue(ensembleStatue,i);
 

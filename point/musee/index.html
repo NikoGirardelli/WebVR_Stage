@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
     <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
     <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
@@ -29,10 +30,10 @@
   <body>
     <a-scene stats avatar-recorder environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
-                                groundYScale: 0;ground: flat; skyColor: #ffffff;
+                                groundYScale: 0;ground: flat;
                                 active: true;gridColor: #ffffff;
-                                horizonColor: #2f2f2f; fog: 0.1;
-                                groundColor: #808080; groundColor2: #5d5d5d;
+                                fog: 0; groundColor: #808080;
+                                groundColor2: #5d5d5d;
                                 groundTexture:none;
                                 skyType:gradient;
                                 ground:none">
@@ -132,19 +133,13 @@
         <audio id="desert" loop='true' autoplay="true"
         src="audio/Desert sound - Sound effect.mp3"></audio>-->
         <img id="gapminder" src="img/gap.png">
+
         <!-- Model statuette -->
-        <a-asset-item id="statuette-gltf" src="model/statuette/statuette.gltf"></a-asset-item>
-        <a-asset-item id="statuette_v2-gltf" src="model/statuette/statuette_v2.gltf"></a-asset-item>
         <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
       </a-assets>
 
-      <!-- Statue test high res, middle res and low res
-      <a-entity position="1 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette-gltf"></a-entity>
-      <a-entity position="4 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette_v3-gltf"></a-entity>
-      <a-entity position="7 -1 0" scale="0.5 0.5 0.5" class="statuette" gltf-model="#statuette_v2-gltf"></a-entity>-->
-
       <!-- Les mains -->
-      <a-entity id="player" rafraichissement
+      <a-entity id="player" rafraichissement position='0 0 0'
                 progressive-controls="controllerModel:false;override:true;
                                       maxLevel:point;touchMixin:mytouch;
                                       pointMixin:mypoint;">
@@ -330,6 +325,10 @@
       <!-- Statues -->
       <a-entity id="ensembleStatue"></a-entity>
 
+      <!-- Environment -->
+      <a-plane position="0 0.001 0" rotation="270 0 0" geometry="width:15;height:15;" material="color:#808080;"></a-plane>
+      <a-cylinder position="0 1.499 0" geometry="radius:7;height:3;openEnded:true;" material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>
+      <a-plane position="0 2.999 0" rotation="90 0 0" geometry="width:15;height:15;" material="color:#c0c0c0;"></a-plane>
       <!-- Titre du graphe
       <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
                 position="-10 2 2.125" rotation="0 90 0" geometry="primitive:circle;radius:1.04">
