@@ -4,10 +4,12 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_3 = ".../csv/indicator gapminder population.csv",
     url_4 = ".../csv/Rayon des spheres Population Pays.csv",
     url_5 = ".../csv/mean-years-of-schooling-for-those-aged-15-and-older.csv",
+    url_6 = ".../csv/indicator sugar_consumption.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
     dataPopulation = {},
+    dataSucreConsommation = {},
     dataEducation = {};
 
 /* Constantes */
@@ -129,7 +131,7 @@ function quatriemeFichier() {
 
 }
 
-/* Pour le radius - Population */
+/* Pour le cerveau - Education */
 function cinquiemeFichier() {
 
   Papa.parse(url_5, {
@@ -140,6 +142,31 @@ function cinquiemeFichier() {
 
                 var data = results.data;
                 dataEducation = clone(data);
+                siziemeFichier();
+
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour la consommation de sucre - obese */
+function siziemeFichier() {
+
+  Papa.parse(url_6, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataSucreConsommation = clone(data);
                 creationStatues();
 
 
@@ -184,9 +211,10 @@ function creerStatue(ensembleStatue,paysChoisi) {
       texteIncome = document.createElement("a-text"),
       texteNom = document.createElement("a-text"),
       textePopulation = document.createElement("a-text"),
-      ui = document.createElement("a-entity");
-
-  ui.setAttribute("mixin","ui-hover-pays");
+      texteEducation = document.createElement("a-text"),
+      texteSucre = document.createElement("a-text"),
+      ui = document.createElement("a-entity"),
+      balloon = document.createElement("a-gltf-model");
 
   texteNom.setAttribute("text", {
     zOffset:0.02,
@@ -256,6 +284,40 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
+  texteEducation.setAttribute("text", {
+    zOffset:0.02,
+    yOffset:0,
+    color:0xffffff,
+    baseline:"center",
+    anchor:"center",
+    align:"center",
+    width:3.5,
+    whiteSpace:"pre",
+    tabSize:2.83,
+    lineHeight:35,
+    height:0.5,
+    value:"Mean Years of Schooling : " + dataEducation[paysChoisi][ANNEE_PAR_DEFAUT],
+    wrapCount:25,
+    alphaTest:1
+  });
+
+  texteSucre.setAttribute("text", {
+    zOffset:0.02,
+    yOffset:0,
+    color:0xffffff,
+    baseline:"center",
+    anchor:"center",
+    align:"center",
+    width:3.5,
+    whiteSpace:"pre",
+    tabSize:2.83,
+    lineHeight:35,
+    height:0.5,
+    value:"Sugar per person (g/day) : " + dataSucreConsommation[paysChoisi][ANNEE_PAR_DEFAUT],
+    wrapCount:29,
+    alphaTest:1
+  });
+
   texte.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
@@ -273,32 +335,46 @@ function creerStatue(ensembleStatue,paysChoisi) {
   });
 
   texte.setAttribute("position",{x:0,y:0,z:1.5});
+  balloon.setAttribute("position",{x:1,y:-1.5,z:1});
+  balloon.setAttribute("src","#balloon-gltf");
   sol.appendChild(texte);
-  statue.appendChild(ui);
+  //statue.appendChild(ui);
+  statue.appendChild(balloon);
+  ui.appendChild(texteNom);
   ui.appendChild(texteIncome);
   ui.appendChild(texteLife);
   ui.appendChild(textePopulation);
-  ui.appendChild(texteNom);
+  ui.appendChild(texteEducation);
+  ui.appendChild(texteSucre);
+  ui.setAttribute("mixin","ui-hover-pays");
   ui.setAttribute("position",{x:0,y:6,z:4});
-  texteIncome.setAttribute("position",{x:0,y:0.1,z:0});
-  texteLife.setAttribute("position",{x:0,y:-0.3,z:0});
-  textePopulation.setAttribute("position",{x:0,y:-0.7,z:0});
-  texteNom.setAttribute("position",{x:0,y:0.775,z:0});
+  texteNom.setAttribute("position",{x:0,y:1.25,z:0});
+  texteIncome.setAttribute("position",{x:0,y:0.5,z:0});
+  texteLife.setAttribute("position",{x:0,y:0.1,z:0});
+  textePopulation.setAttribute("position",{x:0,y:-0.3,z:0});
+  texteEducation.setAttribute("position",{x:0,y:-0.7,z:0});
+  texteSucre.setAttribute("position",{x:0,y:-1.1,z:0});
   statue.setAttribute("position",{x:paysChoisi,y:0.125,z:0});
+  /*lagg trop avec randomize a true
   statue.setAttribute('particle-system', {
-    preset: 'default',
-    color: '#808080',
-    maxParticleCount:8,
+
+    color:"#D3D3D3",
+    maxParticleCount:1,
     type:3,
-    maxAge:2,
-    size:1.5,
-    blending:2,
-    randomize:true,
-    positionSpread:{x:1,y:1,z:1},
+    maxAge:1,
+    duration:0,
+    size:1,
+    blending:3,
+    randomize:false,
+    rotationAxis:"x",
+    positionSpread:{x:0,y:0,z:0},
+    accelerationValue:{x:0,y:1,z:0},
+    velocityValue:{x:0,y:-4,z:0},
+    direction:1,
+    particleCount:2,
     texture:".../img/smoke.png"
 
-  });
-  //sol.setAttribute("particle-system","color","red");
+  });*/
 
   /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphs d'activer. */
   statue.addEventListener("model-loaded",function() {
@@ -332,15 +408,16 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
     /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
     statue.getObject3D("mesh").children[0].material.color = couleur;
+    balloon.getObject3D("mesh").children[0].material.color = couleur;
+    balloon.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT];
+    /* Consommation sucre gram par jour - obese */
+    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][ANNEE_PAR_DEFAUT]/100;
 
     /* Income - grandeur */
   	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;
 
     /* Année d'éducation en moyen -Rayon Population cerveau */
   	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12;
-
-    /* Income - nez */
-  	//statue.getObject3D("mesh").children[0].morphTargetInfluences[4] = paysChoisi*0.25//dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/134864; 3.2
 
     /* Pose initiale */
     //statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
@@ -358,11 +435,12 @@ function creationStatues() {
   sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
   sessionStorage.setItem("dataRayonPopulation", JSON.stringify(dataRayonPopulation));
   sessionStorage.setItem("dataEducation", JSON.stringify(dataEducation));
+  sessionStorage.setItem("dataSucreConsommation", JSON.stringify(dataSucreConsommation));
 
   var ensembleStatue = document.querySelector("#ensembleStatue");
 
   /* Boucle qui parcourt tous les pays */
-	for(var i = 1; i < 2; i++) {
+	for(var i = 1; i < 25; i++) {
 
 		creerStatue(ensembleStatue,i);
 

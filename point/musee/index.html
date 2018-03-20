@@ -28,7 +28,7 @@
     -->
   </head>
   <body>
-    <a-scene stats avatar-recorder environment="grid: none; dressingUniformScale: false;
+    <a-scene stats stats-in-vr avatar-recorder environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat;
                                 active: true;gridColor: #ffffff;
@@ -44,7 +44,7 @@
                  material="color:#ffffff"></a-mixin>
         <!-- Panneau hover pays du graphe -->
         <a-mixin id="ui-hover-pays" position="0 1.25 0"
-                 slice9="width:3.2;height:2;bottom:43.81;left:20;
+                 slice9="width:3.8;height:3;bottom:43.81;left:20;
                          right:43;top:20;src:img/slice9_texture/tooltip.png;
                          color:white;padding:0.02;transparent:false;
                          side:front;"></a-mixin>
@@ -134,8 +134,9 @@
         src="audio/Desert sound - Sound effect.mp3"></audio>-->
         <img id="gapminder" src="img/gap.png">
 
-        <!-- Model statuette -->
+        <!-- Models gltf -->
         <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
+        <a-asset-item id="balloon-gltf" src="model/balloon/balloon.gltf"></a-asset-item>
       </a-assets>
 
       <!-- Les mains -->
@@ -336,7 +337,7 @@
                 position="1.224 0 0" text="color:#000000;wrapCount:20.68;side: double;"></a-text>
         <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
                 position="1.8 -1.8 0" text="color:#000000;wrapCount:25.68;side: double;align:center;"></a-text>
-      </a-sphere>-->
+      </a-sphere> -->
 
       <!-- Instruction
       <a-text text="alphaTest:0.6;
