@@ -5,12 +5,14 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_4 = ".../csv/Rayon des spheres Population Pays.csv",
     url_5 = ".../csv/mean-years-of-schooling-for-those-aged-15-and-older.csv",
     url_6 = ".../csv/indicator sugar_consumption.csv",
+    url_7 = ".../csv/indicator CDIAC carbon_dioxide_emissions_per_capita.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
     dataPopulation = {},
     dataSucreConsommation = {},
-    dataEducation = {};
+    dataEducation = {},
+    dataPollution = {};
 
 /* Constantes */
 const POSITION_STATUE_X = [-5,-3,-1,1,3,5];
@@ -167,6 +169,31 @@ function siziemeFichier() {
 
                 var data = results.data;
                 dataSucreConsommation = clone(data);
+                septiemeFichier();
+
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour l'émission annuelle de CO2 par 1000 tones */
+function septiemeFichier() {
+
+  Papa.parse(url_7, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataPollution = clone(data);
                 creationStatues();
 
 
@@ -188,24 +215,10 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
 	/* Créer le sol */
 	var sol = document.createElement("a-box"),
-			statue = document.createElement("a-entity");
-
-	statue.setAttribute("gltf-model","#statuette_v3-gltf"); // Modèle middle res
-	statue.appendChild(sol);
-	sol.setAttribute("position",{x:0,y:-0.55,z:0});
-	sol.setAttribute("geometry",{depth:3,height:1,width:3});
-	statue.setAttribute("scale",{x:0.125,y:0.125,z:0.125});
-  statue.setAttribute("class","statue");
-
-	ensembleStatue.appendChild(statue);
-
-	/* Modifie les valeurs de la statue */
-  var rowIncome = dataIncome[paysChoisi];
-  var rowLife = dataLife[paysChoisi];
-
-  var //scale = dataRayonPopulation[i][ANNEE_PAR_DEFAUT]/1.125,
-      income_cell_l = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT].length,
-      position = {x:-0.8, y:0.05, z:0},
+			statue = document.createElement("a-entity"),
+      couleur = {},
+      //income_cell_l = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT].length,
+      position = {x:69, y:69, z:69},
       texte = document.createElement("a-text"),
       texteLife = document.createElement("a-text"),
       texteIncome = document.createElement("a-text"),
@@ -214,7 +227,19 @@ function creerStatue(ensembleStatue,paysChoisi) {
       texteEducation = document.createElement("a-text"),
       texteSucre = document.createElement("a-text"),
       ui = document.createElement("a-entity"),
-      balloon = document.createElement("a-gltf-model");
+      balloon = document.createElement("a-entity"),
+      bouteille = document.createElement("a-obj-model"),
+      alcohol = document.createElement("a-obj-model"),
+      nuage = document.createElement("a-obj-model");
+
+	statue.setAttribute("gltf-model","#statuette_v3-gltf"); // Modèle middle res
+	sol.setAttribute("position",{x:0,y:-0.55,z:0});
+	sol.setAttribute("geometry",{depth:3,height:1,width:3});
+	statue.setAttribute("scale",{x:0.125,y:0.125,z:0.125});
+  statue.setAttribute("class","statue");
+
+	ensembleStatue.appendChild(statue);
+  ensembleStatue.setAttribute("position",{x:-8,y:0,z:0});
 
   texteNom.setAttribute("text", {
     zOffset:0.02,
@@ -297,7 +322,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     lineHeight:35,
     height:0.5,
     value:"Mean Years of Schooling : " + dataEducation[paysChoisi][ANNEE_PAR_DEFAUT],
-    wrapCount:25,
+    wrapCount:26,
     alphaTest:1
   });
 
@@ -335,11 +360,23 @@ function creerStatue(ensembleStatue,paysChoisi) {
   });
 
   texte.setAttribute("position",{x:0,y:0,z:1.5});
-  balloon.setAttribute("position",{x:1,y:-1.5,z:1});
-  balloon.setAttribute("src","#balloon-gltf");
+  balloon.setAttribute("position",{x:1,y:1,z:1});
+  bouteille.setAttribute("position",{x:0.5,y:-0.125,z:1});
+  bouteille.setAttribute("material",{opacity:0.5});
+  bouteille.setAttribute("src","#bouteille-obj");
+  alcohol.setAttribute("material",{color:"#74330F"});
+  alcohol.setAttribute("src","#alcohol-obj");
+  nuage.setAttribute("position",{x:0,y:10 + (3*dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486),z:0});
+  nuage.setAttribute("material",{color:"#3A3A3A",opacity:1});
+  nuage.setAttribute("src","#nuage-obj");
+  statue.setAttribute("statue",{numero:paysChoisi});
+  bouteille.appendChild(alcohol);
   sol.appendChild(texte);
-  //statue.appendChild(ui);
+  statue.appendChild(ui);
   statue.appendChild(balloon);
+  statue.appendChild(bouteille);
+  statue.appendChild(nuage);
+  statue.appendChild(sol);
   ui.appendChild(texteNom);
   ui.appendChild(texteIncome);
   ui.appendChild(texteLife);
@@ -376,10 +413,10 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
   });*/
 
-  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphs d'activer. */
+  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphsTarget d'activer. */
   statue.addEventListener("model-loaded",function() {
 
-    var couleur = {};
+  //console.log(statue.hasLoaded)
 
     /* Association couleur - Life Expectancy */
     if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 40) {
@@ -408,21 +445,34 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
     /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
     statue.getObject3D("mesh").children[0].material.color = couleur;
-    balloon.getObject3D("mesh").children[0].material.color = couleur;
-    balloon.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT];
+
     /* Consommation sucre gram par jour - obese */
-    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][ANNEE_PAR_DEFAUT]/100;
+   statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][ANNEE_PAR_DEFAUT]/100;
 
     /* Income - grandeur */
-  	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;
+   statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[paysChoisi][ANNEE_PAR_DEFAUT]/13486;
 
     /* Année d'éducation en moyen -Rayon Population cerveau */
-  	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12;
+   statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12;
 
     /* Pose initiale */
     //statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
 
   });
+
+  /* Population qui affecte le ballon */
+  balloon.setAttribute("material",{color:"red"});
+  balloon.setAttribute("geometry",{
+
+    primitive:"sphere",
+    radius:dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT]*1.5,
+    segmentsHeight:4,
+    segmentsWidth:10
+
+  });
+
+  /* Pollution qui affecte nuage */
+    nuage.setAttribute("material",{opacity:dataPollution[paysChoisi][ANNEE_PAR_DEFAUT]/69})
 
 }
 
