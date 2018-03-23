@@ -13,13 +13,14 @@
     <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
     <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
     <script src="components/rafraichissement.js"></script>
     <script src="components/statue.js"></script>
     <!--
-    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+
     <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
     <script src="components/changement-outil.js"></script>
   <script src="components/ligne-du-temps.js"></script>
@@ -40,6 +41,13 @@
                                 ground:none">
 
       <a-assets>
+        <!-- Models gltf -->
+        <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
+        <!-- Models obj -->
+        <a-asset-item id="bouteille-obj" src="model/bouteille_low_poly/bouteille.obj"></a-asset-item>
+        <a-asset-item id="alcohol-obj" src="model/bouteille_low_poly/alcohol.obj"></a-asset-item>
+        <a-asset-item id="nuage-obj" src="model/nuage/nuage.obj"></a-asset-item>
+        <a-asset-item id="money-obj" src="model/money_sign/money_sign.obj"></a-asset-item>
         <!-- Repère timeline -->
         <a-mixin id="ligneTemps" geometry="height:0.05;width:0.05;depth:0.5"
                  material="color:#ffffff"></a-mixin>
@@ -134,14 +142,6 @@
         <audio id="desert" loop='true' autoplay="true"
         src="audio/Desert sound - Sound effect.mp3"></audio>-->
         <img id="gapminder" src="img/gap.png">
-
-        <!-- Models gltf -->
-        <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
-        <a-asset-item id="balloon-gltf" src="model/balloon/balloon.gltf"></a-asset-item>
-        <!-- Models obj -->
-        <a-asset-item id="bouteille-obj" src="model/bouteille_low_poly/bouteille.obj"></a-asset-item>
-        <a-asset-item id="alcohol-obj" src="model/bouteille_low_poly/alcohol.obj"></a-asset-item>
-        <a-asset-item id="nuage-obj" src="model/nuage/nuage.obj"></a-asset-item>
       </a-assets>
 
       <!-- Les mains -->
@@ -323,7 +323,7 @@
             </a-entity>
           </a-entity>
         </a-entity>
-        <a-entity id="rhand" raycaster="objects:.sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
+        <a-entity id="rhand" teleport-controls="type:parabolic;button:grip" raycaster="objects:.sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
         laser-controls="hands:right" motion-capture-recorder="hand: right;  persistStroke:true;recordingControls: true;visibleStroke:true;"
         line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
@@ -333,8 +333,12 @@
 
       <!-- Environment -->
       <a-plane position="0 0.001 0" rotation="270 0 0" geometry="width:15;height:15;" material="color:#808080;"></a-plane>
-      <a-cylinder position="0 1.499 0" geometry="radius:7;height:3;openEnded:true;" material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>
+      <a-cylinder position="0 1.999 0" geometry="radius:8;height:4;openEnded:true;segmentsRadial:4;thetaStart:45"
+                  material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>
       <a-plane position="0 2.999 0" rotation="90 0 0" geometry="width:15;height:15;" material="color:#c0c0c0;"></a-plane>
+      <a-plane position="0 0.6 0.001" text__nomContinent="value:Americas;align:center;width:25">
+
+      </a-plane>
       <!-- Titre du graphe
       <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
                 position="-10 2 2.125" rotation="0 90 0" geometry="primitive:circle;radius:1.04">
