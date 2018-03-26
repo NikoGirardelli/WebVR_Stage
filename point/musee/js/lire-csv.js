@@ -7,6 +7,7 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     url_6 = ".../csv/indicator sugar_consumption.csv",
     url_7 = ".../csv/indicator CDIAC carbon_dioxide_emissions_per_capita.csv",
     url_8 = ".../csv/indicator alcohol consumption.csv",
+    url_9 = ".../csv/consumption-per-smoker-per-day.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
@@ -14,12 +15,54 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     dataSucreConsommation = {},
     dataEducation = {},
     dataPollution = {},
-    dataAlcoolConsommation = {};
+    dataAlcoolConsommation = {},
+    dataCigarette = {};
 
 /* Constantes */
 const POSITION_STATUE_X = [-5,-3,-1,1,3,5];
 const POSITION_STATUE_Z = [-5,-3,-1,1,3,5];
-const ANNEE_PAR_DEFAUT = 50; // Les données sont entre 1950 et 2010 - ANNEE_PAR_DEFAUT = 1965
+const ANNEE_PAR_DEFAUT = 51; //1950 Les données sont entre 1950 et 2010 - ANNEE_PAR_DEFAUT = 1965
+const POSITION_ALL = [
+  /* Americas */
+  {x:-2.25,y:0.125,z:-4.5},
+  {x:-1.125,y:0.125,z:-4.5},
+  {x:0,y:0.125,z:-4.5},
+  {x:1.125,y:0.125,z:-4.5},
+  {x:2.25,y:0.125,z:-4.5},
+  /* Europe */
+  {x:4.5,y:0.125,z:-3},
+  {x:4.5,y:0.125,z:-1.875},
+  {x:4.5,y:0.125,z:-0.75},
+  {x:4.5,y:0.125,z:0.375},
+  {x:4.5,y:0.125,z:1.5},
+  {x:4.5,y:0.125,z:2.625},
+  /* Asia */
+  {x:-4.125,y:0.125,z:4.5},
+  {x:-3,y:0.125,z:4.5},
+  {x:-1.875,y:0.125,z:4.5},
+  {x:-0.75,y:0.125,z:4.5},
+  {x:0.375,y:0.125,z:4.5},
+  {x:1.5,y:0.125,z:4.5},
+  {x:2.625,y:0.125,z:4.5},
+  {x:3.75,y:0.125,z:4.5},
+  /* Africa */
+  {x:-4.5,y:0.125,z:-2.25},
+  {x:-4.5,y:0.125,z:-1.125},
+  {x:-4.5,y:0.125,z:0},
+  {x:-4.5,y:0.125,z:1.125},
+  {x:-4.5,y:0.125,z:2.25}
+];
+
+const ROTATION_ALL = [
+  /* Americas */
+  {x:0,y:0,z:0},
+  /* Europe */
+  {x:0,y:270,z:0},
+  /* Asia */
+  {x:0,y:180,z:0},
+  /* Africa */
+  {x:0,y:90,z:0}
+];
 
 /* S'occupe de copier le JSON -
 *  http://outset.ws/blog/article/clone-duplicate-json-object-in-javascript
@@ -221,6 +264,31 @@ function huitiemeFichier() {
 
                 var data = results.data;
                 dataAlcoolConsommation = clone(data);
+                neuviemeFichier();
+
+
+    },
+
+    error: function(err, file)
+    {
+      console.log("ERROR:", err, file);
+    }
+
+  });
+
+}
+
+/* Pour la consommation de cigarette */
+function neuviemeFichier() {
+
+  Papa.parse(url_9, {
+
+    download:true,
+    dynamicTyping:true,
+    complete: function (results,file){
+
+                var data = results.data;
+                dataCigarette = clone(data);
                 creationStatues();
 
 
@@ -257,7 +325,8 @@ function creerStatue(ensembleStatue,paysChoisi) {
       bouteille = document.createElement("a-obj-model"),
       alcohol = document.createElement("a-obj-model"),
       nuage = document.createElement("a-obj-model"),
-      argent = document.createElement("a-obj-model");
+      argent = document.createElement("a-obj-model"),
+      cigarette = document.createElement("a-obj-model");
 
   texteNom.setAttribute("text", {
     zOffset:0.02,
@@ -387,21 +456,50 @@ function creerStatue(ensembleStatue,paysChoisi) {
   texteSucre.setAttribute("position",{x:0,y:-1.1,z:0});
 
   /* Statue */
+  /* Rotation statue */
+  if(paysChoisi - 1 < 5) {
+    statue.setAttribute("rotation",ROTATION_ALL[0]);
+  }
+  else if(paysChoisi - 1 < 11) {
+    statue.setAttribute("rotation",ROTATION_ALL[1]);
+  }
+  else if(paysChoisi - 1 < 19) {
+    statue.setAttribute("rotation",ROTATION_ALL[2]);
+  }
+  else {
+    statue.setAttribute("rotation",ROTATION_ALL[3]);
+  }
+
   statue.setAttribute("gltf-model","#statuette_v3-gltf"); // Modèle middle res
 	statue.setAttribute("scale",{x:0.125,y:0.125,z:0.125});
   statue.setAttribute("class","statue");
   statue.setAttribute("statue",{numero:paysChoisi});
-  statue.setAttribute("position",{x:paysChoisi,y:0.125,z:0});
+  statue.setAttribute("position",POSITION_ALL[paysChoisi - 1]);
   statue.appendChild(ui);
   //statue.appendChild(balloon);
   statue.appendChild(bouteille);
   statue.appendChild(nuage);
   statue.appendChild(sol);
   statue.appendChild(argent);
+  statue.appendChild(cigarette);
+
+  /* Cigarette */
+  cigarette.setAttribute("src","#cigarette-obj");
+  cigarette.setAttribute("mtl","#cigarette-mtl");
+  cigarette.setAttribute("position",{
+    x:-0.3,
+    y:-0.06, //+ (6.5*dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT]),
+    z:0.9
+  });
+  cigarette.setAttribute("scale",{
+    x:0.15,// + (0.005*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT]),
+    y:0.1+ (0.0075*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT]),
+    z:0.15 //+ (0.005*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT])
+  });
 
   /* Ensemble Statue */
 	ensembleStatue.appendChild(statue);
-  ensembleStatue.setAttribute("position",{x:-8,y:0,z:0});
+  ensembleStatue.setAttribute("position",{x:0,y:0,z:0});
 
   /* Ballon
   balloon.setAttribute("position",{x:1,y:1,z:1});
@@ -559,10 +657,11 @@ function creationStatues() {
   sessionStorage.setItem("dataSucreConsommation", JSON.stringify(dataSucreConsommation));
   sessionStorage.setItem("dataAlcoolConsommation", JSON.stringify(dataAlcoolConsommation));
   sessionStorage.setItem("dataPollution", JSON.stringify(dataPollution));
+  sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));
 
   var ensembleStatue = document.querySelector("#ensembleStatue");
 
-  /* Boucle qui parcourt tous les pays */
+  /* Boucle qui parcourt tous les pays 25*/
 	for(var i = 1; i < 25; i++) {
 
 		creerStatue(ensembleStatue,i);
