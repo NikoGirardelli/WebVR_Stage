@@ -3,7 +3,7 @@
 AFRAME.registerComponent("statue", {
 
 		schema: {
-	  	numero: {type: 'int', default: 0}
+	  	numeroPays: {type: 'int', default: 0}// Garder en mémoire l'indice de l'enfant
 		},
 
 		init: function () {
@@ -15,170 +15,130 @@ AFRAME.registerComponent("statue", {
 					hoverEnCours = false,
 					mainPointeur = document.querySelector("#rhand");
 
-			/* Raycaster-intersected */
-			this.eventScalingBegining = function() {
-
-				leThis.peutHover();
-			//	mainPointeur.components.raycaster.refreshObjects();
-				/* Si le pays est visible */
-				if(this.getAttribute("visible") == true){
-
-					leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
-
-				}
-
-      };
-
-			/* Raycaster-intersected-cleared.
-			*  Fonctionne seulement lorsqu'on ne vise plus
-			*/
-			this.eventScalingEnding = function() {
-
-				hoverEnCours = false;
-				leThis.selectionnerPays(this);
-
-      };
-
-			/* Afficher ou ne pas afficher le nom des pays */
-			this.selectionnerPays = function(objetVise) {
-
-				var l = continentAppartenant.children.length;
-
-				if(hoverEnCours == true) {
-
-					for(var i = 0;i < l;i++){
-
-						/* Titre pays du continent */
-						continentAppartenant.children[i].children[0].setAttribute("visible",true);
-
-					}
-
-					el.children[1].setAttribute("visible",true);
-          el.children[0].setAttribute("visible",false);
-          el.object3D.children[0].material.opacity = 1;
-
-				}
-
-				else if(hoverEnCours == false) {
-
-					for(var j = 0;j < l;j++){
-
-						/* Titre pays du continent */
-						continentAppartenant.children[j].children[0].setAttribute("visible",false);
-
-					}
-
-					el.children[1].setAttribute("visible",false);
-          el.children[0].setAttribute("visible",false);
-          el.object3D.children[0].material.opacity = 0.3;
-
-				}
-
-			};
-
-      /* Si on a compté au moins pays de survoler,
-      *  on ne peut pas hover un autre.
-      */
-      this.peutHover = function() {
-
-				var lesPays = document.querySelectorAll(".sphereGraphe"),
-						l = lesPays.length,
-						compteur = 0;
-
-				for(var i = 0;i < l;i++) {
-
-					// Si un ui est déjà visible
-					if(lesPays[i].children[1].getAttribute("visible") == true) {
-
-						compteur ++;
-
-					}
-
-				}
-
-				if(compteur > 1) {
-
-					hoverEnCours = false;
-					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
-
-				}
-				else if(compteur == 0) {
-
-					hoverEnCours = true;
-					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
-
-				}
-
-				return compteur;
-
-      };
-
-			//this.metamorphoserStatue()
-
     },
 
-		metamorphoserStatue:function() {
+		metamorphoserStatue:function(annee) {
 
-			var statue = this.el,
-					annee = 12,
-					couleur = {};
+			//var annee = 16; // 1965
 
-			statue.addEventListener("model-loaded",function() {
+			/* Créer le sol */
+			var paysChoisi = this.data.numeroPays,
+		      couleur = {},
+					statue = this.el,
+					ui = statue.children[0],
+		      texteNom = ui.children[0],
+		      texteData1 = ui.children[1],
+		      texteData2 = ui.children[2],
+		      texteData3 = ui.children[3],
+		      texteData4 = ui.children[4],
+		      texteData5 = ui.children[5],
+		      bouteille = statue.children[1],
+		      alcohol = bouteille.children[0],
+		      nuage = statue.children[2],
+					sol = statue.children[3],
+					texteNomBase = sol.children[0],
+		      argent = statue.children[4],
+		      cigarette = statue.children[5];
 
-		    console.log(statue.hasLoaded)
+		  texteNom.setAttribute("text", {
+		    value:dataIncome[paysChoisi][0]
+		  });
 
-		    /* Association couleur - Life Expectancy
+		  texteData1.setAttribute("text", {
+		    value:"Income: " + dataIncome[paysChoisi][annee] + " $"
+		  });
+
+		  texteData2.setAttribute("text", {
+		    value:"Life Expectancy: " + dataLife[paysChoisi][annee] + " years"
+		  });
+
+		  texteData3.setAttribute("text", {
+		    value:"Population : " + dataPopulation[paysChoisi][annee]
+		  });
+
+		  texteData4.setAttribute("text", {
+		    value:"Mean Years of Schooling : " + dataEducation[paysChoisi][annee]
+		  });
+
+		  texteData5.setAttribute("text", {
+		    value:"Sugar per person (g/day) : " + dataSucreConsommation[paysChoisi][annee]
+		  });
+
+		  texteNomBase.setAttribute("text", {
+		    value:dataIncome[paysChoisi][0]
+		  });
+
+			/* Cigarette */
+		  cigarette.setAttribute("scale",{
+		    x:0.15,
+		    y:0.1+ (0.0075*dataCigarette[paysChoisi][annee]),
+		    z:0.15
+		  });
+
+		  /* Alcool */
+		  alcohol.setAttribute("scale",{
+		    x:1,
+		    y:dataAlcoolConsommation[paysChoisi][annee]/19.15,
+		    z:1
+		  });
+
+		  /* Nuage */
+		  nuage.setAttribute("scale",{
+		    x:0.3 + (3*dataPollution[paysChoisi][annee]/69),
+		    y:0.3 + (3*dataPollution[paysChoisi][annee]/69),
+		    z:0.3 + (3*dataPollution[paysChoisi][annee]/69)
+		  });
+		  nuage.setAttribute("position",{
+		    x:0,
+		    y:10 + (6.5*dataRayonPopulation[paysChoisi][annee]),
+		    z:0
+		  });
+
+		  /* Argent */
+		  argent.setAttribute("scale",{
+		    x:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
+		    y:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
+		    z:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486)
+		  });
+
+		  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphsTarget d'activer. */
+		  statue.addEventListener("model-loaded",function() {
+
+		    /* Association couleur - Life Expectancy */
 		    if(dataLife[paysChoisi][annee] < 40) {
 
-		      couleur = {r:0.33,g:0.42,b:0.18}; // Roche
-
+		      couleur = COULEUR_STATUE[0]; // Vert
 		    }
 
 		    else if(dataLife[paysChoisi][annee] < 50) {
 
-		      couleur = {r:0.80,g:0.50,b:0.20}; // Bronze
+		      couleur = COULEUR_STATUE[1]; // Bronze
 
 		    }
 
 		    else if(dataLife[paysChoisi][annee] < 70) {
 
-		      couleur = {r:0.75,g:0.75,b:0.75}; // Argent
+		      couleur = COULEUR_STATUE[2]; // Argent
 
 		    }
 
 		    else if(dataLife[paysChoisi][annee] > 70) {
 
-		      couleur = {r:0.85,g:0.65,b:0.13}; // Or
+		      couleur = COULEUR_STATUE[3]; // Or
 
-		    }*/
+		    }
 
 		    /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
 		    statue.getObject3D("mesh").children[0].material.color = couleur;
 
 		    /* Consommation sucre gram par jour - obese */
-		    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[data.numeroPays][annee]/100;
+		    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][annee]/100;
 
-		    /* Income - grandeur */
-		  	statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = dataIncome[data.numeroPays][annee]/13486;
+		    /* Population - grandeur */
+		    statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][annee];
 
 		    /* Année d'éducation en moyen -Rayon Population cerveau */
-		  	statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[data.numeroPays][annee]/12;
-
-		    /* Pose initiale */
-		    //statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
-
-		  });
-
-			bouteille.setAttribute("material",{src:"#gapminder"});
-
-		  /* Population qui affecte le ballon */
-		  balloon.setAttribute("material",{color:"red"});
-		  balloon.setAttribute("geometry",{
-
-		    primitive:"sphere",
-		    radius:dataRayonPopulation[data.numeroPays][annee]*1.5,
-		    segmentsHeight:4,
-		    segmentsWidth:10
+		    statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][annee]/12;
 
 		  });
 
@@ -186,25 +146,17 @@ AFRAME.registerComponent("statue", {
 
 		play:function () {
 
-			/* Lorsque qu'on hover le sphere */
-	   // this.el.addEventListener('raycaster-intersected', this.eventScalingBegining);
-
-			/* Lorsque qu'on ne hover plus le sphere */
-      //this.el.addEventListener('raycaster-intersected-cleared', this.eventScalingEnding);
+			this.metamorphoserStatue(66)
 
 		},
 
 		pause:function() {
 
-			//this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
-			//this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 
 		},
 
 		remove:function() {
 
-//			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
-	//		this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 
 		}
 

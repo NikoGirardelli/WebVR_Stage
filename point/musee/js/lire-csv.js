@@ -19,8 +19,6 @@ var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
     dataCigarette = {};
 
 /* Constantes */
-const POSITION_STATUE_X = [-5,-3,-1,1,3,5];
-const POSITION_STATUE_Z = [-5,-3,-1,1,3,5];
 const ANNEE_PAR_DEFAUT = 51; //1950 Les données sont entre 1950 et 2010 - ANNEE_PAR_DEFAUT = 1965
 const POSITION_ALL = [
   /* Americas */
@@ -62,6 +60,13 @@ const ROTATION_ALL = [
   {x:0,y:180,z:0},
   /* Africa */
   {x:0,y:90,z:0}
+];
+
+const COULEUR_STATUE = [
+  {r:0.33,g:0.42,b:0.18},
+  {r:0.80,g:0.50,b:0.20},
+  {r:0.75,g:0.75,b:0.75},
+  {r:0.85,g:0.65,b:0.13}
 ];
 
 /* S'occupe de copier le JSON -
@@ -306,22 +311,18 @@ function neuviemeFichier() {
 /* S'occupe de créer une statue pour un pays choisi */
 function creerStatue(ensembleStatue,paysChoisi) {
 
-  var income_l = 25//dataIncome.length - 1;
-
 	/* Créer le sol */
 	var sol = document.createElement("a-box"),
 			statue = document.createElement("a-entity"),
       couleur = {},
-      position = {x:69, y:69, z:69},
-      texte = document.createElement("a-text"),
-      texteLife = document.createElement("a-text"),
-      texteIncome = document.createElement("a-text"),
+      texteNomBase = document.createElement("a-text"),
       texteNom = document.createElement("a-text"),
-      textePopulation = document.createElement("a-text"),
-      texteEducation = document.createElement("a-text"),
-      texteSucre = document.createElement("a-text"),
+      texteData1 = document.createElement("a-text"),
+      texteData2 = document.createElement("a-text"),
+      texteData3 = document.createElement("a-text"),
+      texteData4 = document.createElement("a-text"),
+      texteData5 = document.createElement("a-text"),
       ui = document.createElement("a-entity"),
-    //  balloon = document.createElement("a-entity"),
       bouteille = document.createElement("a-obj-model"),
       alcohol = document.createElement("a-obj-model"),
       nuage = document.createElement("a-obj-model"),
@@ -345,7 +346,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  texteIncome.setAttribute("text", {
+  texteData1.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0xffffff,
@@ -362,7 +363,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  texteLife.setAttribute("text", {
+  texteData2.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0xffffff,
@@ -379,7 +380,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  textePopulation.setAttribute("text", {
+  texteData3.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0xffffff,
@@ -396,7 +397,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  texteEducation.setAttribute("text", {
+  texteData4.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0xffffff,
@@ -413,7 +414,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  texteSucre.setAttribute("text", {
+  texteData5.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0xffffff,
@@ -430,7 +431,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
     alphaTest:1
   });
 
-  texte.setAttribute("text", {
+  texteNomBase.setAttribute("text", {
     zOffset:0.02,
     yOffset:0,
     color:0x191919,
@@ -447,13 +448,13 @@ function creerStatue(ensembleStatue,paysChoisi) {
   });
 
   /* Textes UI */
-  texte.setAttribute("position",{x:0,y:0,z:1.5});
+  texteNomBase.setAttribute("position",{x:0,y:0,z:1.5});
   texteNom.setAttribute("position",{x:0,y:1.25,z:0});
-  texteIncome.setAttribute("position",{x:0,y:0.5,z:0});
-  texteLife.setAttribute("position",{x:0,y:0.1,z:0});
-  textePopulation.setAttribute("position",{x:0,y:-0.3,z:0});
-  texteEducation.setAttribute("position",{x:0,y:-0.7,z:0});
-  texteSucre.setAttribute("position",{x:0,y:-1.1,z:0});
+  texteData1.setAttribute("position",{x:0,y:0.5,z:0});
+  texteData2.setAttribute("position",{x:0,y:0.1,z:0});
+  texteData3.setAttribute("position",{x:0,y:-0.3,z:0});
+  texteData4.setAttribute("position",{x:0,y:-0.7,z:0});
+  texteData5.setAttribute("position",{x:0,y:-1.1,z:0});
 
   /* Statue */
   /* Rotation statue */
@@ -473,10 +474,9 @@ function creerStatue(ensembleStatue,paysChoisi) {
   statue.setAttribute("gltf-model","#statuette_v3-gltf"); // Modèle middle res
 	statue.setAttribute("scale",{x:0.125,y:0.125,z:0.125});
   statue.setAttribute("class","statue");
-  statue.setAttribute("statue",{numero:paysChoisi});
+  statue.setAttribute("statue",{numeroPays:paysChoisi});
   statue.setAttribute("position",POSITION_ALL[paysChoisi - 1]);
   statue.appendChild(ui);
-  //statue.appendChild(balloon);
   statue.appendChild(bouteille);
   statue.appendChild(nuage);
   statue.appendChild(sol);
@@ -488,30 +488,18 @@ function creerStatue(ensembleStatue,paysChoisi) {
   cigarette.setAttribute("mtl","#cigarette-mtl");
   cigarette.setAttribute("position",{
     x:-0.3,
-    y:-0.06, //+ (6.5*dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT]),
+    y:-0.06,
     z:0.9
   });
   cigarette.setAttribute("scale",{
-    x:0.15,// + (0.005*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT]),
+    x:0.15,
     y:0.1+ (0.0075*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT]),
-    z:0.15 //+ (0.005*dataCigarette[paysChoisi][ANNEE_PAR_DEFAUT])
+    z:0.15
   });
 
   /* Ensemble Statue */
 	ensembleStatue.appendChild(statue);
   ensembleStatue.setAttribute("position",{x:0,y:0,z:0});
-
-  /* Ballon
-  balloon.setAttribute("position",{x:1,y:1,z:1});
-  balloon.setAttribute("material",{color:"red"});
-  balloon.setAttribute("geometry",{
-
-    primitive:"sphere",
-    radius:dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT]*1.5,
-    segmentsHeight:4,
-    segmentsWidth:10
-
-  });*/
 
   /* Bouteille */
   bouteille.setAttribute("position",{x:0.5,y:-0.125,z:1});
@@ -557,7 +545,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
   });
 
   /* Sol */
-  sol.appendChild(texte);
+  sol.appendChild(texteNomBase);
   sol.setAttribute("position",{x:0,y:-0.55,z:0});
 	sol.setAttribute("geometry",{
     depth:3,
@@ -567,81 +555,14 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
   /* Ui */
   ui.appendChild(texteNom);
-  ui.appendChild(texteIncome);
-  ui.appendChild(texteLife);
-  ui.appendChild(textePopulation);
-  ui.appendChild(texteEducation);
-  ui.appendChild(texteSucre);
+  ui.appendChild(texteData1);
+  ui.appendChild(texteData2);
+  ui.appendChild(texteData3);
+  ui.appendChild(texteData4);
+  ui.appendChild(texteData5);
   ui.setAttribute("mixin","ui-hover-pays");
   ui.setAttribute("position",{x:0,y:6,z:4});
-
-  //lagg trop avec randomize a true
-  /*statue.setAttribute('particle-system', {
-
-    color:"#D3D3D3",
-    maxParticleCount:1,
-    type:3,
-    maxAge:1,
-    duration:0,
-    size:1,
-    blending:3,
-    randomize:false,
-    rotationAxis:"x",
-    positionSpread:{x:0,y:0,z:0},
-    accelerationValue:{x:0,y:1,z:0},
-    velocityValue:{x:0,y:-4,z:0},
-    direction:1,
-    particleCount:2,
-    texture:".../img/smoke.png"
-
-  });*/
-
-  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphsTarget d'activer. */
-  statue.addEventListener("model-loaded",function() {
-
-  //console.log(statue.hasLoaded)
-
-    /* Association couleur - Life Expectancy */
-    if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 40) {
-
-      couleur = {r:0.33,g:0.42,b:0.18}; // Roche
-
-    }
-
-    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 50) {
-
-      couleur = {r:0.80,g:0.50,b:0.20}; // Bronze
-
-    }
-
-    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] < 70) {
-
-      couleur = {r:0.75,g:0.75,b:0.75}; // Argent
-
-    }
-
-    else if(dataLife[paysChoisi][ANNEE_PAR_DEFAUT] > 70) {
-
-      couleur = {r:0.85,g:0.65,b:0.13}; // Or
-
-    }
-
-    /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
-    statue.getObject3D("mesh").children[0].material.color = couleur;
-
-    /* Consommation sucre gram par jour - obese */
-    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][ANNEE_PAR_DEFAUT]/100;
-
-    /* Population - grandeur */
-    statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][ANNEE_PAR_DEFAUT];
-
-    /* Année d'éducation en moyen -Rayon Population cerveau */
-    statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][ANNEE_PAR_DEFAUT]/12;
-
-    /* Pose initiale */
-    //statue.getObject3D("mesh").children[0].morphTargetInfluences[9] = 0;
-
-  });
+  ui.setAttribute("rotation",{x:-30,y:0,z:0});
 
 }
 
@@ -659,14 +580,24 @@ function creationStatues() {
   sessionStorage.setItem("dataPollution", JSON.stringify(dataPollution));
   sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));
 
-  var ensembleStatue = document.querySelector("#ensembleStatue");
+  var toutesLesStatues = document.querySelector("#toutesLesStatues");
+  var quatreStatues = document.querySelector("#quatreStatues");
 
   /* Boucle qui parcourt tous les pays 25*/
 	for(var i = 1; i < 25; i++) {
 
-		creerStatue(ensembleStatue,i);
+		creerStatue(toutesLesStatues,i);
 
 	}
+
+  /* Boucle qui crée 5 statue pour un pays/personalisable. */
+	for(var i = 1; i < 6; i++) {
+
+		creerStatue(quatreStatues,i);
+
+	}
+
+  quatreStatues.setAttribute("visible",false);
 
 }
 
