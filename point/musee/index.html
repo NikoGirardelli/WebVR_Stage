@@ -97,7 +97,15 @@
 
        <a-mixin id="Bouton" bouton-selection
                 material="opacity:1;color:#4c4c4c;"
-                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
         <a-mixin id="Americas" pays-selection
                 material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
@@ -118,9 +126,9 @@
         <a-mixin id="fadeCouleur" attribute="material.color" direction="reverse"
                  begin="playFadeCouleur"
                  to="#4c4c4c" dur="500"></a-mixin>
-        <a-mixin id="fadeBouton" attribute="material.color" direction="alternate"
+        <a-mixin id="fadeBouton" attribute="material.color"
                  begin="playFadeBouton" repeat="0"
-                 from="#4c4c4c" to="white" dur="500"></a-mixin>
+                 from="#4c4c4c" to="#000000" dur="500"></a-mixin>
         <a-mixin id="fadeAmericas" attribute="material.color" fill="both"
                  repeat="0"
                  from="#4c4c4c" to="#9ef03e" dur="500"></a-mixin>
@@ -156,11 +164,10 @@
         </a-camera>
         <a-entity id="lhand" vive-controls="hand:left;model:false">
 
-          <a-entity id="ui-joueur" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0"
-                    data-annee="0" data-csv="" data-piece="1">
+          <a-entity id="ui-joueur" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
 
             <!-- Fond -->
-            <a-entity position="0 -0.3 0"
+            <a-entity class="panneau" position="0 -0.3 0"
                       slice9="width:3;height:2;bottom:43.81;left:20;
                               right:43;top:20;src:img/slice9_texture/tooltip.png;
                               color:white;padding:0.02;
@@ -170,110 +177,72 @@
               <a-text class="textContinent" mixin="textContinent"
                       value="Data" position="0 0.8 0"></a-text>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 0.6 0.001" data-csv="0">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Cigarette per Smoker per day"></a-text>
-              </a-entity>
+                        position="0 0.6 0.001" data-csv="1"
+                        text="value:Alcohol Consumption;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 0.4 0.001" data-csv="1">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Alcohol Consumption"></a-text>
-              </a-entity>
+                        position="0 0.4 0.001" data-csv="2"
+                        text="value:Cigarette per Smoker per day;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 0.2 0.001" data-csv="2" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="CO2 Emissions per Capita"></a-text>
-              </a-entity>
+                        position="0 0.2 0.001" data-csv="3"
+                        text="value:Mean Years of Schooling;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 0 0.001" data-csv="3" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="GPD per Capita"></a-text>
-              </a-entity>
+                        position="0 0 0.001" data-csv="4"
+                        text="value:GPD per Capita;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 -0.2 0.001" data-csv="4" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Population"></a-text>
-              </a-entity>
+                        position="0 -0.2 0.001" data-csv="5"
+                        text="value:Life Expectancy;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 -0.4 0.001" data-csv="5" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Life Expectancy"></a-text>
-              </a-entity>
+                        position="0 -0.4 0.001" data-csv="6"
+                        text="value:CO2 Emissions per Capita;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 -0.6 0.001" data-csv="6" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Sugar Consumption"></a-text>
-              </a-entity>
+                        position="0 -0.6 0.001" data-csv="7"
+                        text="value:Population;"></a-entity>
               <a-entity class="panneauData" mixin="Bouton"
-                        position="0 -0.8 0.001" data-csv="7" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Mean Years of Schooling"></a-text>
-              </a-entity>
+                        position="0 -0.8 0.001" data-csv="8"
+                        text="value:Sugar Consumption;"></a-entity>
             </a-entity>
             <!-- Years -->
             <a-entity position="-0.35 -0.25 0">
               <a-text class="textContinent" mixin="textContinent"
                       value="Years" position="0 0.8 0"></a-text>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 0.6 0.001" data-annee="0">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="1950"></a-text>
-              </a-entity>
+                        position="0 0.6 0.001" data-annee="0"
+                        text="value:1950;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 0.4 0.001" data-annee="1">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="1960"></a-text>
-              </a-entity>
+                        position="0 0.4 0.001" data-annee="1"
+                        text="value:1960;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 0.2 0.001" data-annee="2" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="1970"></a-text>
-              </a-entity>
+                        position="0 0.2 0.001" data-annee="2"
+                        text="value:1970;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 0 0.001" data-annee="3" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="1980"></a-text>
-              </a-entity>
+                        position="0 0 0.001" data-annee="3"
+                        text="value:1980;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 -0.2 0.001" data-annee="4" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="1990"></a-text>
-              </a-entity>
+                        position="0 -0.2 0.001" data-annee="4"
+                        text="value:1990;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 -0.4 0.001" data-annee="5" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="2000"></a-text>
-              </a-entity>
+                        position="0 -0.4 0.001" data-annee="5"
+                        text="value:2000;"></a-entity>
               <a-entity class="panneauAnnee" mixin="Bouton"
-                        position="0 -0.6 0.001" data-annee="6" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="2010"></a-text>
-              </a-entity>
+                        position="0 -0.6 0.001" data-annee="6"
+                        text="value:2010;"></a-entity>
             </a-entity>
             <!-- Rooms -->
             <a-entity position="0.35 -0.25 0">
               <a-text class="textContinent" mixin="textContinent"
                       value="Room" position="0 0.8 0"></a-text>
               <a-entity class="panneauPiece" mixin="Bouton"
-                        position="0 0.6 0.001" data-piece="0">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Hub"></a-text>
-              </a-entity>
+                        position="0 0.6 0.001" data-piece="0"
+                        text="value:Hub;"></a-entity>
               <a-entity class="panneauPiece" mixin="Bouton"
-                        position="0 0.4 0.001" data-piece="1">
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="All Country"></a-text>
-              </a-entity>
+                        position="0 0.4 0.001" data-piece="1"
+                        text="value:All Countries;"></a-entity>
               <a-entity class="panneauPiece" mixin="Bouton"
-                        position="0 0.2 0.001" data-piece="2" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Country"></a-text>
-              </a-entity>
+                        position="0 0.2 0.001" data-piece="2"
+                        text="value:Country;"></a-entity>
               <a-entity class="panneauPiece" mixin="Bouton"
-                        position="0 0 0.001" data-piece="3" >
-                <a-text class="textPanneau" mixin="textPanneau"
-                        value="Customize"></a-text>
-              </a-entity>
+                        position="0 0 0.001" data-piece="3"
+                        text="value:Customize;"></a-entity>
             </a-entity>
             <!-- Tips
             <a-entity position="1.05 -0.25 0">
@@ -318,7 +287,7 @@
           </a-entity>
         </a-entity>
         <a-entity id="rhand"
-        raycaster="objects:.pointTeleportation,.panneauData,.panneauPiece,.panneauAnnee,
+        raycaster="objects:.pointTeleportation,.panneau,.panneauData,.panneauPiece,.panneauAnnee,
                            .sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
         laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>

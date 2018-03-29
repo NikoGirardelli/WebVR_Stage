@@ -85,8 +85,6 @@ AFRAME.registerComponent("modification-piece", {
 				quatreStatues = document.querySelector("#quatreStatues"),
 				lesCheckpoints = document.querySelectorAll(".pointTeleportation");
 
-				console.log(this.data.piece)
-
 		/* All Countries */
 		if(this.data.piece === LES_PIECES[1]) {
 

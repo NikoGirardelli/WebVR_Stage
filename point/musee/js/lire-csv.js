@@ -553,6 +553,13 @@ function creerStatue(ensembleStatue,paysChoisi) {
     width:3
   });
 
+  /* Désactivation */
+  argent.setAttribute('visible',false);
+  nuage.setAttribute('visible',false);
+  alcohol.setAttribute('visible',false);
+  bouteille.setAttribute('visible',false);
+  cigarette.setAttribute('visible',false);
+
   /* Ui */
   ui.appendChild(texteNom);
   ui.appendChild(texteData1);

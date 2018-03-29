@@ -1,9 +1,20 @@
 /* S'occupe de former la statue selon les datas. */
+const LES_ANNEES = [1,11,21,31,41,51,61];//1950,1960,1970,1980,1990,2000,2010
 
 AFRAME.registerComponent("statue", {
 
 		schema: {
-	  	numeroPays: {type: 'int', default: 0}// Garder en mémoire l'indice de l'enfant
+			annee: {type: 'int', default: LES_ANNEES[0], oneOf:LES_ANNEES},// Garder annee
+			dataAlcoolConsommation: {type: 'boolean', default: false},
+			dataCigarette: {type: 'boolean', default: false},
+			dataEducation: {type: 'boolean', default: false},
+			dataIncome: {type: 'boolean', default: false},
+			dataLife: {type: 'boolean', default: false},
+			dataPollution: {type: 'boolean', default: false},
+			dataPopulation: {type: 'boolean', default: false},
+			dataSucreConsommation: {type: 'boolean', default: false},
+			numeroPays: {type: 'int', default: 0}// Garder en mémoire l'indice de l'enfant
+
 		},
 
 		init: function () {
@@ -17,12 +28,10 @@ AFRAME.registerComponent("statue", {
 
     },
 
-		metamorphoserStatue:function(annee) {
+		metamorphoserStatue:function() {
 
-			//var annee = 16; // 1965
-
-			/* Créer le sol */
-			var paysChoisi = this.data.numeroPays,
+			var annee = this.data.annee,
+					paysChoisi = this.data.numeroPays,
 		      couleur = {},
 					statue = this.el,
 					ui = statue.children[0],
@@ -101,52 +110,117 @@ AFRAME.registerComponent("statue", {
 		    z:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486)
 		  });
 
-		  /* Lorsque le modèle est chargé. Peut seulement avoir 4 morphsTarget d'activer. */
-		  statue.addEventListener("model-loaded",function() {
+	    /* Association couleur - Life Expectancy */
+	    if(dataLife[paysChoisi][annee] < 40 && this.data.dataLife === true) {
 
-		    /* Association couleur - Life Expectancy */
-		    if(dataLife[paysChoisi][annee] < 40) {
+	      couleur = COULEUR_STATUE[0]; // Vert
+	    }
 
-		      couleur = COULEUR_STATUE[0]; // Vert
-		    }
+	    else if(dataLife[paysChoisi][annee] < 50 && this.data.dataLife === true) {
 
-		    else if(dataLife[paysChoisi][annee] < 50) {
+	      couleur = COULEUR_STATUE[1]; // Bronze
 
-		      couleur = COULEUR_STATUE[1]; // Bronze
+	    }
 
-		    }
+	    else if(dataLife[paysChoisi][annee] < 70 || this.data.dataLife === false) {
 
-		    else if(dataLife[paysChoisi][annee] < 70) {
+	      couleur = COULEUR_STATUE[2]; // Argent
 
-		      couleur = COULEUR_STATUE[2]; // Argent
+	    }
 
-		    }
+	    else if(dataLife[paysChoisi][annee] > 70 && this.data.dataLife === true) {
 
-		    else if(dataLife[paysChoisi][annee] > 70) {
+	      couleur = COULEUR_STATUE[3]; // Or
 
-		      couleur = COULEUR_STATUE[3]; // Or
+	    }
 
-		    }
+	    /* Life Expectancy - couleur */
+			statue.getObject3D("mesh").children[0].material.color = couleur;
 
-		    /* Life Expectancy - couleur  minimum = 24.76 - max = 82 */
-		    statue.getObject3D("mesh").children[0].material.color = couleur;
+			/* Consommation sucre gramme par jour - obese */
+			if(this.data.dataSucreConsommation === true) {
 
-		    /* Consommation sucre gram par jour - obese */
-		    statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][annee]/100;
+				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][annee]/100;
 
-		    /* Population - grandeur */
-		    statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][annee];
+			} else {
 
-		    /* Année d'éducation en moyen -Rayon Population cerveau */
-		    statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][annee]/12;
+				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = 0;
 
-		  });
+			}
+
+			/* Population - grandeur */
+			if(this.data.dataPopulation === true) {
+
+				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][annee];
+
+			} else {
+
+				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 0;
+
+			}
+
+			/* Année d'éducation en moyen - cerveau */
+			if(this.data.dataEducation === true) {
+
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][annee]/12;
+
+			} else {
+
+				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = 0;
+
+			}
+
+			/* Alcool */
+			if(this.data.dataAlcoolConsommation === true) {
+
+ 				alcohol.setAttribute('visible',true);
+				bouteille.setAttribute('visible',true);
+
+			} else {
+
+				alcohol.setAttribute('visible',false);
+				bouteille.setAttribute('visible',false);
+
+			}
+
+			/* Cigarette */
+			if(this.data.dataCigarette === true) {
+
+ 				cigarette.setAttribute('visible',true);
+
+			} else {
+
+				cigarette.setAttribute('visible',false);
+
+			}
+
+			/* Pollution */
+			if(this.data.dataPollution === true) {
+
+ 				nuage.setAttribute('visible',true);
+
+			} else {
+
+				nuage.setAttribute('visible',false);
+
+			}
+
+			/* Income */
+			if(this.data.dataIncome === true) {
+
+ 				argent.setAttribute('visible',true);
+
+			} else {
+
+				argent.setAttribute('visible',false);
+
+			}
 
 		},
 
-		play:function () {
+		update:function () {
 
-			this.metamorphoserStatue(66)
+			this.metamorphoserStatue();
 
 		},
 

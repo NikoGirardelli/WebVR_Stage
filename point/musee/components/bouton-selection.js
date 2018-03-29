@@ -16,11 +16,12 @@ AFRAME.registerComponent("bouton-selection", {
 
 			/* Bouton */
 			var el = this.el,
-					anim = document.createElement('a-animation'),
-					leThis = this;
+					leThis = this,
+					anim = document.createElement('a-animation');
 
 			anim.setAttribute("mixin","fadeBouton");
 			el.appendChild(anim);
+
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
@@ -36,10 +37,8 @@ AFRAME.registerComponent("bouton-selection", {
 
       };
 
-			/* Ajoute ou supprime le pays
-			this.selectionnerPays = function() {
-
-				if(hoverEnCours == true) {
+			/* Ajoute ou supprime le pays */
+			this.selectionnerPiece = function() {
 
 					if(el.getAttribute("data-pays") != "SelectAll" &&
 						 el.getAttribute("data-pays") != "RemoveAll") {
@@ -66,7 +65,7 @@ AFRAME.registerComponent("bouton-selection", {
 
 						maSphere.setAttribute("material",{visible:!visible});
 
-					}
+					/*
 
 					else {
 
@@ -99,20 +98,19 @@ AFRAME.registerComponent("bouton-selection", {
 
 							}
 
-					}
+					}*/
 
 					leThis.animerPanneau();
 
 				}
 
-			};*/
+			};
 
 			this.animerPanneau = function() {
 
 				leThis.activerSelection();
 
 	 			el.emit("playFadeBouton");
-				console.log(el.children[1])
 
 	 		}
 
@@ -121,25 +119,132 @@ AFRAME.registerComponent("bouton-selection", {
 		activerSelection:function() {
 
 			var el = this.el,
-					dataPiece = el.getAttribute("data-piece");
-					uiJoueur = document.querySelector("#ui-joueur"),
-					piece = document.querySelector("#piece");
+					lesBoutonsPieces = document.querySelectorAll("."+ typesPanneau[2]),
+					lesBoutonsAnnees = document.querySelectorAll("."+ typesPanneau[1]),
+					piece = document.querySelector("#piece"),
+					lesStatues = document.querySelectorAll(".statue"),
+					lesStatuesL = lesStatues.length,
+					anim = el.children[0];
 
 			/* panneauData */
-			if(this.el.getAttribute("class") == typesPanneau[0]) {
+			if(el.getAttribute("class") == typesPanneau[0]) {
+
+				var dataCsv = el.getAttribute("data-csv");
+
+				anim.setAttribute("from","#000000");
+				anim.setAttribute("to","#4c4c4c");
+				anim.setAttribute("direction","alternate");
+				anim.setAttribute("fill","both");
+
+
+				switch(dataCsv) {
+
+					case "1":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataAlcoolConsommation:!lesStatues[i].getAttribute("statue").dataAlcoolConsommation});
+
+									}
+					break;
+					case "2":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataCigarette:!lesStatues[i].getAttribute("statue").dataCigarette});
+
+									}
+					break;
+					case "3":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataEducation:!lesStatues[i].getAttribute("statue").dataEducation});
+
+									}
+					break;
+					case "4":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataIncome:!lesStatues[i].getAttribute("statue").dataIncome});
+
+									}
+					break;
+					case "5":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataLife:!lesStatues[i].getAttribute("statue").dataLife});
+
+									}
+					break;
+					case "6":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataPollution:!lesStatues[i].getAttribute("statue").dataPollution});
+
+									}
+					break;
+					case "7":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataPopulation:!lesStatues[i].getAttribute("statue").dataPopulation});
+
+									}
+					break;
+					case "8":
+									for(var i = 0;i < lesStatuesL;i++) {
+
+										lesStatues[i].setAttribute("statue",{
+											dataSucreConsommation:!lesStatues[i].getAttribute("statue").dataSucreConsommation});
+
+									}
+					break;
+
+				}
 
 			}
-			/* panneauAnnee */
-			/* panneauPiece */
-			if(this.el.getAttribute("class") == typesPanneau[2]) {
+			/* Change l'annéee lors du clique */
+			if(el.getAttribute("class") == typesPanneau[1]) {
 
-				//console.log(piece.components[0].data)
-				console.log(piece.components["modification-piece"].oldData)
-				piece.components["modification-piece"].data = LES_PIECES[dataPiece];
-				console.log(piece.components["modification-piece"].data)
+				var dataAnnee = el.getAttribute("data-annee");
 
-				/* Enlève l'ancienne valeur */
-				uiJoueur.setAttribute("data-piece",dataPiece);
+				for(var i = 0;i < 7 ;i++) {
+
+						//lesBoutonsAnnees[i].setAttribute("text",{color:0xFFFFFF});
+						lesBoutonsAnnees[i].setAttribute("material",{color:0x4c4c4c});
+
+				}
+
+				//el.setAttribute("text",{color:0x33dded});
+
+				for(var i = 0;i < lesStatuesL;i++) {
+
+					lesStatues[i].setAttribute("statue",{annee:LES_ANNEES[dataAnnee]});
+
+
+				}
+
+			}
+			/* Change de lieu lors du clique */
+			if(el.getAttribute("class") == typesPanneau[2]) {
+
+				for(var i = 0;i < 4 ;i++) {
+
+					//	lesBoutonsPieces[i].setAttribute("text",{color:0xFFFFFF});
+						lesBoutonsPieces[i].setAttribute("material",{color:0x4c4c4c});
+
+				}
+
+			//	el.setAttribute("text",{color:0x33dded});
+
+				var dataPiece = el.getAttribute("data-piece");
+
+				piece.setAttribute("modification-piece",{piece:LES_PIECES[dataPiece]});
+
 
 			}
 
