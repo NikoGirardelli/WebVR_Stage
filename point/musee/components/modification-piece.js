@@ -82,11 +82,18 @@ AFRAME.registerComponent("modification-piece", {
 
 		var lesPanneauxTitre = document.querySelectorAll(".titreContinent"),
 				toutesLesStatues = document.querySelector("#toutesLesStatues"),
-				quatreStatues = document.querySelector("#quatreStatues"),
-				lesCheckpoints = document.querySelectorAll(".pointTeleportation");
+				cinqStatues = document.querySelector("#cinqStatues"),
+				lesCheckpoints = document.querySelectorAll(".pointTeleportation"),
+				mainGaucheJoueur = document.querySelector("#lhand"),
+				autresStatues = document.querySelector("#cinqStatues").childNodes,
+				lesBoutonsAnnees = document.querySelectorAll(".panneauAnnee");
 
 		/* All Countries */
 		if(this.data.piece === LES_PIECES[1]) {
+
+			/* Affiche le panneau principal et est centré */
+			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
+			mainGaucheJoueur.children[1].setAttribute("position",{x:0,y:-10,z:-0.07});
 
 			/* Nom et les points de téléportation */
 			for(var i = 0; i < 9; i++) {
@@ -105,16 +112,27 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons d'année actif */
+				if(i < 7) {
+
+					lesBoutonsAnnees[i].setAttribute("bouton-selection");
+
+				}
+
 			}
 
 			toutesLesStatues.setAttribute("visible",true);
-			quatreStatues.setAttribute("visible",true);
+			cinqStatues.setAttribute("visible",false);
 
 
 		}
 
 		/* Country */
 		else if(this.data.piece === LES_PIECES[2]) {
+
+			/* Affiche le panneau pour choisir le pays */
+			mainGaucheJoueur.children[0].setAttribute("position",{x:-0.225,y:0,z:-0.07});
+			mainGaucheJoueur.children[1].setAttribute("position",{x:0.225,y:0,z:-0.07});
 
 			/* Les noms des continents sont visibles */
 			for(var i = 0; i < 9; i++) {
@@ -130,6 +148,11 @@ AFRAME.registerComponent("modification-piece", {
 				if(i == 4) {
 
 					lesPanneauxTitre[i].setAttribute("visible",true);
+					lesPanneauxTitre[i].setAttribute("text",{
+						value:"Choose a country",
+						wrapCount:18,
+						width:6
+					});
 
 				}
 
@@ -139,14 +162,44 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons d'année inactif */
+				if(i < 7) {
+
+					lesBoutonsAnnees[i].removeAttribute("bouton-selection");
+
+				}
+
+			}
+
+			/* Modifie les cinq statues */
+			for(var i = 0;i < 4;i++) {
+
+				/* Mets l'année à jour */
+				autresStatues[i].setAttribute("statue",{annee:LES_ANNEES[i + 2]});
+
+				/* Mets le numeroPays des statues  */
+				autresStatues[i].setAttribute("statue",{
+					numeroPays:0
+				});
+
+				/* Affiche l'année sur la base */
+				autresStatues[i].children[3].children[0].setAttribute('text',{
+					value:dataLife[0][autresStatues[i].getAttribute("statue").annee]
+				});
+
 			}
 
 			toutesLesStatues.setAttribute("visible",false);
-			quatreStatues.setAttribute("visible",true);
+			cinqStatues.setAttribute("visible",true);
 
 		}
 
+		/* Custom */
 		else if(this.data.piece === LES_PIECES[3]) {
+
+			/* Affiche le panneau principal et est centré */
+			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
+			mainGaucheJoueur.children[1].setAttribute("position",{x:0,y:-10,z:-0.07});
 
 			/* Les noms des continents sont visibles */
 			for(var i = 0; i < 9; i++) {
@@ -174,15 +227,26 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons d'année actif */
+				if(i < 7) {
+
+					lesBoutonsAnnees[i].setAttribute("bouton-selection");
+
+				}
+
 			}
 
 			toutesLesStatues.setAttribute("visible",false);
-			quatreStatues.setAttribute("visible",true);
+			cinqStatues.setAttribute("visible",true);
 
 		}
 
 		/* Hub */
 		else if(this.data.piece === LES_PIECES[0]) {
+
+			/* Affiche le panneau principal et est centré */
+			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
+			mainGaucheJoueur.children[1].setAttribute("position",{x:0,y:-10,z:-0.07});
 
 			/* Les noms des continents sont visibles */
 			for(var i = 0; i < 9; i++) {
@@ -202,13 +266,20 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons d'année actif */
+				if(i < 7) {
+
+					lesBoutonsAnnees[i].setAttribute("bouton-selection");
+
+				}
+
 				lesCheckpoints[i].setAttribute("visible",true);
 
 
 			}
 
 			toutesLesStatues.setAttribute("visible",false);
-			quatreStatues.setAttribute("visible",false);
+			cinqStatues.setAttribute("visible",false);
 
 		}
 

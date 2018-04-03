@@ -588,7 +588,7 @@ function creationStatues() {
   sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));
 
   var toutesLesStatues = document.querySelector("#toutesLesStatues");
-  var quatreStatues = document.querySelector("#quatreStatues");
+  var cinqStatues = document.querySelector("#cinqStatues");
 
   /* Boucle qui parcourt tous les pays 25*/
 	for(var i = 1; i < 25; i++) {
@@ -600,11 +600,11 @@ function creationStatues() {
   /* Boucle qui crée 5 statue pour un pays/personalisable. */
 	for(var i = 1; i < 6; i++) {
 
-		creerStatue(quatreStatues,i);
+		creerStatue(cinqStatues,i);
 
 	}
 
-  quatreStatues.setAttribute("visible",false);
+  cinqStatues.setAttribute("visible",false);
 
 }
 

@@ -55,9 +55,6 @@
         <a-asset-item id="cigarette-obj" src="model/cigarette/cigarette.obj"></a-asset-item>
         <a-asset-item id="cigarette-mtl" src="model/cigarette/cigarette.mtl"></a-asset-item>
 
-        <!-- Repère timeline -->
-        <a-mixin id="ligneTemps" geometry="height:0.05;width:0.05;depth:0.5"
-                 material="color:#ffffff"></a-mixin>
         <!-- Panneau hover pays du graphe -->
         <a-mixin id="ui-hover-pays" position="0 1.25 0"
                  slice9="width:3.8;height:3;bottom:43.81;left:20;
@@ -75,25 +72,6 @@
                        align:center;
                        anchor:center;
                        baseline:center;"></a-mixin>
-        <a-mixin id="textPays"
-                text="alphaTest:0.6;
-                      zOffset:0.01;
-                      tabSize: 0; width: 0.5;
-                      baseline: top; wrapCount: 12;
-                      align:center;
-                      anchor:center;
-                      baseline:center;
-                      letterSpacing: 0.3"></a-mixin>
-        <a-mixin id="textPanneau"
-                text="alphaTest:0.6;
-                      zOffset:0.01;
-                      tabSize: 0; width: 0.5;
-                      baseline: top; wrapCount: 14;
-                      align:center;
-                      anchor:center;
-                      baseline:center;
-                      letterSpacing: 0.3;
-                      color:#000000"></a-mixin>
 
        <a-mixin id="Bouton" bouton-selection
                 material="opacity:1;color:#4c4c4c;"
@@ -108,16 +86,48 @@
                       letterSpacing: 0.3;"></a-mixin>
         <a-mixin id="Americas" pays-selection
                 material="opacity:1;color:#4c4c4c;"
-                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
         <a-mixin id="Africa" pays-selection
                 material="opacity:1;color:#4c4c4c;"
-                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
         <a-mixin id="Europe" pays-selection
                 material="opacity:1;color:#4c4c4c;"
-                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
         <a-mixin id="Asia" pays-selection
                 material="opacity:1;color:#4c4c4c;"
-                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
 
         <!-- Animations-->
         <a-mixin id="fade" attribute="material.opacity" direction="alternate"
@@ -285,165 +295,140 @@
               </a-entity>
             </a-entity>-->
           </a-entity>
+          <a-entity id="ui-pays" position="0.455 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
+            <a-entity class="panneau" position="0 -0.3 0"
+                      slice9="width:3;height:2;bottom:43.81;left:20;
+                              right:43;top:20;src:img/slice9_texture/tooltip.png;
+                              color:white;padding:0.02;
+                              side:double;"></a-entity>
+            <a-entity position="-1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="The Americas" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.6 0.001" data-pays="Brazil"
+                        text="value:Brazil" data-nombre-pays="1">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.4 0.001" data-pays="Canada"
+                        text="value:Canada" data-nombre-pays="2">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.2 0.001" data-pays="Dominican Republic"
+                        text="value:Dominican Republic" data-nombre-pays="3">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0 0.001" data-pays="Haiti"
+                        text="value:Haiti" data-nombre-pays="4">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 -0.2 0.001" data-pays="United States"
+                        text="value:United States" data-nombre-pays="5">
+              </a-entity>
+            </a-entity>
+            <a-entity position="-0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Africa" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.6 0.001" data-pays="Botswana"
+                        text="value:Botswana" data-nombre-pays="20">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.4 0.001" data-pays="Congo - Dem. Rep."
+                        text="value:Congo - Dem. Rep." data-nombre-pays="21">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.2 0.001" data-pays="Congo - Rep."
+                        text="value:Congo - Rep." data-nombre-pays="22">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0 0.001" data-pays="Sierra Leone"
+                        text="value:Sierra Leone" data-nombre-pays="23">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 -0.2 0.001" data-pays="South Africa"
+                        text="value:South Africa" data-nombre-pays="24">
+              </a-entity>
+            </a-entity>
+            <a-entity position="0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Europe" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.6 0.001" data-pays="Denmark"
+                        text="value:Denmark" data-nombre-pays="6">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.4 0.001" data-pays="Germany"
+                        text="value:Germany" data-nombre-pays="7">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.2 0.001" data-pays="Hungary"
+                        text="value:Hungary" data-nombre-pays="8">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0 0.001" data-pays="Poland"
+                        text="value:Poland" data-nombre-pays="9">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 -0.2 0.001" data-pays="Romania"
+                        text="value:Romania" data-nombre-pays="10">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 -0.4 0.001" data-pays="United Kingdom"
+                        text="value:United Kingdom" data-nombre-pays="11">
+              </a-entity>
+            </a-entity>
+            <a-entity position="1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Asia" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.6 0.001" data-pays="Brunei"
+                        text="value:Brunei" data-nombre-pays="12">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.4 0.001" data-pays="China"
+                        text="value:China" data-nombre-pays="13">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.2 0.001" data-pays="India"
+                        text="value:India" data-nombre-pays="14">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0 0.001" data-pays="Iran"
+                        text="value:Iran" data-nombre-pays="15">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.2 0.001" data-pays="North Korea"
+                        text="value:North Korea" data-nombre-pays="16">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.4 0.001" data-pays="South Korea"
+                        text="value:South Korea" data-nombre-pays="17">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.6 0.001" data-pays="Russia"
+                        text="value:Russia" data-nombre-pays="18">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.8 0.001" data-pays="Singapore"
+                        text="value:Singapore" data-nombre-pays="19">
+              </a-entity>
+            </a-entity>
+          </a-entity>
         </a-entity>
         <a-entity id="rhand"
         raycaster="objects:.pointTeleportation,.panneau,.panneauData,.panneauPiece,.panneauAnnee,
                            .sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
         laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
-      <!-- UI custom
-      <a-entity id="ui-parent" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
-        <a-entity id="ui-pays" position="0 -0.3 0"
-                  slice9="width:3;height:2;bottom:43.81;left:20;
-                          right:43;top:20;src:img/slice9_texture/tooltip.png;
-                          color:white;padding:0.02;
-                          side:double;"></a-entity>
-        <a-entity position="-1.05 -0.25 0">
-          <a-text class="textContinent" mixin="textContinent"
-                  value="The Americas" position="0 0.8 0"></a-text>
-          <a-entity class="panneauSelectionPays" mixin="Americas"
-                    position="0 0.6 0.001" data-pays="Brazil">
-            <a-text class="textPays" mixin="textPays"
-                    value="Brazil"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Americas"
-                    position="0 0.4 0.001" data-pays="Canada">
-            <a-text class="textPays" mixin="textPays"
-                    value="Canada"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Americas"
-                    position="0 0.2 0.001" data-pays="Dominican Republic" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Dominican Republic"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Americas"
-                    position="0 0 0.001" data-pays="Haiti" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Haiti"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Americas"
-                    position="0 -0.2 0.001" data-pays="United States" >
-            <a-text class="textPays" mixin="textPays"
-                    value="United States"></a-text>
-          </a-entity>
-        </a-entity>
-        <a-entity position="-0.35 -0.25 0">
-          <a-text class="textContinent" mixin="textContinent"
-                  value="Africa" position="0 0.8 0"></a-text>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 0.6 0.001" data-pays="Botswana">
-            <a-text class="textPays" mixin="textPays"
-                    value="Botswana"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 0.4 0.001" data-pays="Brunei">
-            <a-text class="textPays" mixin="textPays"
-                    value="Brunei"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 0.2 0.001" data-pays="Congo - Dem. Rep." >
-            <a-text class="textPays" mixin="textPays"
-                    value="Congo - Dem. Rep."></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 0 0.001" data-pays="Congo - Rep." >
-            <a-text class="textPays" mixin="textPays"
-                    value="Congo - Rep."></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 -0.2 0.001" data-pays="Sierra Leone" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Sierra Leone"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Africa"
-                    position="0 -0.4 0.001" data-pays="South Africa" >
-            <a-text class="textPays" mixin="textPays"
-                    value="South Africa"></a-text>
-          </a-entity>
-        </a-entity>
-        <a-entity position="0.35 -0.25 0">
-          <a-text class="textContinent" mixin="textContinent"
-                  value="Europe" position="0 0.8 0"></a-text>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 0.6 0.001" data-pays="Denmark">
-            <a-text class="textPays" mixin="textPays"
-                    value="Denmark"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 0.4 0.001" data-pays="Germany">
-            <a-text class="textPays" mixin="textPays"
-                    value="Germany"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 0.2 0.001" data-pays="Hungary" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Hungary"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 0 0.001" data-pays="Poland" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Poland"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 -0.2 0.001" data-pays="Romania" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Romania"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Europe"
-                    position="0 -0.4 0.001" data-pays="United Kingdom" >
-            <a-text class="textPays" mixin="textPays"
-                    value="United Kingdom"></a-text>
-          </a-entity>
-        </a-entity>
-        <a-entity position="1.05 -0.25 0">
-          <a-text class="textContinent" mixin="textContinent"
-                  value="Asia" position="0 0.8 0"></a-text>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 0.6 0.001" data-pays="China">
-            <a-text class="textPays" mixin="textPays"
-                    value="China"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 0.4 0.001" data-pays="India">
-            <a-text class="textPays" mixin="textPays"
-                    value="India"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 0.2 0.001" data-pays="Iran" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Iran"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 0 0.001" data-pays="North Korea" >
-            <a-text class="textPays" mixin="textPays"
-                    value="North Korea"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 -0.2 0.001" data-pays="South Korea" >
-            <a-text class="textPays" mixin="textPays"
-                    value="South Korea"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 -0.4 0.001" data-pays="Russia" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Russia"></a-text>
-          </a-entity>
-          <a-entity class="panneauSelectionPays" mixin="Asia"
-                    position="0 -0.6 0.001" data-pays="Singapore" >
-            <a-text class="textPays" mixin="textPays"
-                    value="Singapore"></a-text>
-          </a-entity>
-        </a-entity>
-      </a-entity>  -->
 
       <!-- Toutes les statues -->
       <a-entity id="toutesLesStatues"></a-entity>
 
       <!-- Quatre statues -->
-      <a-entity id="quatreStatues"></a-entity>
+      <a-entity id="cinqStatues"></a-entity>
 
       <!-- Environment -->
-      <a-entity id="piece" modification-piece="All Countries">
+      <a-entity id="piece" modification-piece>
         <a-plane position="0 0.001 0" rotation="270 0 0" geometry="width:15;height:15;" material="color:#808080;"></a-plane>
         <a-cylinder position="0 1.999 0" geometry="radius:8;height:4;openEnded:true;segmentsRadial:4;thetaStart:45"
                     material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>

@@ -3,12 +3,14 @@
  */
 AFRAME.registerComponent("pays-selection", {
 
+
+
 		init: function () {
 
 			/* Pays */
 			var el = this.el,
 					anim = document.createElement('a-animation'),
-					//animText = document.createElement('a-animation'),
+					animText = document.createElement('a-animation'),
 					leThis = this,
 					hoverEnCours = false;
 
@@ -32,23 +34,20 @@ AFRAME.registerComponent("pays-selection", {
 					anim.setAttribute("mixin","fadeAsia");
 					break;
 
-					case "Bouton":
-					anim.setAttribute("mixin","fadeBouton");
-					break;
-
 				}
 
 			}
 
-			this.animerCouleur(anim);
+			el.setAttribute("material",{color:0x4c4c4c});
+
+			//this.animerCouleur(anim);
 			//animText.setAttribute("mixin","fadeCouleur");
-			//el.firstElementChild.appendChild(animText);
-			el.appendChild(anim);
+			//el.appendChild(animText);
+			//el.appendChild(anim);
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
 
-				leThis.peutHover();
 				el.setAttribute("scale","1.2 1.2 1.2");
 
       };
@@ -56,7 +55,6 @@ AFRAME.registerComponent("pays-selection", {
 			/* Raycaster-intersected-cleared */
 			this.eventScalingEnding = function() {
 
-				hoverEnCours = false;
 				el.setAttribute("scale","1 1 1");
 
       };
@@ -64,7 +62,79 @@ AFRAME.registerComponent("pays-selection", {
 			/* Ajoute ou supprime le pays */
 			this.selectionnerPays = function() {
 
-				if(hoverEnCours == true) {
+				var piece = document.querySelector("#piece"),
+						autresStatues = document.querySelector("#cinqStatues").childNodes,
+						l = autresStatues.length
+						numeroDuPaysChoisi = el.getAttribute("data-nombre-pays"),
+						titreContinent = piece.children[7],
+						lesBoutons = document.querySelectorAll(".panneauSelectionPays");
+
+				/* Met les boutons en gris */
+				for(var i = 0;i < 24;i++) {
+
+					lesBoutons[i].setAttribute("material",{color:0x4c4c4c});
+
+				}
+
+				/* Vérifie si c'est le panneau dans la pièce Country */
+				if(piece.getAttribute("modification-piece").piece == LES_PIECES[2]) {
+
+					/* Modifie les cinq statues */
+					for(var i = 0;i < l;i++) {
+
+						/* Mets le numeroPays des statues */
+						autresStatues[i].setAttribute("statue",{
+							numeroPays:numeroDuPaysChoisi
+						});
+
+						/* Affiche l'année sur la base */
+						autresStatues[i].children[3].children[0].setAttribute('text',{
+							value:dataLife[0][autresStatues[i].getAttribute("statue").annee]
+						});
+
+					}
+
+					/* Met le titre au nom du pays choisi */
+					titreContinent.setAttribute("text",{
+						value:dataLife[numeroDuPaysChoisi][0],
+						wrapCount:18,
+						width:5
+					});
+
+				}
+
+				/* Vérifie si c'est le panneau dans la pièce Customize */
+				if(piece.getAttribute("modification-piece").piece == LES_PIECES[3]) {
+
+					/* Verifier cinq pays ont été choisi */
+
+					/* Modifie les cinq statues */
+					for(var i = 0;i < l;i++) {
+
+						/* Mets le numeroPays des statues */
+						autresStatues[i].setAttribute("statue",{
+							numeroPays:numeroDuPaysChoisi
+						});
+
+						/* Affiche l'année sur la base */
+						autresStatues[i].children[3].children[0].setAttribute('text',{
+							value:dataLife[numeroDuPaysChoisi][0]
+						});
+
+					}
+
+					/* Met le titre au nom du pays choisi */
+					titreContinent.setAttribute("text",{
+						value:dataLife[0][autresStatues[i].getAttribute("statue").annee],
+						wrapCount:18,
+						width:5
+					});
+
+				}
+
+				leThis.animerPanneau();
+
+				/*
 
 					if(el.getAttribute("data-pays") != "SelectAll" &&
 						 el.getAttribute("data-pays") != "RemoveAll") {
@@ -129,35 +199,19 @@ AFRAME.registerComponent("pays-selection", {
 					leThis.animerPanneau();
 
 				}
-
+*/
 			};
-
-			this.peutHover = function() {
-
-        var mainPointeur = document.querySelector("#rhand");
-
-          if(mainPointeur.components['raycaster'].intersectedEls.length == 1) {
-
-            hoverEnCours = true;
-
-          }
-
-          if(mainPointeur.components['raycaster'].intersectedEls.length > 2) {
-
-            hoverEnCours = false;
-
-          }
-
-      };
 
 	  },
 
 	 animerPanneau:function() {
 
-			 var el = this.el;
+			 var el = this.el,
+			 					couleur = "";
 
-			 /* Joue l'animation de fade-in/fade-out */
+			 /* Joue l'animation de fade-in/fade-out
 			 switch(el.attributes[1].nodeValue) {
+
 					case "Americas":
 					el.emit("playFadeAmericas");
 					break;
@@ -174,17 +228,37 @@ AFRAME.registerComponent("pays-selection", {
 					el.emit("playFadeAsia");
 					break;
 
-					case "Bouton":
-					el.emit("playFadeBouton");
+			 }*/
+
+			 switch(el.attributes[1].nodeValue) {
+
+					case "Americas":
+					couleur = "#9ef03e";
+					break;
+
+					case "Africa":
+					couleur = "#33dded";
+					break;
+
+					case "Europe":
+					couleur = "#fff37a";
+					break;
+
+					case "Asia":
+					couleur = "#ff798e";
 					break;
 
 			 }
+
+			 el.setAttribute("material",{color:couleur});
+
+
 
 		},
 
 		play:function () {
 
-			this.animerPanneau();
+			//this.animerPanneau();
 
 			/* Lorsqu'on clique le jour */
 			this.el.addEventListener("click",this.selectionnerPays);

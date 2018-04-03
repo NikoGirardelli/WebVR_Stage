@@ -73,9 +73,20 @@ AFRAME.registerComponent("statue", {
 		    value:"Sugar per person (g/day) : " + dataSucreConsommation[paysChoisi][annee]
 		  });
 
-		  texteNomBase.setAttribute("text", {
-		    value:dataIncome[paysChoisi][0]
-		  });
+			if(statue.parentEl.id == "cinqStatues") {
+
+				texteNomBase.setAttribute("text", {
+			    value:dataIncome[0][LES_ANNEES[this.data.numeroPays + 1]]
+			  });
+
+			} else {
+
+				texteNomBase.setAttribute("text", {
+			    value:dataIncome[paysChoisi][0]
+			  });
+
+			}
+
 
 			/* Cigarette */
 		  cigarette.setAttribute("scale",{
