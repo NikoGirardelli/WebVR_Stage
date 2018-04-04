@@ -17,7 +17,7 @@ AFRAME.registerComponent("modification-piece", {
 
 	schema: {
 
-		piece: {default:LES_PIECES[1], type:"string", oneOf:LES_PIECES}
+		piece: {default:LES_PIECES[0], type:"string", oneOf:LES_PIECES}
 
 	},
 
@@ -86,10 +86,18 @@ AFRAME.registerComponent("modification-piece", {
 				lesCheckpoints = document.querySelectorAll(".pointTeleportation"),
 				mainGaucheJoueur = document.querySelector("#lhand"),
 				autresStatues = document.querySelector("#cinqStatues").childNodes,
-				lesBoutonsAnnees = document.querySelectorAll(".panneauAnnee");
+				lesBoutonsAnnees = document.querySelectorAll(".panneauAnnee"),
+				lesBoutonsData = document.querySelectorAll(".panneauData"),
+				unBoutonPays = document.querySelector(".panneauSelectionPays"),
+				texteHub = document.querySelector("#texteHub");
+
+		/* Désactive les boutons pour les pays. */
+		unBoutonPays.components["pays-selection"].desactiverBouton();
 
 		/* All Countries */
 		if(this.data.piece === LES_PIECES[1]) {
+
+			texteHub.setAttribute("visible",false);
 
 			/* Affiche le panneau principal et est centré */
 			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
@@ -119,6 +127,13 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons data actif */
+				if(i < 8) {
+
+					lesBoutonsData[i].setAttribute("bouton-selection");
+
+				}
+
 			}
 
 			toutesLesStatues.setAttribute("visible",true);
@@ -129,6 +144,8 @@ AFRAME.registerComponent("modification-piece", {
 
 		/* Country */
 		else if(this.data.piece === LES_PIECES[2]) {
+
+			texteHub.setAttribute("visible",false);
 
 			/* Affiche le panneau pour choisir le pays */
 			mainGaucheJoueur.children[0].setAttribute("position",{x:-0.225,y:0,z:-0.07});
@@ -169,10 +186,17 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons data actif */
+				if(i < 8) {
+
+					lesBoutonsData[i].setAttribute("bouton-selection");
+
+				}
+
 			}
 
 			/* Modifie les cinq statues */
-			for(var i = 0;i < 4;i++) {
+			for(var i = 0;i < 5;i++) {
 
 				/* Mets l'année à jour */
 				autresStatues[i].setAttribute("statue",{annee:LES_ANNEES[i + 2]});
@@ -197,9 +221,14 @@ AFRAME.registerComponent("modification-piece", {
 		/* Custom */
 		else if(this.data.piece === LES_PIECES[3]) {
 
+			/* Remet le tableau des pays choisis vide */
+			laSelectionDesPays = [];
+
+			texteHub.setAttribute("visible",false);
+
 			/* Affiche le panneau principal et est centré */
-			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
-			mainGaucheJoueur.children[1].setAttribute("position",{x:0,y:-10,z:-0.07});
+			mainGaucheJoueur.children[0].setAttribute("position",{x:-0.225,y:0,z:-0.07});
+			mainGaucheJoueur.children[1].setAttribute("position",{x:0.225,y:0,z:-0.07});
 
 			/* Les noms des continents sont visibles */
 			for(var i = 0; i < 9; i++) {
@@ -216,7 +245,7 @@ AFRAME.registerComponent("modification-piece", {
 
 					lesPanneauxTitre[i].setAttribute("visible",true);
 					lesPanneauxTitre[i].setAttribute("text",{
-						value:"Custom"
+						value:"Customize"
 					});
 
 				}
@@ -234,6 +263,13 @@ AFRAME.registerComponent("modification-piece", {
 
 				}
 
+				/* Mets les boutons data actif */
+				if(i < 8) {
+
+					lesBoutonsData[i].setAttribute("bouton-selection");
+
+				}
+
 			}
 
 			toutesLesStatues.setAttribute("visible",false);
@@ -243,6 +279,8 @@ AFRAME.registerComponent("modification-piece", {
 
 		/* Hub */
 		else if(this.data.piece === LES_PIECES[0]) {
+
+			texteHub.setAttribute("visible",true);
 
 			/* Affiche le panneau principal et est centré */
 			mainGaucheJoueur.children[0].setAttribute("position",{x:0,y:0,z:-0.07});
@@ -269,7 +307,14 @@ AFRAME.registerComponent("modification-piece", {
 				/* Mets les boutons d'année actif */
 				if(i < 7) {
 
-					lesBoutonsAnnees[i].setAttribute("bouton-selection");
+					lesBoutonsAnnees[i].removeAttribute("bouton-selection");
+
+				}
+
+				/* Mets les boutons data actif */
+				if(i < 8) {
+
+					lesBoutonsData[i].removeAttribute("bouton-selection");
 
 				}
 

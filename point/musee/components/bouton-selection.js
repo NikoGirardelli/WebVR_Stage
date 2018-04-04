@@ -17,12 +17,15 @@ AFRAME.registerComponent("bouton-selection", {
 			/* Bouton */
 			var el = this.el,
 					leThis = this,
-					anim = document.createElement('a-animation'),
 					data = this.data;
 
-			anim.setAttribute("mixin","fadeBouton");
-			el.appendChild(anim);
+			/* Mets les choix par défaut sur le panneau */
+			if(el.getAttribute("data-annee") == 0 ||
+				 el.getAttribute("data-piece") == 0) {
 
+				 el.setAttribute("material",{color:0x000000});
+
+			}
 
 			/* Raycaster-intersected */
 			this.eventScalingBegining = function() {
@@ -38,36 +41,40 @@ AFRAME.registerComponent("bouton-selection", {
 
       };
 
-			this.animerPanneau = function() {
+			/* Active la sélection */
+			this.activerSelection = function() {
 
-					leThis.activerSelection();
+				leThis.animerEtChangement();
+				
+				if(el.getAttribute("material").color == 0 ||
+				 	 el.getAttribute("material").color == "#000000") {
 
-	 				el.emit("playFadeBouton");
+					el.setAttribute("material",{color:0x4c4c4c});
 
-	 		}
+				} else if(el.getAttribute("material").color == 5000268 ||
+									el.getAttribute("material").color == "#4c4c4c") {
+
+					el.setAttribute("material",{color:0x000000});
+
+				}
+
+      };
 
 	  },
 
-		activerSelection:function() {
+		animerEtChangement:function() {
 
 			var el = this.el,
 					lesBoutonsPieces = document.querySelectorAll("."+ typesPanneau[2]),
 					lesBoutonsAnnees = document.querySelectorAll("."+ typesPanneau[1]),
 					piece = document.querySelector("#piece"),
 					lesStatues = document.querySelectorAll(".statue"),
-					lesStatuesL = lesStatues.length,
-					anim = el.children[0];
+					lesStatuesL = lesStatues.length;
 
 			/* panneauData */
 			if(el.getAttribute("class") == typesPanneau[0]) {
 
 				var dataCsv = el.getAttribute("data-csv");
-
-				anim.setAttribute("from","#000000");
-				anim.setAttribute("to","#4c4c4c");
-				anim.setAttribute("direction","alternate");
-				anim.setAttribute("fill","both");
-
 
 				switch(dataCsv) {
 
@@ -140,7 +147,7 @@ AFRAME.registerComponent("bouton-selection", {
 
 			}
 			/* Change l'annéee lors du clique */
-			if(el.getAttribute("class") == typesPanneau[1]) {
+			else if(el.getAttribute("class") == typesPanneau[1]) {
 
 				var dataAnnee = el.getAttribute("data-annee");
 
@@ -162,7 +169,7 @@ AFRAME.registerComponent("bouton-selection", {
 
 			}
 			/* Change de lieu lors du clique */
-			if(el.getAttribute("class") == typesPanneau[2]) {
+			else if(el.getAttribute("class") == typesPanneau[2]) {
 
 				for(var i = 0;i < 4 ;i++) {
 
@@ -177,15 +184,14 @@ AFRAME.registerComponent("bouton-selection", {
 
 				piece.setAttribute("modification-piece",{piece:LES_PIECES[dataPiece]});
 
-
 			}
 
 		},
 
 		play:function () {
 
-				/* Lorsqu'on clique le jour */
-				this.el.addEventListener("click",this.animerPanneau);
+				/* Lorsqu'on clique le bouton */
+				this.el.addEventListener("click",this.activerSelection);
 
 				/* Lorsque qu'on hover le bouton */
 	      this.el.addEventListener('raycaster-intersected', this.eventScalingBegining);
@@ -202,7 +208,7 @@ AFRAME.registerComponent("bouton-selection", {
 
 		remove:function() {
 
-			this.el.removeEventListener("click",this.animerPanneau);
+			this.el.removeEventListener("click",this.activerSelection);
 			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
 			this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 

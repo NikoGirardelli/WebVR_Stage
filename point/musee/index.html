@@ -13,7 +13,6 @@
     <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
     <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
-
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
@@ -34,7 +33,7 @@
     -->
   </head>
   <body>
-    <a-scene stats stats-in-vr environment="grid: none; dressingUniformScale: false;
+    <a-scene stats environment="grid: none; dressingUniformScale: false;
                                             dressingScale: 0; dressingAmount: 0;
                                             groundYScale: 0;ground: flat;
                                             active: true;gridColor: #ffffff;
@@ -433,6 +432,18 @@
         <a-cylinder position="0 1.999 0" geometry="radius:8;height:4;openEnded:true;segmentsRadial:4;thetaStart:45"
                     material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>
         <a-plane position="0 2.999 0" rotation="90 0 0" geometry="width:15;height:15;" material="color:#c0c0c0;"></a-plane>
+      </a-entity>
+
+      <a-entity id="texteHub">
+        <a-text value="Use your laser on the grey circle on the floor to teleport yourself in the same room."
+                position="5.6 1.5 0" rotation="0 270 0"
+                text="color:#000000;wrapCount:18;side: front;align:center;"></a-text>
+        <a-text value="Use your panel to select the year, the room and the data you want to see. In some room, you can select countries from it too."
+                position="-5.6 1.5 0" rotation="0 90 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;"></a-text>
+        <a-text value="Look carefully at the statues. The data will modify their appearance and surrounding. Their data is on your panel."
+                position="0 1.5 5.6" rotation="0 180 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;"></a-text>
       </a-entity>
       <!-- Titre du graphe
       <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"

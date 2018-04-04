@@ -576,7 +576,7 @@ function creerStatue(ensembleStatue,paysChoisi) {
 /* Boucle qui appelle creerStatue() */
 function creationStatues() {
 
-  /* Sauvegarde des datas */
+  /* Sauvegarde des datas
   sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
   sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
   sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
@@ -585,7 +585,7 @@ function creationStatues() {
   sessionStorage.setItem("dataSucreConsommation", JSON.stringify(dataSucreConsommation));
   sessionStorage.setItem("dataAlcoolConsommation", JSON.stringify(dataAlcoolConsommation));
   sessionStorage.setItem("dataPollution", JSON.stringify(dataPollution));
-  sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));
+  sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));*/
 
   var toutesLesStatues = document.querySelector("#toutesLesStatues");
   var cinqStatues = document.querySelector("#cinqStatues");

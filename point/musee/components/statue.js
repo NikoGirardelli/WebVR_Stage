@@ -47,185 +47,192 @@ AFRAME.registerComponent("statue", {
 					sol = statue.children[3],
 					texteNomBase = sol.children[0],
 		      argent = statue.children[4],
-		      cigarette = statue.children[5];
+		      cigarette = statue.children[5],
+					piece = document.querySelector("#piece");
 
-		  texteNom.setAttribute("text", {
-		    value:dataIncome[paysChoisi][0]
-		  });
+		 /* Pour empêcher un bug avec les déformations,
+		    on ne modifie pas les statue sans un pays */
+		 if(paysChoisi != 0) {
 
-		  texteData1.setAttribute("text", {
-		    value:"Income: " + dataIncome[paysChoisi][annee] + " $"
-		  });
+			texteNom.setAttribute("text", {
+ 		    value:dataIncome[paysChoisi][0]
+ 		  });
 
-		  texteData2.setAttribute("text", {
-		    value:"Life Expectancy: " + dataLife[paysChoisi][annee] + " years"
-		  });
+ 		  texteData1.setAttribute("text", {
+ 		    value:"Income: " + dataIncome[paysChoisi][annee] + " $"
+ 		  });
 
-		  texteData3.setAttribute("text", {
-		    value:"Population : " + dataPopulation[paysChoisi][annee]
-		  });
+ 		  texteData2.setAttribute("text", {
+ 		    value:"Life Expectancy: " + dataLife[paysChoisi][annee] + " years"
+ 		  });
 
-		  texteData4.setAttribute("text", {
-		    value:"Mean Years of Schooling : " + dataEducation[paysChoisi][annee]
-		  });
+ 		  texteData3.setAttribute("text", {
+ 		    value:"Population : " + dataPopulation[paysChoisi][annee]
+ 		  });
 
-		  texteData5.setAttribute("text", {
-		    value:"Sugar per person (g/day) : " + dataSucreConsommation[paysChoisi][annee]
-		  });
+ 		  texteData4.setAttribute("text", {
+ 		    value:"Mean Years of Schooling : " + dataEducation[paysChoisi][annee]
+ 		  });
 
-			if(statue.parentEl.id == "cinqStatues") {
+ 		  texteData5.setAttribute("text", {
+ 		    value:"Sugar per person (g/day) : " + dataSucreConsommation[paysChoisi][annee]
+ 		  });
 
-				texteNomBase.setAttribute("text", {
-			    value:dataIncome[0][LES_ANNEES[this.data.numeroPays + 1]]
-			  });
+ 			if(piece.getAttribute("modification-piece").piece == LES_PIECES[2]) {
 
-			} else {
+ 				texteNomBase.setAttribute("text", {
+ 			    value:dataIncome[0][LES_ANNEES[this.data.numeroPays + 1]]
+ 			  });
 
-				texteNomBase.setAttribute("text", {
-			    value:dataIncome[paysChoisi][0]
-			  });
+ 			} else {
 
-			}
+ 				texteNomBase.setAttribute("text", {
+ 			    value:dataIncome[paysChoisi][0]
+ 			  });
+
+ 			}
 
 
-			/* Cigarette */
-		  cigarette.setAttribute("scale",{
-		    x:0.15,
-		    y:0.1+ (0.0075*dataCigarette[paysChoisi][annee]),
-		    z:0.15
-		  });
+ 			/* Cigarette */
+ 		  cigarette.setAttribute("scale",{
+ 		    x:0.15,
+ 		    y:0.1+ (0.0075*dataCigarette[paysChoisi][annee]),
+ 		    z:0.15
+ 		  });
 
-		  /* Alcool */
-		  alcohol.setAttribute("scale",{
-		    x:1,
-		    y:dataAlcoolConsommation[paysChoisi][annee]/19.15,
-		    z:1
-		  });
+ 		  /* Alcool */
+ 		  alcohol.setAttribute("scale",{
+ 		    x:1,
+ 		    y:dataAlcoolConsommation[paysChoisi][annee]/19.15,
+ 		    z:1
+ 		  });
 
-		  /* Nuage */
-		  nuage.setAttribute("scale",{
-		    x:0.3 + (3*dataPollution[paysChoisi][annee]/69),
-		    y:0.3 + (3*dataPollution[paysChoisi][annee]/69),
-		    z:0.3 + (3*dataPollution[paysChoisi][annee]/69)
-		  });
-		  nuage.setAttribute("position",{
-		    x:0,
-		    y:10 + (6.5*dataRayonPopulation[paysChoisi][annee]),
-		    z:0
-		  });
+ 		  /* Nuage */
+ 		  nuage.setAttribute("scale",{
+ 		    x:0.3 + (3*dataPollution[paysChoisi][annee]/69),
+ 		    y:0.3 + (3*dataPollution[paysChoisi][annee]/69),
+ 		    z:0.3 + (3*dataPollution[paysChoisi][annee]/69)
+ 		  });
+ 		  nuage.setAttribute("position",{
+ 		    x:0,
+ 		    y:10 + (6.5*dataRayonPopulation[paysChoisi][annee]),
+ 		    z:0
+ 		  });
 
-		  /* Argent */
-		  argent.setAttribute("scale",{
-		    x:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
-		    y:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
-		    z:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486)
-		  });
+ 		  /* Argent */
+ 		  argent.setAttribute("scale",{
+ 		    x:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
+ 		    y:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486),
+ 		    z:0.5 + (0.125*dataIncome[paysChoisi][annee]/13486)
+ 		  });
 
-	    /* Association couleur - Life Expectancy */
-	    if(dataLife[paysChoisi][annee] < 40 && this.data.dataLife === true) {
+ 	    /* Association couleur - Life Expectancy */
+ 	    if(dataLife[paysChoisi][annee] < 40 && this.data.dataLife === true) {
 
-	      couleur = COULEUR_STATUE[0]; // Vert
-	    }
+ 	      couleur = COULEUR_STATUE[0]; // Vert
+ 	    }
 
-	    else if(dataLife[paysChoisi][annee] < 50 && this.data.dataLife === true) {
+ 	    else if(dataLife[paysChoisi][annee] < 50 && this.data.dataLife === true) {
 
-	      couleur = COULEUR_STATUE[1]; // Bronze
+ 	      couleur = COULEUR_STATUE[1]; // Bronze
 
-	    }
+ 	    }
 
-	    else if(dataLife[paysChoisi][annee] < 70 || this.data.dataLife === false) {
+ 	    else if(dataLife[paysChoisi][annee] < 70 || this.data.dataLife === false) {
 
-	      couleur = COULEUR_STATUE[2]; // Argent
+ 	      couleur = COULEUR_STATUE[2]; // Argent
 
-	    }
+ 	    }
 
-	    else if(dataLife[paysChoisi][annee] > 70 && this.data.dataLife === true) {
+ 	    else if(dataLife[paysChoisi][annee] > 70 && this.data.dataLife === true) {
 
-	      couleur = COULEUR_STATUE[3]; // Or
+ 	      couleur = COULEUR_STATUE[3]; // Or
 
-	    }
+ 	    }
 
-	    /* Life Expectancy - couleur */
-			statue.getObject3D("mesh").children[0].material.color = couleur;
+ 	    /* Life Expectancy - couleur */
+ 			statue.getObject3D("mesh").children[0].material.color = couleur;
 
-			/* Consommation sucre gramme par jour - obese */
-			if(this.data.dataSucreConsommation === true) {
+ 			/* Consommation sucre gramme par jour - obese */
+ 			if(this.data.dataSucreConsommation === true) {
 
-				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][annee]/100;
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = dataSucreConsommation[paysChoisi][annee]/100;
 
-			} else {
+ 			} else {
 
-				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = 0;
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[0] = 0;
 
-			}
+ 			}
 
-			/* Population - grandeur */
-			if(this.data.dataPopulation === true) {
+ 			/* Population - grandeur */
+ 			if(this.data.dataPopulation === true) {
 
-				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][annee];
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 3*dataRayonPopulation[paysChoisi][annee];
 
-			} else {
+ 			} else {
 
-				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 0;
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[2] = 0;
 
-			}
+ 			}
 
-			/* Année d'éducation en moyen - cerveau */
-			if(this.data.dataEducation === true) {
+ 			/* Année d'éducation en moyen - cerveau */
+ 			if(this.data.dataEducation === true) {
 
- 				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][annee]/12;
+  				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = dataEducation[paysChoisi][annee]/12;
 
-			} else {
+ 			} else {
 
-				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = 0;
+ 				statue.getObject3D("mesh").children[0].morphTargetInfluences[7] = 0;
 
-			}
+ 			}
 
-			/* Alcool */
-			if(this.data.dataAlcoolConsommation === true) {
+ 			/* Alcool */
+ 			if(this.data.dataAlcoolConsommation === true) {
 
- 				alcohol.setAttribute('visible',true);
-				bouteille.setAttribute('visible',true);
+  				alcohol.setAttribute('visible',true);
+ 				bouteille.setAttribute('visible',true);
 
-			} else {
+ 			} else {
 
-				alcohol.setAttribute('visible',false);
-				bouteille.setAttribute('visible',false);
+ 				alcohol.setAttribute('visible',false);
+ 				bouteille.setAttribute('visible',false);
 
-			}
+ 			}
 
-			/* Cigarette */
-			if(this.data.dataCigarette === true) {
+ 			/* Cigarette */
+ 			if(this.data.dataCigarette === true) {
 
- 				cigarette.setAttribute('visible',true);
+  				cigarette.setAttribute('visible',true);
 
-			} else {
+ 			} else {
 
-				cigarette.setAttribute('visible',false);
+ 				cigarette.setAttribute('visible',false);
 
-			}
+ 			}
 
-			/* Pollution */
-			if(this.data.dataPollution === true) {
+ 			/* Pollution */
+ 			if(this.data.dataPollution === true) {
 
- 				nuage.setAttribute('visible',true);
+  				nuage.setAttribute('visible',true);
 
-			} else {
+ 			} else {
 
-				nuage.setAttribute('visible',false);
+ 				nuage.setAttribute('visible',false);
 
-			}
+ 			}
 
-			/* Income */
-			if(this.data.dataIncome === true) {
+ 			/* Income */
+ 			if(this.data.dataIncome === true) {
 
- 				argent.setAttribute('visible',true);
+  				argent.setAttribute('visible',true);
 
-			} else {
+ 			} else {
 
-				argent.setAttribute('visible',false);
+ 				argent.setAttribute('visible',false);
 
-			}
+ 			}
+
+		 }
 
 		},
 

@@ -1,9 +1,10 @@
 /* S'occupe de savoir quel journée est saisie
  * lorsque les boutons sont cliqué
  */
+
+var laSelectionDesPays = [];
+
 AFRAME.registerComponent("pays-selection", {
-
-
 
 		init: function () {
 
@@ -69,15 +70,10 @@ AFRAME.registerComponent("pays-selection", {
 						titreContinent = piece.children[7],
 						lesBoutons = document.querySelectorAll(".panneauSelectionPays");
 
-				/* Met les boutons en gris */
-				for(var i = 0;i < 24;i++) {
-
-					lesBoutons[i].setAttribute("material",{color:0x4c4c4c});
-
-				}
-
 				/* Vérifie si c'est le panneau dans la pièce Country */
 				if(piece.getAttribute("modification-piece").piece == LES_PIECES[2]) {
+
+					leThis.desactiverBouton();
 
 					/* Modifie les cinq statues */
 					for(var i = 0;i < l;i++) {
@@ -101,134 +97,88 @@ AFRAME.registerComponent("pays-selection", {
 						width:5
 					});
 
+					leThis.animerPanneau();
+
 				}
 
 				/* Vérifie si c'est le panneau dans la pièce Customize */
 				if(piece.getAttribute("modification-piece").piece == LES_PIECES[3]) {
 
-					/* Verifier cinq pays ont été choisi */
+					/* Met l'année choisi comme titre
+					titreContinent.setAttribute("text",{
+						value:dataLife[0][autresStatues[0].getAttribute("statue").annee],
+						wrapCount:18,
+						width:5
+					});*/
+					/* On ajoute notre pays de sélectionner au tableau */
+					laSelectionDesPays.push(numeroDuPaysChoisi);
+					/* Si on a moins que 5 pays pour nos statue
+					if(laSelectionDesPays.length <= 5) {
+
+
+
+					}*/
+
+					/* Si on a plus que 5 pays pour nos statue */
+					if(laSelectionDesPays.length > 5) {
+
+						/* Désactive le premier choix */
+						var premierChoix = document.querySelector('[data-nombre-pays="'
+																											+ laSelectionDesPays[0]
+																											+ '"]');
+						premierChoix.setAttribute("material",{color:0x4c4c4c});
+						laSelectionDesPays.splice(0,1);
+						//laSelectionDesPays[0] = laSelectionDesPays[laSelectionDesPays.length - 1];
+						//laSelectionDesPays.pop();
+
+						/* On ajoute notre pays de sélectionner au tableau */
+						//laSelectionDesPays.push(numeroDuPaysChoisi);
+
+					}
 
 					/* Modifie les cinq statues */
-					for(var i = 0;i < l;i++) {
+					for(var i = 0;i < laSelectionDesPays.length;i++) {
+
+						/* Animer les choix */
+						var choix = document.querySelector('[data-nombre-pays="' +laSelectionDesPays[i] + '"]');
+						choix.components["pays-selection"].animerPanneau();
+
 
 						/* Mets le numeroPays des statues */
 						autresStatues[i].setAttribute("statue",{
-							numeroPays:numeroDuPaysChoisi
+							numeroPays:laSelectionDesPays[i]
 						});
 
-						/* Affiche l'année sur la base */
+						/* Affiche l'année sur la base
 						autresStatues[i].children[3].children[0].setAttribute('text',{
-							value:dataLife[numeroDuPaysChoisi][0]
-						});
+							value:dataLife[laSelectionDesPays[0]][0]
+						});*/
 
 					}
-
-					/* Met le titre au nom du pays choisi */
-					titreContinent.setAttribute("text",{
-						value:dataLife[0][autresStatues[i].getAttribute("statue").annee],
-						wrapCount:18,
-						width:5
-					});
 
 				}
 
-				leThis.animerPanneau();
-
-				/*
-
-					if(el.getAttribute("data-pays") != "SelectAll" &&
-						 el.getAttribute("data-pays") != "RemoveAll") {
-
-						el.removeChild(el.children[1]);
-	 					var anim = document.createElement("a-animation");
-						el.components["pays-selection"].animerCouleur(anim);
-						el.appendChild(anim);
-						var maSphere = document.querySelector('[data-pays-sphere="'+
-													 el.getAttribute("data-pays")+'"]');
-						var visible = maSphere.getAttribute("visible");
-						maSphere.setAttribute("visible",!visible);
-
-						if(visible == false) {
-
-							el.children[1].setAttribute("direction","normal");
-
-						}
-						else if(visible == true) {
-
-							el.children[1].setAttribute("direction","reverse");
-
-						}
-
-						maSphere.setAttribute("material",{visible:!visible});
-
-					}
-
-					else {
-
-							var lesPays = document.querySelectorAll(".sphereGraphe");
-							var lesBoutons = document.querySelectorAll(".panneauSelectionPays"); // Doit ne pas prendre les 2 premiers
-							var l = lesPays.length;
-
-							for(var i = 0;i < l;i++) {
-
-								var anim = document.createElement("a-animation");
-								lesBoutons[i + 2].removeChild(lesBoutons[i + 2].children[1]);
-								lesBoutons[i + 2].appendChild(anim);
-
-								if(el.getAttribute("data-pays") == "SelectAll") {
-
-									lesBoutons[i + 2].children[1].setAttribute("direction","alternate");
-									lesBoutons[i + 2].components["pays-selection"].animerCouleur(anim);
-									lesPays[i].setAttribute("visible",true);
-									lesPays[i].setAttribute("material",{visible:true});
-
-								}
-
-								else {
-
-									anim.setAttribute("mixin","fadeAuGris");
-									lesPays[i].setAttribute("visible",false);
-									lesPays[i].setAttribute("material",{visible:false});
-
-								}
-
-							}
-
-					}
-
-					leThis.animerPanneau();
-
-				}
-*/
 			};
 
 	  },
+
+		desactiverBouton:function() {
+
+			var lesBoutons = document.querySelectorAll(".panneauSelectionPays");
+
+			/* Met les boutons en gris */
+			for(var i = 0;i < 24;i++) {
+
+				lesBoutons[i].setAttribute("material",{color:0x4c4c4c});
+
+			}
+
+		},
 
 	 animerPanneau:function() {
 
 			 var el = this.el,
 			 					couleur = "";
-
-			 /* Joue l'animation de fade-in/fade-out
-			 switch(el.attributes[1].nodeValue) {
-
-					case "Americas":
-					el.emit("playFadeAmericas");
-					break;
-
-					case "Africa":
-					el.emit("playFadeAfrica");
-					break;
-
-					case "Europe":
-					el.emit("playFadeEurope");
-					break;
-
-					case "Asia":
-					el.emit("playFadeAsia");
-					break;
-
-			 }*/
 
 			 switch(el.attributes[1].nodeValue) {
 
@@ -252,13 +202,9 @@ AFRAME.registerComponent("pays-selection", {
 
 			 el.setAttribute("material",{color:couleur});
 
-
-
 		},
 
 		play:function () {
-
-			//this.animerPanneau();
 
 			/* Lorsqu'on clique le jour */
 			this.el.addEventListener("click",this.selectionnerPays);
