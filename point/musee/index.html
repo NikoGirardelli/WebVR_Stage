@@ -10,9 +10,6 @@
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
-    <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
-    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/phase-shift.js"></script>
@@ -22,15 +19,6 @@
     <script src="components/modification-piece.js"></script>
     <script src="components/teleportation.js"></script>
     <script src="components/bouton-selection.js"></script>
-    <!--
-    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
-    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
-    <script src="components/changement-outil.js"></script>
-  <script src="components/ligne-du-temps.js"></script>
-    <script src="components/pays-selection.js"></script>
-    <script src="components/sphere-hover.js"></script>
-    <script src="components/interaction-graphe.js"></script>
-    -->
   </head>
   <body>
     <a-scene stats environment="grid: none; dressingUniformScale: false;
@@ -152,9 +140,7 @@
                  from="#4c4c4c" to="#ff798e" dur="500"></a-mixin>
         <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
                  to="#4c4c4c"dur="500"></a-mixin>
-        <!-- Audio
-        <audio id="desert" loop='true' autoplay="true"
-        src="audio/Desert sound - Sound effect.mp3"></audio>-->
+
         <img id="gapminder" src="img/gap.png">
       </a-assets>
 
@@ -271,26 +257,6 @@
                         position="0 0.2 0.001" data-pays="Iran" >
                 <a-text class="textPays" mixin="textPays"
                         value="Iran"></a-text>
-              </a-entity>
-              <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 0 0.001" data-pays="North Korea" >
-                <a-text class="textPays" mixin="textPays"
-                        value="North Korea"></a-text>
-              </a-entity>
-              <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.2 0.001" data-pays="South Korea" >
-                <a-text class="textPays" mixin="textPays"
-                        value="South Korea"></a-text>
-              </a-entity>
-              <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.4 0.001" data-pays="Russia" >
-                <a-text class="textPays" mixin="textPays"
-                        value="Russia"></a-text>
-              </a-entity>
-              <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.6 0.001" data-pays="Singapore" >
-                <a-text class="textPays" mixin="textPays"
-                        value="Singapore"></a-text>
               </a-entity>
             </a-entity>-->
           </a-entity>
@@ -417,7 +383,7 @@
         <a-entity id="rhand"
         raycaster="objects:.pointTeleportation,.panneau,.panneauData,.panneauPiece,.panneauAnnee,
                            .sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
-        laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
+        laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity>
       </a-entity>
 
       <!-- Toutes les statues -->
@@ -445,32 +411,6 @@
                 position="0 1.5 5.6" rotation="0 180 0"
                 text="color:#000000;wrapCount:20;side: front;align:center;"></a-text>
       </a-entity>
-      <!-- Titre du graphe
-      <a-sphere scale="1 1 1" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
-                position="-10 2 2.125" rotation="0 90 0" geometry="primitive:circle;radius:1.04">
-        <a-text value="Life Expectency and Incomes/Years since 1915 to 2015"
-                position="1.224 0 0" text="color:#000000;wrapCount:20.68;side: double;"></a-text>
-        <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
-                position="1.8 -1.8 0" text="color:#000000;wrapCount:25.68;side: double;align:center;"></a-text>
-      </a-sphere> -->
-
-      <!-- Instruction
-      <a-text text="alphaTest:0.6;
-                    tabSize: 0; width: 5;
-                    baseline: top; wrapCount: 12;
-                    letterSpacing: 0.3;
-                    align:center;color:#000000;
-                    anchor:center;zOffset:0;
-                    baseline:center;value:Use your feet on the timeline to see the data move.;"
-                    position="0 1.5 -10"></a-text>
-      <a-text text="alphaTest:0.6;
-                    tabSize: 0; width: 7;
-                    baseline: top; wrapCount: 20;
-                    letterSpacing: 0.3;
-                    align:center;color:#000000;
-                    anchor:center;zOffset:0;
-                    baseline:center;value:Use your pointer to choose a country from the menu on your left hand, and if you hover over a sphere you'll see more details about the country.;"
-                    position="0 1.5 10" rotation="0 180 0"></a-text>-->
 
       <!-- Son
       <a-entity sound="src:#desert" position="0 0 0"></a-entity>-->
