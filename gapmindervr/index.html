@@ -1,103 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <title>GapminderVR</title>
- <meta charset="utf-8">
- <meta name ="description" content="GapminderVR">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
- <link rel="stylesheet" href="css/style.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- Inspired by the demo on W3Schools https://www.w3schools.com/bootstrap/bootstrap_theme_band.asp -->
+  <title>GapminderVR</title>
+  <meta charset="utf-8">
+  <meta name ="description" content="GapminderVR">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-  <!-- Navigation -->
-  <nav class="navbar justify-content-end navbar-expand-sm bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand float-left text-warning" href="#welcome">GapminderVR</a>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="#railOfTime">Rail of Times</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="#museum">Museum</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" href="#about">About</a>
-        </li>
+<body id="welcome" data-spy="scroll" data-target=".navbar" data-offset="50">
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#welcome">GAPMINDERVR</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#railOfTime">RAIL OF TIME</a></li>
+        <li><a href="#museum">MUSEUM</a></li>
+        <li><a href="#about">ABOUT</a></li>
       </ul>
     </div>
-  </nav>
-
-  <!-- Header
-  header.masthead {
- text-align:center;
- color:#fff;
- background-image:url(../img/header-bg.jpg);
- background-repeat:no-repeat;
- background-attachment:scroll;
- background-position:center center;
- -webkit-background-size:cover;
- -moz-background-size:cover;
- -o-background-size:cover;
- background-size:cover
-}-->
-  <header class="masthead">
-    <div class="container">
-      <h1>Welcome</h1>
-    </div>
-  </header>
-  <!--
-  <div id="welcome" class="container-fluid bg-dark" style="padding-top:70px;padding-bottom:70px">
-    <h1 class="text-center">Welcome</h1>
-    <p>We were impressed by Hans Rosling work and the GapMinder.org site. A fundamental part of this experience is the animation through time showing how the statistics evolved, sometimes in surprising ways. We present a version of this experience in WebVR where, instead of merely animating the visualization in a passive manner, we provide the user with the ability to control the flow of time by walking on a rail. Thus we capture the original GapMinder experience in an immersive manner.
-
-To experience GapMinder VR, we recommend an HTC Vive connected to a suitable PC running a recent version of Firefox.!</p>
   </div>
-  Rail of Time -->
-  <section id="railOfTime">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <h2 class="section-heading text-uppercase">Rail of Time</h2>
-          <h3 class="section-subheading text-muted">Use your feet to move the data through time.</h3>
+</nav>
+
+<!-- Welcome -->
+<div id="welcome" class="bg-1">
+  <div class="container">
+    <h3 class="text-center">WELCOME</h3>
+    <p class="text-center">We were impressed by Hans Rosling work and the Gapminder.org site. A fundamental part of this experience is the animation through time showing how the statistics evolved, sometimes in surprising ways. We present a version of this experience in WebVR where, instead of merely animating the visualization in a passive manner, we provide the user with the ability to control the flow of time by walking on a rail. Thus we capture the original Gapminder experience in an immersive manner.</p>
+    <br>
+    <p class="text-center "><kbd>To experience GapminderVR, we recommend an HTC Vive connected to a suitable PC running a recent version of Firefox.</kbd></p>
+  </div>
+</div>
+
+<!-- Rail of Time -->
+<div id="railOfTime" class='bg-2'>
+  <div class="container">
+    <h3 class="text-center">RAIL OF TIME</h3>
+    <p class="text-center">Rail of Time is a VR demo where the user uses his feet to change years. Changing year affect the data on the graph. You can also use your pointer to toggle visibility of the countries, and to have more information about them, like their population for the current year.</p>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="paris.jpg" alt="Paris" width="400" height="300">
+          <p><strong>Paris</strong></p>
         </div>
       </div>
-      <div class="row text-center">
-        <div class="col-md-4 text-center">
-          <h4 class="text-uppercase">Pictures</h4>
-        </div>
-        <div class="col-md-4 text-center">
-          <h4 class="text-uppercase">Videos</h4>
-        </div>
-        <div class="col-md-4 text-center">
-          <h4 class="text-uppercase">Demo</h4>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="newyork.jpg" alt="New York" width="400" height="300">
+          <p><strong>New York</strong></p>
         </div>
       </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="sanfran.jpg" alt="San Francisco" width="400" height="300">
+          <p><strong>San Francisco</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="paris.jpg" alt="Paris" width="400" height="300">
+          <p><strong>Paris</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="newyork.jpg" alt="New York" width="400" height="300">
+          <p><strong>New York</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="sanfran.jpg" alt="San Francisco" width="400" height="300">
+          <p><strong>San Francisco</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-12 videoDemo">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+      </div>
+      <a class="btn" href="index.html" target="_blank">Try demo</a>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Rail of Time -->
-  <div id="vide" class="container-fluid bg-warning" style="padding-top:70px;padding-bottom:70px">
+<!-- Museum -->
+<div id="museum" class="bg-1">
+  <div class="container">
+    <h3 class="text-center">MUSEUM</h3>
+    <p class="text-center">Museum is a VR demo where the user visit a museum where countries are the statues. The data affect their body and surronding, for example, their income is represented by a money sign. The richer the country is, the bigger the sign gets.</p>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="paris.jpg" alt="Paris" width="400" height="300">
+          <p><strong>Paris</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="newyork.jpg" alt="New York" width="400" height="300">
+          <p><strong>New York</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="sanfran.jpg" alt="San Francisco" width="400" height="300">
+          <p><strong>San Francisco</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="paris.jpg" alt="Paris" width="400" height="300">
+          <p><strong>Paris</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="newyork.jpg" alt="New York" width="400" height="300">
+          <p><strong>New York</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="sanfran.jpg" alt="San Francisco" width="400" height="300">
+          <p><strong>San Francisco</strong></p>
+        </div>
+      </div>
+      <div class="col-sm-12 videoDemo">
+        <div class="embed-responsive embed-responsive-16by9" margin-bottom="20px">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <a class="btn" href="index.html" target="_blank">Try demo</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-  </div>
-  <!-- Rail of Time -->
-  <div id="museum" class="container-fluid" style="padding-top:70px;padding-bottom:70px">
-    <h1 class="text-center">Museum</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-  </div>
-  <!-- Rail of Time -->
-  <div id="about" class="container-fluid bg-light " style="padding-top:70px;padding-bottom:70px">
-    <h1 class="text-center">About</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-  </div>
-  <!-- Footer -->
-  <footer class="container text-center">
-    <p>Copyright © GapminderVR 2018</p>
-  </footer>
+
+<!-- About -->
+<div id="about" class="container text-center">
+  <h3>ABOUT</h3>
+  <p>The GapminderVR experience was designed by Niko Girardelli in collaboration
+with Dara Aghamirkarimi, Béatrice Pudelko and Daniel Lemire at the University of Quebec (TELUQ). We acknowledge the support of the Natural Sciences and Engineering Research Council of Canada (NSERC), which invests annually over $1 billion in people, discovery and innovation.</p>
+</div>
+
+
+<!-- Footer -->
+<footer class="text-center">
+  <a class="up-arrow" href="#welcome" data-toggle="tooltip" title="TO TOP">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a><br><br>
+  <p>Copyright © GapminderVR 2018</p>
+</footer>
+
+<script>
+$(document).ready(function(){
+  // Initialize Tooltip
+  $('[data-toggle="tooltip"]').tooltip();
+
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#welcome']").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 900, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+})
+</script>
+
 </body>
 </html>
