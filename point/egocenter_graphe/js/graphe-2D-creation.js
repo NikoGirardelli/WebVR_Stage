@@ -2,34 +2,6 @@
 /* Constantes pour les couleurs, gris, blanc, noir */
 const couleur = [0x808b96,0xfbfcfc,0x000000];
 
-/* Sous-programme qui crée le sol du graphe */
-function creerSol(graphe,callback) {
-
-	var sol = new THREE.BoxBufferGeometry(1.5,0.25,1.5);
-	var solLecture = new THREE.PlaneGeometry(1,1);
-	var texture = new THREE.TextureLoader().load( ".../textures/grid_2.png" );
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.offset.x = 1;
-	texture.offset.y = 1;
-	texture.repeat.set(1,1);//0.35,5
-
-	var materialGris = new THREE.MeshBasicMaterial( {color: couleur[0] } );
-	var materialBlanc = new THREE.MeshBasicMaterial( {color: couleur[1] } );
-	var materialTexture = new THREE.MeshBasicMaterial( {side: THREE.FrontSide,
-		 																									map:texture } );
-
-	var cubeSol = new THREE.Mesh( sol, materialGris );
-	var planeSolLecture = new THREE.Mesh( solLecture, materialTexture );
-
-	planeSolLecture.position.set(0,0.13,0);
-	planeSolLecture.rotation.set(4.71,0,0);
-
-	graphe.object3D.add(cubeSol);
-	graphe.object3D.add(planeSolLecture);
-	callback(graphe,creerAxeZ);
-}
-
 function creerAxeX(graphe,callback) {
 
 	var parent = document.createElement("a-entity");
@@ -50,18 +22,6 @@ function creerAxeX(graphe,callback) {
 	});
 
 	var value = "";
-
-	/* On écrit tous les chiffres de 0 à 100
-	for(var i = 130; i >= 0;i--) {
-
-		/* Si modulo de i par 5 et que le restant de la divison est pair
-		if(i%5 == 0 && (i/5) % 2 == 0) {
-			 /*On ajoute la valeur
-			value += " " + i + "k";
-
-		}
-
-	}*/
 
 	var positions = new Float32Array([0,1.47,0,
 																	 	 0,7.87,0]);
@@ -267,7 +227,7 @@ function creerAxeY(graphe) {
 
   for(var j = 2;j<11;j++) {
 
-    geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ));
+    geometry.addAttribute('position', new THREE.Float32BufferAttribute( positions, 3 ));
     geometry.computeBoundingSphere();
 
     mesh = new THREE.Line(geometry, materialBlanc);

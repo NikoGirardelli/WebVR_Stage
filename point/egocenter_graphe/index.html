@@ -4,23 +4,17 @@
     <meta charset="utf-8">
     <title>Egocenter</title>
     <meta name ="description" content="Egocenter - A-Frame">
+    <meta name="author" content="Niko Girardelli">
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
-    <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
     <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
-    <script src="components/phase-shift.js"></script>
     <script src="components/rafraichissement.js"></script>
-    <!--
-    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
-    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
-    <script src="components/changement-outil.js"></script>
-  <script src="components/ligne-du-temps.js"></script>-->
     <script src="components/pays-selection.js"></script>
     <script src="components/sphere-hover.js"></script>
     <script src="components/interaction-graphe.js"></script>
@@ -128,9 +122,7 @@
                  from="#4c4c4c" to="#ff798e" dur="500"></a-mixin>
         <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
                  to="#4c4c4c"dur="500"></a-mixin>
-        <!-- Audio
-        <audio id="desert" loop='true' autoplay="true"
-        src="audio/Desert sound - Sound effect.mp3"></audio>-->
+
         <img id="gapminder" src="img/gap.png">
       </a-assets>
 
@@ -211,27 +203,22 @@
                         value="Botswana"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Africa"
-                        position="0 0.4 0.001" data-pays="Brunei">
-                <a-text class="textPays" mixin="textPays"
-                        value="Brunei"></a-text>
-              </a-entity>
-              <a-entity class="panneauSelectionPays" mixin="Africa"
-                        position="0 0.2 0.001" data-pays="Congo - Dem. Rep." >
+                        position="0 0.4 0.001" data-pays="Congo - Dem. Rep." >
                 <a-text class="textPays" mixin="textPays"
                         value="Congo - Dem. Rep."></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Africa"
-                        position="0 0 0.001" data-pays="Congo - Rep." >
+                        position="0 0.2 0.001" data-pays="Congo - Rep." >
                 <a-text class="textPays" mixin="textPays"
                         value="Congo - Rep."></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Africa"
-                        position="0 -0.2 0.001" data-pays="Sierra Leone" >
+                        position="0 0 0.001" data-pays="Sierra Leone" >
                 <a-text class="textPays" mixin="textPays"
                         value="Sierra Leone"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Africa"
-                        position="0 -0.4 0.001" data-pays="South Africa" >
+                        position="0 -0.2 0.001" data-pays="South Africa" >
                 <a-text class="textPays" mixin="textPays"
                         value="South Africa"></a-text>
               </a-entity>
@@ -276,37 +263,42 @@
               <a-text class="textContinent" mixin="textContinent"
                       value="Asia" position="0 0.8 0"></a-text>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 0.6 0.001" data-pays="China">
+                        position="0 0.6 0.001" data-pays="Brunei">
+                <a-text class="textPays" mixin="textPays"
+                        value="Brunei"></a-text>
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.4 0.001" data-pays="China">
                 <a-text class="textPays" mixin="textPays"
                         value="China"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 0.4 0.001" data-pays="India">
+                        position="0 0.2 0.001" data-pays="India">
                 <a-text class="textPays" mixin="textPays"
                         value="India"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 0.2 0.001" data-pays="Iran" >
+                        position="0 0 0.001" data-pays="Iran" >
                 <a-text class="textPays" mixin="textPays"
                         value="Iran"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 0 0.001" data-pays="North Korea" >
+                        position="0 -0.2 0.001" data-pays="North Korea" >
                 <a-text class="textPays" mixin="textPays"
                         value="North Korea"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.2 0.001" data-pays="South Korea" >
+                        position="0 -0.4 0.001" data-pays="South Korea" >
                 <a-text class="textPays" mixin="textPays"
                         value="South Korea"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.4 0.001" data-pays="Russia" >
+                        position="0 -0.6 0.001" data-pays="Russia" >
                 <a-text class="textPays" mixin="textPays"
                         value="Russia"></a-text>
               </a-entity>
               <a-entity class="panneauSelectionPays" mixin="Asia"
-                        position="0 -0.6 0.001" data-pays="Singapore" >
+                        position="0 -0.8 0.001" data-pays="Singapore" >
                 <a-text class="textPays" mixin="textPays"
                         value="Singapore"></a-text>
               </a-entity>
@@ -318,18 +310,7 @@
         line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
       </a-entity>
 
-      <!-- Graphe
-      <a-entity class="graphe" scale="1 1 1" stretchable hoverable grabbable
-                position="2 0 0" rotation="0 0 0" >
-        <a-box position="0 1.55 0"
-        event-set__hover-start="material.opacity: 0.3"
-        event-set__hover-end="material.opacity: 0"
-        geometry="height: 3.44; width: 1.55; depth: 3.08"
-        material="opacity: 0; transparent: true;
-        fog: false; color: #ffffff;
-        flatShading: true; depthWrite: false;
-        depthTest: false;"></a-box>
-      </a-entity>-->
+      <!-- Graphe -->
       <a-entity id="graphe"></a-entity>
 
       <!-- Ligne du temps -->
@@ -381,8 +362,6 @@
              geometry="depth:1.5;width:3.5;height:0.25"
              material="color:#c0c0c0;"></a-box>
 
-      <!-- Son -->
-      <a-entity sound="src:#desert" position="0 0 0"></a-entity>
     </a-scene>
   </body>
 </html>

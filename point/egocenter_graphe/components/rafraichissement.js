@@ -2,19 +2,14 @@ AFRAME.registerComponent('rafraichissement', {
 
   init: function () {
 
+    // Rafraîchit la page
     this.rafraichir = function() { location.reload(); };
 
   },
 
   play: function () {
 
-    // Rafraîchit la page
     this.el.addEventListener("menudown",this.rafraichir);
-    /*this.el.addEventListener("trackpaddown",function(){
-
-
-    });*/
-
 
   },
 

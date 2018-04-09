@@ -279,20 +279,9 @@ function CreerLignes() {
 /* S'occupe de créer des spheres pour chaque pays */
 function CreerSpheres() {
 
-  var i;
-  var income_l = 25//dataIncome.length - 1;
-
-  /* Supprime l'ancienne sauvegarde */
-  sessionStorage.clear();
-
-  /* Enregistrement de la variable paysChoisi dans la sessionStorage */
-  sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
-  sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
-  sessionStorage.setItem("dataRayonPopulation", JSON.stringify(dataRayonPopulation));
-  sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
-
-
-  var graphe = document.querySelector("#graphe");
+  var i,
+      income_l = 25,//dataIncome.length - 1
+      graphe = document.querySelector("#graphe");
 
   /* Mur contenant les pays d'un continent */
   var tabMurs = [];
@@ -481,7 +470,7 @@ function CreerSpheres() {
     texteNom.setAttribute("position",{x:0,y:0.775,z:0});
     sphereGraphe.appendChild(ui);
     ui.setAttribute("visible",false);
-    //geometry.computeBoundingSphere();
+
     mesh = new THREE.Mesh( geometry, material);
     mesh.material.opacity = 0.3;
     mesh.material.transparent = true;
@@ -550,26 +539,8 @@ function CreerSpheres() {
     sphereGraphe.setAttribute("geometry",{primitive:"circle",radius:scale*1.125})
     sphereGraphe.object3D.add(mesh);
     sphereGraphe.object3D.children[0].scale.set(scale,scale,0.05);
-  //sphereGraphe.setAttribute("visible",false);
 
   }
-
-}
-
-/* S'occupe de générer une couleur aléatoirement
-*  https://stackoverflow.com/questions/1484506/random-color-generator
-*/
-function makeRandomColor() {
-
-  var c = '';
-
-  while (c.length < 6) {
-
-    c += (Math.random()).toString(16).substr(-6).substr(-1)
-
-  }
-
-  return '#'+c;
 
 }
 

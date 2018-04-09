@@ -17,7 +17,7 @@ AFRAME.registerComponent("sphere-hover", {
 			this.eventScalingBegining = function() {
 
 				leThis.peutHover();
-			//	mainPointeur.components.raycaster.refreshObjects();
+
 				/* Si le pays est visible */
 				if(this.getAttribute("visible") == true){
 
@@ -97,13 +97,11 @@ AFRAME.registerComponent("sphere-hover", {
 				if(compteur > 1) {
 
 					hoverEnCours = false;
-					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
 
 				}
 				else if(compteur == 0) {
 
 					hoverEnCours = true;
-					//leThis.selectionnerPays(mainPointeur.components.raycaster.intersectedEls[0]);
 
 				}
 

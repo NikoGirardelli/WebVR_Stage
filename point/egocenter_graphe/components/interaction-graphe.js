@@ -1,11 +1,4 @@
-var vieillePositionX,
-    dataIncome = JSON.parse(sessionStorage.getItem('dataIncome')),
-    dataLife = JSON.parse(sessionStorage.getItem('dataLife')),
-    dataPopulation = JSON.parse(sessionStorage.getItem('dataPopulation'));
-/*
-const A_REGLE_POSITION = [0.0025,0.00125,0.000625,0.000313,
-                              0.000156,0.000078,0.000039,0.00002];
-const B_REGLE_POSITION = [0,1.25,2.5,3.75,5,6.25,75,8.75];*/
+var vieillePositionX = 0;
 
 AFRAME.registerComponent('interaction-graphe', {
 
@@ -23,7 +16,7 @@ AFRAME.registerComponent('interaction-graphe', {
 
       var head = document.querySelector("#head"),
           positionTete = head.getAttribute("position").x;
-//console.log(vieillePositionX);
+
       if(positionTete > 0) {
 
           positionTete = Math.floor(positionTete*10)/10;
@@ -68,14 +61,6 @@ AFRAME.registerComponent('interaction-graphe', {
 
     }
 
-    /* Si on sort de la plateforme
-    if(positionJoueurX > 1.5 || positionJoueurX < -1.5) {
-
-      annee = null;
-      texteAnnee.setAttribute("value","Go back on the plateform");
-      texteAnnee.setAttribute("text",{wrapCount:8});
-
-    }*/
     // Ligne de temps
     switch(positionJoueurX) {
 
@@ -153,12 +138,11 @@ AFRAME.registerComponent('interaction-graphe', {
       /* Modifie les sphères des pays */
       else if(i > 0) {
 
-          var scale = dataRayonPopulation[i][annee]/1.125;
-          //console.log(cellsIncome[annee] + " " + cellsPopulation[0])
+        var scale = dataRayonPopulation[i][annee]/1.125;
+
         /* Formule pour position le pays sur le Y */
         position.y = (cellsLife[annee]*0.08) + 0.655;
 
-      //  position.x = cellsIncome[annee]/12300;
         /* Income position x*/
         if(cellsIncome[annee] <= 1000) {
 
