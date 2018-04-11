@@ -2,16 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Egocenter</title>
-    <meta name ="description" content="Egocenter - A-Frame">
+    <title>Rail of Time</title>
+    <meta name ="description" content="Rail of Time - A-Frame">
     <meta name="author" content="Niko Girardelli">
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/lire-csv.js"></script>
     <script src="components/rafraichissement.js"></script>
@@ -21,7 +19,7 @@
     <script src="js/graphe-2D-creation.js"></script>
   </head>
   <body>
-    <a-scene avatar-recorder environment="grid: none; dressingUniformScale: false;
+    <a-scene environment="grid: none; dressingUniformScale: false;
                                 dressingScale: 0; dressingAmount: 0;
                                 groundYScale: 0;ground: flat; skyColor: #ffffff;
                                 active: true;gridColor: #ffffff;
@@ -142,8 +140,7 @@
                          anchor:center;zOffset:-30;
                          baseline:center;value:;"></a-text>
         </a-camera>
-        <a-entity id="lhand" vive-controls="hand: left;model:false"
-        motion-capture-recorder="hand: left; persistStroke:true;recordingControls: true;visibleStroke:true;">
+        <a-entity id="lhand" vive-controls="hand: left;model:false">
           <!-- UI -->
           <a-entity id="ui-parent" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
 
@@ -306,8 +303,8 @@
           </a-entity>
         </a-entity>
         <a-entity id="rhand" raycaster="objects:.sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
-        laser-controls="hands:right" motion-capture-recorder="hand: right;  persistStroke:true;recordingControls: true;visibleStroke:true;"
-        line="color: #22D1EE; opacity: 0.75"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
+        laser-controls="hands:right"
+        line="color: #22D1EE; opacity: 0.75"></a-entity>
       </a-entity>
 
       <!-- Graphe -->
