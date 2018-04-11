@@ -1,5 +1,5 @@
 # Web VR - Stage Hiver 2018
-========================================
+
 ## GapminderVR
 [GapminderVR](http://www.gapmindervr.org/)
  - Site regroupant la démonstration du 'Museum' et celle de 'Rail of Time'.
