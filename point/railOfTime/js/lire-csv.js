@@ -1,8 +1,8 @@
 /* Papa Bless */
-var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
-    url_2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
-    url_3 = ".../csv/indicator gapminder population.csv",
-    url_4=".../csv/Rayon des spheres Population Pays.csv",
+var url_1 = "../csv/indicator life_expectancy_at_birth.csv",
+    url_2 = "../csv/indicator gapminder gdp_per_capita_ppp.csv",
+    url_3 = "../csv/indicator gapminder population.csv",
+    url_4="../csv/Rayon des spheres Population Pays.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
@@ -154,7 +154,6 @@ function CreerLignes() {
     var ligneGraphe = document.createElement("a-entity");
     ligneGraphe.setAttribute("class","ligneGraphe");
     ligneGraphe.setAttribute("scale",{x:1,y:1,z:-1});
-  //ligneGraphe.setAttribute("position",{x:-0.3,y:1,z:-1});
     lignesGraphe.appendChild(ligneGraphe);
     ligneGraphe.setAttribute("data-pays-ligne",cellsLife[0]);
 
@@ -268,8 +267,7 @@ function CreerLignes() {
 
     mesh = new THREE.Line( geometry, material);
     ligneGraphe.object3D.add(mesh);
-    //ligneGraphe.setAttribute("visible",false);
-    console.log(ligneGraphe.object3D)
+
   }
 
   document.querySelector("#head").appendChild(lignesGraphe);
