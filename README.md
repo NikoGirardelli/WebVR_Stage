@@ -18,7 +18,7 @@
  - Permet de choisir des pays qu'on veut afficher dans notre graphe. Les pays sont représentés par des lignes dans notre graphe.
 
 ## Section exemples
- - Contient les certaines fonctionnalités qu'on retrouve dans les démonstrations.
+ - Contient certaines fonctionnalités qu'on retrouve dans les démonstrations et des tests.
 
 [Choisiri un jour avec le laser](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/point/jour_pointer/index.html)
 
