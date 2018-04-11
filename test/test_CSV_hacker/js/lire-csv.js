@@ -1,6 +1,6 @@
 /* Papa Bless */
-var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
-    url_2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
+var url_1 = "../csv/indicator life_expectancy_at_birth.csv",
+    url_2 = "../csv/indicator gapminder gdp_per_capita_ppp.csv",
     creationFini = false,
     dataLife = {},
     dataIncome = {};
