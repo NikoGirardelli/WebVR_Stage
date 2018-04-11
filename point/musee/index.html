@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Musée</title>
+    <meta name ="description" content="Musée - A-Frame">
+    <meta name="author" content="Niko Girardelli">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/lire-csv.js"></script>
+    <script src="components/rafraichissement.js"></script>
+    <script src="components/statue.js"></script>
+    <script src="components/pays-selection.js"></script>
+    <script src="components/modification-piece.js"></script>
+    <script src="components/teleportation.js"></script>
+    <script src="components/bouton-selection.js"></script>
+  </head>
+  <body>
+    <a-scene stats environment="grid: none; dressingUniformScale: false;
+                                            dressingScale: 0; dressingAmount: 0;
+                                            groundYScale: 0;ground: flat;
+                                            active: true;gridColor: #ffffff;
+                                            fog: 0; groundColor: #808080;
+                                            groundColor2: #5d5d5d;
+                                            groundTexture:none;
+                                            skyType:gradient;
+                                            ground:none">
+
+      <a-assets>
+        <!-- Models gltf -->
+        <a-asset-item id="statuette_v3-gltf" src="model/statuette/statuette_v3.gltf"></a-asset-item>
+        <!-- Models obj -->
+        <a-asset-item id="bouteille-obj" src="model/bouteille_low_poly/bouteille.obj"></a-asset-item>
+        <a-asset-item id="alcohol-obj" src="model/bouteille_low_poly/alcohol.obj"></a-asset-item>
+        <a-asset-item id="nuage-obj" src="model/nuage/nuage.obj"></a-asset-item>
+        <a-asset-item id="money-obj" src="model/money_sign/money_sign.obj"></a-asset-item>
+        <a-asset-item id="cigarette-obj" src="model/cigarette/cigarette.obj"></a-asset-item>
+        <a-asset-item id="cigarette-mtl" src="model/cigarette/cigarette.mtl"></a-asset-item>
+
+        <!-- Panneau hover pays du graphe -->
+        <a-mixin id="ui-hover-pays" position="0 1.25 0"
+                 slice9="width:3.8;height:3;bottom:43.81;left:20;
+                         right:43;top:20;src:img/slice9_texture/tooltip.png;
+                         color:white;padding:0.02;transparent:false;
+                         side:front;"></a-mixin>
+
+        <!-- Ui texte -->
+        <a-mixin id="textContinent"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.6;
+                       baseline: top; wrapCount: 12;
+                       letterSpacing: 0.3;
+                       align:center;
+                       anchor:center;
+                       baseline:center;"></a-mixin>
+
+       <a-mixin id="Bouton" bouton-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
+        <a-mixin id="Americas" pays-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
+        <a-mixin id="Africa" pays-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
+        <a-mixin id="Europe" pays-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
+        <a-mixin id="Asia" pays-selection
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.15;width:0.6;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 14;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"></a-mixin>
+
+        <!-- Animations-->
+        <a-mixin id="fade" attribute="material.opacity" direction="alternate"
+                 begin="playFade" repeat="0"
+                 from="0.4" to="1" dur="500"></a-mixin>
+        <a-mixin id="fadeCouleur" attribute="material.color" direction="reverse"
+                 begin="playFadeCouleur"
+                 to="#4c4c4c" dur="500"></a-mixin>
+        <a-mixin id="fadeBouton" attribute="material.color"
+                 begin="playFadeBouton" repeat="0"
+                 from="#4c4c4c" to="#000000" dur="500"></a-mixin>
+        <a-mixin id="fadeAmericas" attribute="material.color" fill="both"
+                 repeat="0"
+                 from="#4c4c4c" to="#9ef03e" dur="500"></a-mixin>
+        <a-mixin id="fadeAfrica" attribute="material.color" fill="both"
+                 repeat="0"
+                 from="#4c4c4c" to="#33dded" dur="500"></a-mixin>
+        <a-mixin id="fadeEurope" attribute="material.color" fill="both"
+                  repeat="0"
+                 from="#4c4c4c" to="#fff37a" dur="500"></a-mixin>
+        <a-mixin id="fadeAsia" attribute="material.color" fill="both"
+                 repeat="0"
+                 from="#4c4c4c" to="#ff798e" dur="500"></a-mixin>
+        <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
+                 to="#4c4c4c"dur="500"></a-mixin>
+
+        <img id="gapminder" src="img/gap.png">
+      </a-assets>
+
+      <!-- Les mains -->
+      <a-entity id="player" rafraichissement position='0 0 0'>
+        <a-camera id="head" camera="far:500;">
+          <!-- Annee texte -->
+          <a-text id="anneeTexte"
+                   text="alphaTest:0.6;
+                         tabSize: 0; width: 10;
+                         baseline: top; wrapCount: 12;
+                         letterSpacing: 0.3;
+                         align:center;color:#ffffff;
+                         anchor:center;zOffset:-30;
+                         baseline:center;value:;"></a-text>
+        </a-camera>
+        <a-entity id="lhand" vive-controls="hand:left;model:false">
+
+          <a-entity id="ui-joueur" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
+
+            <!-- Fond -->
+            <a-entity class="panneau" position="0 -0.3 0"
+                      slice9="width:3;height:2;bottom:43.81;left:20;
+                              right:43;top:20;src:img/slice9_texture/tooltip.png;
+                              color:white;padding:0.02;
+                              side:double;"></a-entity>
+            <!-- Datas -->
+            <a-entity position="-1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Data" position="0 0.8 0"></a-text>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 0.6 0.001" data-csv="1"
+                        text="value:Alcohol Consumption;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 0.4 0.001" data-csv="2"
+                        text="value:Cigarette per Smoker per day;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 0.2 0.001" data-csv="3"
+                        text="value:Mean Years of Schooling;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 0 0.001" data-csv="4"
+                        text="value:GPD per Capita;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 -0.2 0.001" data-csv="5"
+                        text="value:Life Expectancy;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 -0.4 0.001" data-csv="6"
+                        text="value:CO2 Emissions per Capita;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 -0.6 0.001" data-csv="7"
+                        text="value:Population;"></a-entity>
+              <a-entity class="panneauData" mixin="Bouton"
+                        position="0 -0.8 0.001" data-csv="8"
+                        text="value:Sugar Consumption;"></a-entity>
+            </a-entity>
+            <!-- Years -->
+            <a-entity position="-0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Years" position="0 0.8 0"></a-text>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 0.6 0.001" data-annee="0"
+                        text="value:1950;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 0.4 0.001" data-annee="1"
+                        text="value:1960;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 0.2 0.001" data-annee="2"
+                        text="value:1970;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 0 0.001" data-annee="3"
+                        text="value:1980;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 -0.2 0.001" data-annee="4"
+                        text="value:1990;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 -0.4 0.001" data-annee="5"
+                        text="value:2000;"></a-entity>
+              <a-entity class="panneauAnnee" mixin="Bouton"
+                        position="0 -0.6 0.001" data-annee="6"
+                        text="value:2010;"></a-entity>
+            </a-entity>
+            <!-- Rooms -->
+            <a-entity position="0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Room" position="0 0.8 0"></a-text>
+              <a-entity class="panneauPiece" mixin="Bouton"
+                        position="0 0.6 0.001" data-piece="0"
+                        text="value:Hub;"></a-entity>
+              <a-entity class="panneauPiece" mixin="Bouton"
+                        position="0 0.4 0.001" data-piece="1"
+                        text="value:All Countries;"></a-entity>
+              <a-entity class="panneauPiece" mixin="Bouton"
+                        position="0 0.2 0.001" data-piece="2"
+                        text="value:Country;"></a-entity>
+              <a-entity class="panneauPiece" mixin="Bouton"
+                        position="0 0 0.001" data-piece="3"
+                        text="value:Customize;"></a-entity>
+            </a-entity>
+            <!-- Tips
+            <a-entity position="1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Asia" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.6 0.001" data-pays="China">
+                <a-text class="textPays" mixin="textPays"
+                        value="China"></a-text>
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.4 0.001" data-pays="India">
+                <a-text class="textPays" mixin="textPays"
+                        value="India"></a-text>
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.2 0.001" data-pays="Iran" >
+                <a-text class="textPays" mixin="textPays"
+                        value="Iran"></a-text>
+              </a-entity>
+            </a-entity>-->
+          </a-entity>
+          <a-entity id="ui-pays" position="0.455 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
+            <a-entity class="panneau" position="0 -0.3 0"
+                      slice9="width:3;height:2;bottom:43.81;left:20;
+                              right:43;top:20;src:img/slice9_texture/tooltip.png;
+                              color:white;padding:0.02;
+                              side:double;"></a-entity>
+            <a-entity position="-1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="The Americas" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.6 0.001" data-pays="Brazil"
+                        text="value:Brazil" data-nombre-pays="1">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.4 0.001" data-pays="Canada"
+                        text="value:Canada" data-nombre-pays="2">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0.2 0.001" data-pays="Dominican Republic"
+                        text="value:Dominican Republic" data-nombre-pays="3">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 0 0.001" data-pays="Haiti"
+                        text="value:Haiti" data-nombre-pays="4">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Americas"
+                        position="0 -0.2 0.001" data-pays="United States"
+                        text="value:United States" data-nombre-pays="5">
+              </a-entity>
+            </a-entity>
+            <a-entity position="-0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Africa" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.6 0.001" data-pays="Botswana"
+                        text="value:Botswana" data-nombre-pays="20">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.4 0.001" data-pays="Congo - Dem. Rep."
+                        text="value:Congo - Dem. Rep." data-nombre-pays="21">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0.2 0.001" data-pays="Congo - Rep."
+                        text="value:Congo - Rep." data-nombre-pays="22">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 0 0.001" data-pays="Sierra Leone"
+                        text="value:Sierra Leone" data-nombre-pays="23">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Africa"
+                        position="0 -0.2 0.001" data-pays="South Africa"
+                        text="value:South Africa" data-nombre-pays="24">
+              </a-entity>
+            </a-entity>
+            <a-entity position="0.35 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Europe" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.6 0.001" data-pays="Denmark"
+                        text="value:Denmark" data-nombre-pays="6">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.4 0.001" data-pays="Germany"
+                        text="value:Germany" data-nombre-pays="7">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0.2 0.001" data-pays="Hungary"
+                        text="value:Hungary" data-nombre-pays="8">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 0 0.001" data-pays="Poland"
+                        text="value:Poland" data-nombre-pays="9">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 -0.2 0.001" data-pays="Romania"
+                        text="value:Romania" data-nombre-pays="10">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Europe"
+                        position="0 -0.4 0.001" data-pays="United Kingdom"
+                        text="value:United Kingdom" data-nombre-pays="11">
+              </a-entity>
+            </a-entity>
+            <a-entity position="1.05 -0.25 0">
+              <a-text class="textContinent" mixin="textContinent"
+                      value="Asia" position="0 0.8 0"></a-text>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.6 0.001" data-pays="Brunei"
+                        text="value:Brunei" data-nombre-pays="12">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.4 0.001" data-pays="China"
+                        text="value:China" data-nombre-pays="13">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0.2 0.001" data-pays="India"
+                        text="value:India" data-nombre-pays="14">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 0 0.001" data-pays="Iran"
+                        text="value:Iran" data-nombre-pays="15">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.2 0.001" data-pays="North Korea"
+                        text="value:North Korea" data-nombre-pays="16">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.4 0.001" data-pays="South Korea"
+                        text="value:South Korea" data-nombre-pays="17">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.6 0.001" data-pays="Russia"
+                        text="value:Russia" data-nombre-pays="18">
+              </a-entity>
+              <a-entity class="panneauSelectionPays" mixin="Asia"
+                        position="0 -0.8 0.001" data-pays="Singapore"
+                        text="value:Singapore" data-nombre-pays="19">
+              </a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+        <a-entity id="rhand"
+        raycaster="objects:.pointTeleportation,.panneau,.panneauData,.panneauPiece,.panneauAnnee,
+                           .sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
+        laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity>
+      </a-entity>
+
+      <!-- Toutes les statues -->
+      <a-entity id="toutesLesStatues"></a-entity>
+
+      <!-- Quatre statues -->
+      <a-entity id="cinqStatues"></a-entity>
+
+      <!-- Environment -->
+      <a-entity id="piece" modification-piece>
+        <a-plane position="0 0.001 0" rotation="270 0 0" geometry="width:15;height:15;" material="color:#808080;"></a-plane>
+        <a-cylinder position="0 1.999 0" geometry="radius:8;height:4;openEnded:true;segmentsRadial:4;thetaStart:45"
+                    material="side:back;shader:gradientshader;topColor:#c0c0c0;bottomColor:#ffffff;"></a-cylinder>
+        <a-plane position="0 2.999 0" rotation="90 0 0" geometry="width:15;height:15;" material="color:#c0c0c0;"></a-plane>
+      </a-entity>
+
+      <a-entity id="texteHub">
+        <a-text value="Use your laser on the grey circle on the floor to teleport yourself in the same room."
+                position="5.6 1.5 0" rotation="0 270 0"
+                text="color:#000000;wrapCount:18;side: front;align:center;"></a-text>
+        <a-text value="Use your panel to select the year, the room and the data you want to see. In some room, you can select countries from it too."
+                position="-5.6 1.5 0" rotation="0 90 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;"></a-text>
+        <a-text value="Look carefully at the statues. The data will modify their appearance and surrounding. Their data is on your panel."
+                position="0 1.5 5.6" rotation="0 180 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;"></a-text>
+      </a-entity>
+
+      <!-- Son
+      <a-entity sound="src:#desert" position="0 0 0"></a-entity>-->
+    </a-scene>
+  </body>
+</html>

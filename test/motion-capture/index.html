@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Motion Capture</title>
+    <meta name ="description" content="Motion Capture - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-motion-capture-components/dist/aframe-motion-capture-components.min.js"></script>
+  </head>
+  <body>
+    <!-- https://aframe.io/docs/0.8.0/introduction/visual-inspector-and-dev-tools.html#motion-capture-1
+        pour Plus d'information -->
+    <a-scene stats environment="preset:contact"
+             avatar-recorder="autoRecord:true;
+                              localStorage:true;
+                              recordingName:motion-capture;
+                              spectatorMode:true;"
+             avatar-replayer="recordingName: motion-capture;
+                              loop: true; spectatorMode: true">
+
+      <!-- Les mains -->
+      <a-entity id="player" position='0 0 0'>
+        <a-camera id="head" camera="far:500;">
+          <!-- Annee texte -->
+          <a-text id="anneeTexte"
+                   text="alphaTest:0.6;
+                         tabSize: 0; width: 10;
+                         baseline: top; wrapCount: 12;
+                         letterSpacing: 0.3;
+                         align:center;color:#ffffff;
+                         anchor:center;zOffset:-30;
+                         baseline:center;value:;"></a-text>
+        </a-camera>
+        <a-entity id="lefthand" vive-controls="hand:left;"motion-capture-recorder="persistStroke:true;visibleStroke:true;"></a-entity>
+        <a-entity id="righthand" vive-controls="hand:right;"motion-capture-recorder="persistStroke:true;visibleStroke:true;"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil ligne-du-temps="event:click;mixin:ligneTemps"-->
+      </a-entity>
+
+      <!-- Texte -->
+      <a-entity>
+        <a-text value="Keyboard Shortcuts For Recording:
+
+                      space - Toggle recording.
+                      q - Toggle spectator mode camera.
+                      c - Clear recording from localStorage and memory.
+                      u - Upload recording to file host and get short URL."
+                position="0 2 5.6" rotation="0 180 0"
+                text="color:#000000;wrapCount:52;side: front;align:center;width:11">
+        </a-text>
+        <a-text value="Stand straigth for a couple of second on the green mark."
+                position="5.6 1.5 0" rotation="0 270 0"
+                text="color:#000000;wrapCount:18;side: front;align:center;">
+                <a-text value="X" position="-0.02 -1.5 4.25" rotation="270 0 0"
+                        text="color:#62f442;wrapCount:10;side:front;align:center;"></a-text>
+        </a-text>
+        <a-text value="Wave your hand while being on the blue mark."
+                position="-5.6 1.5 0" rotation="0 90 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;">
+                <a-text value="X" position="-0.02 -1.5 4.25" rotation="270 0 0"
+                        text="color:#3d63e2;wrapCount:10;side:front;align:center;"></a-text>
+        </a-text>
+        <a-text value="Crouch on the red mark."
+                position="0 1.5 -5.6" rotation="0 360 0"
+                text="color:#000000;wrapCount:20;side: front;align:center;">
+                <a-text value="X" position="-0.02 -1.5 4.25" rotation="270 0 0"
+                        text="color:#ce0018;wrapCount:10;side:front;align:center;"></a-text>
+        </a-text>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>

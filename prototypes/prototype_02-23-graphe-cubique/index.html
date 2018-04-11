@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prototype 02-23-18</title>
+    <meta name ="description" content="Prototype 02-23-18 - A-Frame">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
+    <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
+    <script src="components/phase-shift.js"></script>
+    <script src="components/rafraichissement.js"></script>
+    <!--<script src="components/ui-widget.js"></script>
+    <script src="components/changement-outil.js"></script>
+    <script src="components/bouton-generate.js"></script>
+    <script src="components/horloge.js"></script>
+    <script src="components/jour-clickable.js"></script>
+    <script src="components/lecture-cube.js"></script>
+    <script src="components/am-pm.js"></script>
+    <script src="components/lumiere-nuit.js"></script>
+    <script src="components/annee-selection.js"></script>
+    <script src="components/changer-annee.js"></script>-->
+    <script src="components/pays-selection.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/lire-csv.js"></script>
+    <script src="js/graphe-creation.js"></script>
+  </head>
+  <body>
+    <a-scene stats environment="preset:egypt; shadow:false;
+                                        skyType:atmosphere;">
+
+      <a-assets>
+        <!-- to change touch mode collider -->
+        <a-mixin id="mytouch" physics-collider phase-shift
+                 collision-filter="collisionForces: false"
+                 static-body="shape: sphere; sphereRadius: 0.02"
+                 super-hands="colliderEvent: collisions; colliderEventProperty: els;
+                              colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
+                              colliderState:"></a-mixin>
+        <a-mixin id="mypoint" phase-shift
+                 raycaster="showLine:true;far:5;interval:100;
+                            objects:.panneauSelectionPays, .graphe"
+                 super-hands="colliderEvent:raycaster-intersection;
+                              colliderEventProperty:els;
+                              colliderEndEvent:raycaster-intersection-cleared;
+                              colliderEndEventProperty:el;
+                              dragDropEndButtons: triggerup;
+                              dragDropStartButtons: triggerdown;
+                              stretchEndButtons: triggerup;
+                              stretchStartButtons: triggerdown;
+                              grabEndButtons: triggerup;
+                              grabStartButtons: triggerdown;"></a-mixin>
+
+        <!-- Ui texte -->
+        <a-mixin id="textContinent"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.6;
+                       baseline: top; wrapCount: 12;
+                       letterSpacing: 0.3;
+                       align:center;
+                       anchor:center;
+                       baseline:center;"></a-mixin>
+       <a-mixin id="textPays"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 12;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="btnAnnee"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 1;
+                      baseline: top; wrapCount: 12;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="texteAnnee"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 1.5;
+                      baseline: top; wrapCount: 12;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3"></a-mixin>
+       <a-mixin id="zoneBtnAnnee" hoverable
+                material="opacity:1;color:grey;"
+                geometry="primitive:plane;height:0.15;width:0.15;"></a-mixin>
+
+       <a-mixin id="Americas" hoverable
+                material="opacity:1;color:grey;" pays-selection
+                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+       <a-mixin id="Africa" hoverable
+                material="opacity:1;color:grey;" pays-selection
+                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+       <a-mixin id="Europe" hoverable
+                material="opacity:1;color:grey;" pays-selection
+                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+       <a-mixin id="Asia" hoverable
+                material="opacity:1;color:grey;" pays-selection
+                geometry="primitive:plane;height:0.15;width:0.6;"></a-mixin>
+       <a-mixin id="panneauSelectionAnnees" hoverable
+                material="opacity:1;color:grey;" annee-selection
+                geometry="primitive:plane;height:0.15;width:0.6;">
+        </a-mixin>
+
+        <!-- Pour les jours
+        <a-mixin id="btnCal" rotation="90 90 90"
+                 geometry="width:0.5;height:0.1;depth:0.5"
+                 material="opacity:0.2"></a-mixin>-->
+        <!-- Aiguille
+        <a-mixin id="aiguille" material="color:#a82121" rotation="90 0 0"
+                 geometry="primitive: box;
+                           depth:0.01; height: 0.6; width:0.02;"></a-mixin>-->
+        <!-- Animations-->
+        <a-mixin id="fade" attribute="material.opacity" direction="alternate"
+                 begin="playFade" repeat="0"
+                 from="0.4" to="1" dur="500"></a-mixin>
+        <a-mixin id="fadeAnnee" attribute="material.color" direction="alternate"
+                 begin="playFadeAnnee" repeat="0"
+                 from="grey" to="white" dur="500"></a-mixin>
+        <a-mixin id="fadeAmericas" attribute="material.color" direction="alternate"
+                 begin="playFadeAmericas" repeat="0"
+                 from="grey" to="#9ef03e" dur="500"></a-mixin>
+        <a-mixin id="fadeAfrica" attribute="material.color" direction="alternate"
+                 begin="playFadeAfrica" repeat="0"
+                 from="grey" to="#33dded" dur="500"></a-mixin>
+        <a-mixin id="fadeEurope" attribute="material.color" direction="alternate"
+                 begin="playFadeEurope" repeat="0"
+                 from="grey" to="#fff37a" dur="500"></a-mixin>
+        <a-mixin id="fadeAsia" attribute="material.color" direction="alternate"
+                 begin="playFadeAsia" repeat="0"
+                 from="grey" to="#ff798e" dur="500"></a-mixin>
+        <!-- Audio -->
+        <audio id="desert" loop='true' autoplay="true"
+        src="audio/Desert sound - Sound effect.mp3"></audio>
+        <img id="gapminder" src="img/gap.png">
+      </a-assets>
+
+      <!-- UI -->
+      <a-entity id="ui-parent" position="0 1.25 -3">
+
+        <!-- Pour les pays -->
+        <a-entity id="ui-pays" position="0 -0.155 0"
+                  slice9="width:3;height:1.81;bottom:43.81;left:20;
+                          right:43;top:20;src:img/slice9_texture/tooltip.png;
+                          color:white;padding:0.02;
+                          side:double;"></a-entity>
+        <!-- The Americas -->
+        <a-entity position="-1.05 -0.25 0">
+          <a-text class="textContinent" mixin="textContinent"
+                  value="The Americas" position="0 0.8 0"></a-text>
+          <a-entity class="panneauSelectionPays" mixin="Americas"
+                    position="0 0.6 0.001" data-pays="Brazil">
+            <a-text class="textPays" mixin="textPays"
+                    value="Brazil"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Americas"
+                    position="0 0.4 0.001" data-pays="Canada">
+            <a-text class="textPays" mixin="textPays"
+                    value="Canada"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Americas"
+                    position="0 0.2 0.001" data-pays="Dominican Republic" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Dominican Republic"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Americas"
+                    position="0 0 0.001" data-pays="Haiti" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Haiti"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Americas"
+                    position="0 -0.2 0.001" data-pays="United States" >
+            <a-text class="textPays" mixin="textPays"
+                    value="United States"></a-text>
+          </a-entity>
+        </a-entity>
+        <!-- Africa -->
+        <a-entity position="-0.35 -0.25 0">
+          <a-text class="textContinent" mixin="textContinent"
+                  value="Africa" position="0 0.8 0"></a-text>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 0.6 0.001" data-pays="Botswana">
+            <a-text class="textPays" mixin="textPays"
+                    value="Botswana"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 0.4 0.001" data-pays="Brunei">
+            <a-text class="textPays" mixin="textPays"
+                    value="Brunei"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 0.2 0.001" data-pays="Congo - Dem. Rep." >
+            <a-text class="textPays" mixin="textPays"
+                    value="Congo - Dem. Rep."></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 0 0.001" data-pays="Congo - Rep." >
+            <a-text class="textPays" mixin="textPays"
+                    value="Congo - Rep."></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 -0.2 0.001" data-pays="Sierra Leone" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Sierra Leone"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Africa"
+                    position="0 -0.4 0.001" data-pays="South Africa" >
+            <a-text class="textPays" mixin="textPays"
+                    value="South Africa"></a-text>
+          </a-entity>
+        </a-entity>
+        <!-- Europe -->
+        <a-entity position="0.35 -0.25 0">
+          <a-text class="textContinent" mixin="textContinent"
+                  value="Europe" position="0 0.8 0"></a-text>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 0.6 0.001" data-pays="Denmark">
+            <a-text class="textPays" mixin="textPays"
+                    value="Denmark"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 0.4 0.001" data-pays="Germany">
+            <a-text class="textPays" mixin="textPays"
+                    value="Germany"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 0.2 0.001" data-pays="Hungary" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Hungary"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 0 0.001" data-pays="Poland" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Poland"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 -0.2 0.001" data-pays="Romania" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Romania"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Europe"
+                    position="0 -0.4 0.001" data-pays="United Kingdom" >
+            <a-text class="textPays" mixin="textPays"
+                    value="United Kingdom"></a-text>
+          </a-entity>
+        </a-entity>
+        <!-- Asia -->
+        <a-entity position="1.05 -0.25 0">
+          <a-text class="textContinent" mixin="textContinent"
+                  value="Asia" position="0 0.8 0"></a-text>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 0.6 0.001" data-pays="China">
+            <a-text class="textPays" mixin="textPays"
+                    value="China"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 0.4 0.001" data-pays="India">
+            <a-text class="textPays" mixin="textPays"
+                    value="India"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 0.2 0.001" data-pays="Iran" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Iran"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 0 0.001" data-pays="North Korea" >
+            <a-text class="textPays" mixin="textPays"
+                    value="North Korea"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 -0.2 0.001" data-pays="South Korea" >
+            <a-text class="textPays" mixin="textPays"
+                    value="South Korea"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 -0.4 0.001" data-pays="Russia" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Russia"></a-text>
+          </a-entity>
+          <a-entity class="panneauSelectionPays" mixin="Asia"
+                    position="0 -0.6 0.001" data-pays="Singapore" >
+            <a-text class="textPays" mixin="textPays"
+                    value="Singapore"></a-text>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Les mains -->
+      <a-entity id="player" rafraichissement
+                progressive-controls="controllerModel:false;override:true;
+                                      maxLevel:point;touchMixin:mytouch;
+                                      pointMixin:mypoint;">
+        <a-entity id="lhand" hand-controls="left"></a-entity>
+        <a-entity id="rhand" hand-controls="right"></a-entity><!-- teleport-controls="type:parabolic;" changement-outil -->
+      </a-entity>
+
+      <!-- Graphe -->
+      <a-entity class="graphe" scale="1 1 1" stretchable hoverable grabbable
+                position="2 0 0" rotation="0 0 0" >
+        <a-box position="0 1.55 0"
+        event-set__hover-start="material.opacity: 0.3"
+        event-set__hover-end="material.opacity: 0"
+        geometry="height: 3.44; width: 1.55; depth: 3.08"
+        material="opacity: 0; transparent: true;
+        fog: false; color: #ffffff;
+        flatShading: true; depthWrite: false;
+        depthTest: false;"></a-box>
+      </a-entity>
+
+      <!-- Titre du graphe -->
+      <a-sphere scale="0.4 0.4 0.4" material="repeat:1.0 1.0; src: #gapminder; shader: standard; side: double;"
+                position="-0.75 3.1 -3.1" geometry="primitive:circle;radius:1.04">
+        <a-text value="Life Expectency and Incomes/Years since 1915 to 2015"
+                position="1.224 0 0" text="color:#d9ad28;wrapCount:20.68;side: double;"></a-text>
+        <a-text value="Choose countries by clicking on them and witness the result on the graph on your right."
+                position="1.8 -1.8 0" text="color:#d9ad28;wrapCount:25.68;side: double;align:center;"></a-text>
+      </a-sphere>
+
+      <!-- Son -->
+      <a-entity sound="src:#desert" position="0 0 0"></a-entity>
+    </a-scene>
+
+</html>

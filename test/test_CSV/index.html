@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+    		<meta charset="UTF-8" />
+    		<meta name="viewport" content="width=device-width  initial-scale=1.0">
+    		<title>Test CSV A-frame </title>
+        <meta name="description" content="Reading csv file using javascript" />
+        <meta name="author" content="Niko Girardelli"/>
+        <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+        <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.js"></script>
+        <script src="https://rawgit.com/chenzlabs/stats-in-vr/master/dist/aframe-stats-in-vr-component.min.js"></script>
+        <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+        <!--<script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>-->
+        <script src="js/papaparse.min.js"></script>
+        <script src="js/lire-csv.js"></script>
+        <script src="js/graphe-creation.js"></script>
+        </head>
+        <body>
+          <a-scene stats stats-in-vr environment="preset:egypt;">
+            <a-assets>
+              <!-- to change touch mode collider -->
+              <a-mixin id="mytouch" physics-collider phase-shift
+                       collision-filter="collisionForces: false"
+                       static-body="shape: sphere; sphereRadius: 0.02"
+                       super-hands="colliderEvent: collisions; colliderEventProperty: els;
+                                    colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;
+                                    colliderState:"></a-mixin>
+            </a-assets>
+
+            <!-- Les mains -->
+            <a-entity id="player" rafraichissement
+                      progressive-controls="controllerModel:false;override:true;
+                                            maxLevel:touch;touchMixin:mytouch;
+                                            pointMixin:mypoint;objects: .ligneGraphe;">
+              <a-entity id="lhand" hand-controls="left"
+                        teleport-controls="type:parabolic;"></a-entity>
+              <a-entity id="rhand" hand-controls="right"
+                         changement-outil>
+              </a-entity>
+            </a-entity>
+
+            <!-- Graphe -->
+            <a-entity class="graphe" scale="1 1 1" rotation="0 0 0" graphe-creation></a-entity>
+
+          </a-scene>
+        </body>
+    </html>
