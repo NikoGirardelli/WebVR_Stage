@@ -1,13 +1,13 @@
 /* Papa Bless - S'occupe d'enregistrer dans le sessionStorage nos datas - Commentaire à refaire*/
-var url_1 = ".../csv/indicator life_expectancy_at_birth.csv",
-    url_2 = ".../csv/indicator gapminder gdp_per_capita_ppp.csv",
-    url_3 = ".../csv/indicator gapminder population.csv",
-    url_4 = ".../csv/Rayon des spheres Population Pays.csv",
-    url_5 = ".../csv/mean-years-of-schooling-for-those-aged-15-and-older.csv",
-    url_6 = ".../csv/indicator sugar_consumption.csv",
-    url_7 = ".../csv/indicator CDIAC carbon_dioxide_emissions_per_capita.csv",
-    url_8 = ".../csv/indicator alcohol consumption.csv",
-    url_9 = ".../csv/consumption-per-smoker-per-day.csv",
+var url_1 = "../csv/indicator life_expectancy_at_birth.csv",
+    url_2 = "../csv/indicator gapminder gdp_per_capita_ppp.csv",
+    url_3 = "../csv/indicator gapminder population.csv",
+    url_4 = "../csv/Rayon des spheres Population Pays.csv",
+    url_5 = "../csv/mean-years-of-schooling-for-those-aged-15-and-older.csv",
+    url_6 = "../csv/indicator sugar_consumption.csv",
+    url_7 = "../csv/indicator CDIAC carbon_dioxide_emissions_per_capita.csv",
+    url_8 = "../csv/indicator alcohol consumption.csv",
+    url_9 = "../csv/consumption-per-smoker-per-day.csv",
     dataLife = {},
     dataIncome = {},
     dataRayonPopulation = {},
@@ -575,17 +575,6 @@ function creerStatue(ensembleStatue,paysChoisi) {
 
 /* Boucle qui appelle creerStatue() */
 function creationStatues() {
-
-  /* Sauvegarde des datas
-  sessionStorage.setItem("dataLife", JSON.stringify(dataLife));
-  sessionStorage.setItem("dataIncome", JSON.stringify(dataIncome));
-  sessionStorage.setItem("dataPopulation", JSON.stringify(dataPopulation));
-  sessionStorage.setItem("dataRayonPopulation", JSON.stringify(dataRayonPopulation));
-  sessionStorage.setItem("dataEducation", JSON.stringify(dataEducation));
-  sessionStorage.setItem("dataSucreConsommation", JSON.stringify(dataSucreConsommation));
-  sessionStorage.setItem("dataAlcoolConsommation", JSON.stringify(dataAlcoolConsommation));
-  sessionStorage.setItem("dataPollution", JSON.stringify(dataPollution));
-  sessionStorage.setItem("dataCigarette", JSON.stringify(dataCigarette));*/
 
   var toutesLesStatues = document.querySelector("#toutesLesStatues");
   var cinqStatues = document.querySelector("#cinqStatues");

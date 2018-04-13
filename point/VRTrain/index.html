@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VRTrain</title>
+    <meta name ="description" content="VRTrain - A-Frame">
+    <meta name="author" content="Niko Girardelli">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.0.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v3.0.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+    <script src="components/train.js"></script>
+    <script src="components/rafraichissement.js"></script>
+    <script src="components/prochain-arret.js"></script>
+    <script src="components/bouton-achat-vente.js"></script>
+    <script src="components/joueur.js"></script>
+    <!--
+    <script src="components/changement-outil.js"></script>
+    <script src="js/papaparse.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
+    <script src="js/lire-csv.js"></script>
+    <script src="components/statue.js"></script>
+    <script src="components/pays-selection.js"></script>
+    <script src="components/modification-piece.js"></script>
+    <script src="components/teleportation.js"></script>-->
+  </head>
+  <body>
+    <a-scene stats physics="debug: true;gravity:0"
+             environment="grid: none;
+                          active: true;
+                          fog: 0;preset:yavapai;
+                          groundTexture:none;">
+
+      <a-assets>
+        <a-mixin id="pointer" raycaster="showLine:true;far:20;"
+                 super-hands="colliderEvent:raycaster-intersection;
+                              colliderEventProperty:els;
+                              colliderEndEvent:raycaster-intersection-cleared;
+                              colliderEndEventProperty:el;
+                              grabStartButtons:gripdown;
+                              grabEndButtons:gripup;
+                              ">
+
+        <!-- Panneau hover pays du graphe -->
+        <a-mixin id="ui-hover-pays" position="0 1.25 0"
+                 slice9="width:3.8;height:3;bottom:43.81;left:20;
+                         right:43;top:20;src:img/slice9_texture/tooltip.png;
+                         color:white;padding:0.02;transparent:false;
+                         side:front;"></a-mixin>
+        <a-mixin id="panneau"
+                slice9="width:3;height:2;bottom:43.81;left:20;
+                        right:43;top:20;src:img/slice9_texture/tooltip.png;
+                        color:white;padding:0.02;
+                        side:double;"
+                event-set__hoveron="_event: hover-start;
+                                    slice9.opacity: 0.7;
+                                    transparent: true"
+                event-set__hoveroff="_event: hover-end;
+                                     slice9.opacity: 1;
+                                     transparent: false"></a-mixin>
+
+        <!-- Ui - Titre ville -->
+        <a-mixin id="titreVille"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.6;
+                       baseline: top; wrapCount: 12;
+                       letterSpacing: 0.3;
+                       align:center;
+                       anchor:center;
+                       baseline:center;width:3;"></a-mixin>
+
+       <a-mixin id="Bouton" bouton-achat-vente
+                material="opacity:1;color:#4c4c4c;"
+                geometry="primitive:plane;height:0.2;width:0.65;"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 5;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"
+                scale="2 2 1"
+                event-set__hoveron="_event: hover-start;
+                                    scale: 2.2 2.2 1;"
+                event-set__hoveroff="_event: hover-end;
+                                     scale: 2 2 1;"></a-mixin>
+
+        <!-- Animations-->
+        <a-mixin id="fadeCouleur" attribute="material.color" direction="reverse"
+                 begin="playFadeCouleur"
+                 to="#4c4c4c" dur="500"></a-mixin>
+        <a-mixin id="fadeBouton" attribute="material.color"
+                 begin="playFadeBouton" repeat="0"
+                 from="#4c4c4c" to="#000000" dur="500"></a-mixin>
+        <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
+                 to="#4c4c4c"dur="500"></a-mixin>
+      </a-assets>
+
+      <!-- Les mains -->
+      <a-entity id="player" rafraichissement joueur position='0 0 0'
+                progressive-controls="controllerModel:true;
+                                      pointMixin:pointer;
+                                      maxLevel:point;
+                                      objects:#ui-prochain-arret,
+                                              .ui-article,
+                                              .ui-inventaire,
+                                              .ui-achat,
+                                              .ui-argent,
+                                              .bouton,
+                                              #map;">
+        <a-camera id="head" camera="far:500;"></a-camera>
+        <a-entity id="lhand" class="left-controller"></a-entity>
+        <a-entity id="rhand" class="right-controller"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau prochain arrêt -->
+      <a-entity id="ui-prochain-arret" hoverable sleepy dynamic-body grabbable
+                position="1 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0"
+                prochain-arret>
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Nom et temps restant -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="pa-ville" mixin="titreVille"
+                  value="Train arrives  in Townroto" position="0 0.25 0"></a-text>
+          <a-text class="pa-eta" mixin="titreVille"
+                  value="ETA: 0" position="0 -0.5 0"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le panneau de notre inventaire -->
+      <a-entity class="ui-inventaire" hoverable sleepy dynamic-body grabbable
+                position="2 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Inventory" position="0 0.5 0"></a-text>
+          <a-entity class="inv-article"
+                    position="0 0 0.001"
+                    text="value:0 x Grain;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="inv-article"
+                    position="0 -0.375 0.001"
+                    text="value:0 x Steel;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="inv-article"
+                    position="0 -0.75 0.001"
+                    text="value:0 x Poutine;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le panneau de notre compte de banque  -->
+      <a-entity class="ui-argent" hoverable sleepy dynamic-body grabbable
+                position="2 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Your Money" position="0 0.5 0"></a-text>
+          <a-entity id="myMoney"
+                    position="0 0 0.001"
+                    text="value:0 $;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Toronto -->
+      <a-entity class="ui-article" hoverable sleepy dynamic-body grabbable
+                position="0 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Toronto" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Montreal -->
+      <a-entity class="ui-article" hoverable sleepy dynamic-body grabbable
+                position="0 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Montreal" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Toronto -->
+      <a-entity class="ui-article" hoverable sleepy dynamic-body grabbable
+                position="0 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Boston" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
+                position="3 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Grain" position="0 0.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.125 0.001" data-btn="1"
+                    text="value:Buy;"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.625 0.001" data-btn="2"
+                    text="value:Sell;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
+                position="3 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Poutine" position="0 0.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.125 0.001" data-btn="3"
+                    text="value:Buy;"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.625 0.001" data-btn="4"
+                    text="value:Sell;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
+                position="3 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Steel" position="0 0.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.125 0.001" data-btn="5"
+                    text="value:Buy;"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -0.625 0.001" data-btn="6"
+                    text="value:Sell;"></a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- Map -->
+      <a-entity id="map" sleepy dynamic-body grabbable hoverable train
+                geometry="primitive:cylinder;height:0.5;" material="color:green;"
+                event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+                event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
+        <a-entity position="0 0.5 0.75" material="color:#ffb800;"
+                  geometry="primitive:ring;radiusInner:0.18;
+                            radiusOuter:0.2;thetaLength:0;"
+                  text="value:Boston;yOffset:2;
+                        color:#000000;width:2;
+                        side:front;align:center;
+                        color:white;">
+        </a-entity>
+        <a-entity position="0.75 0.5 0" material="color:#bf2f38;"
+                  geometry="primitive:ring;radiusInner:0.18;
+                            radiusOuter:0.2;thetaLength:0;"
+                  text="value:Montreal;yOffset:2;
+                        color:#000000;width:2;
+                        side:front;align:center;
+                        color:white;">
+        </a-entity>
+        <a-entity position="-0.75 0.5 0" material="color:#003876;"
+                  geometry="primitive:ring;radiusInner:0.18;
+                            radiusOuter:0.2;thetaLength:0;"
+                  text="value:Toronto;yOffset:2;
+                        color:#000000;width:2;
+                        side:front;align:center;
+                        color:white;">
+        </a-entity>
+      </a-entity>
+
+      <a-plane static-body rotation="270 0 0" visible="false" geometry="height:20;width:20;"></a-plane>
+      <!-- Son
+      <a-entity sound="src:#desert" position="0 0 0"></a-entity>-->
+    </a-scene>
+  </body>
+</html>
