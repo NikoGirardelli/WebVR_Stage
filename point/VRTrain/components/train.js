@@ -41,14 +41,13 @@ AFRAME.registerComponent("train", {
 
 		},
 
-		tick:function () {
+		chronoTrain:function() {
 
 			var el = this.el,
 					lesVilles = el.children,
 					panneauETA = document.querySelector("#ui-prochain-arret");
 
 			/* Faire l'effet d'un chrono */
-			//console.log(tempsRestant)
 			if(tempsRestant > 0) {
 
 					tempsRestant--;
@@ -86,6 +85,12 @@ AFRAME.registerComponent("train", {
 				this.villeVisible(lesVilles[indiceVille], indiceVille);
 
 			}
+
+		},
+
+		tick:function () {
+
+			this.chronoTrain();
 
 		}
 

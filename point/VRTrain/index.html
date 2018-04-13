@@ -18,6 +18,7 @@
     <script src="components/prochain-arret.js"></script>
     <script src="components/bouton-achat-vente.js"></script>
     <script src="components/joueur.js"></script>
+    <script src="components/jouer-son.js"></script>
     <!--
     <script src="components/changement-outil.js"></script>
     <script src="js/papaparse.min.js"></script>
@@ -45,12 +46,7 @@
                               grabEndButtons:gripup;
                               ">
 
-        <!-- Panneau hover pays du graphe -->
-        <a-mixin id="ui-hover-pays" position="0 1.25 0"
-                 slice9="width:3.8;height:3;bottom:43.81;left:20;
-                         right:43;top:20;src:img/slice9_texture/tooltip.png;
-                         color:white;padding:0.02;transparent:false;
-                         side:front;"></a-mixin>
+        <!-- panneau -->
         <a-mixin id="panneau"
                 slice9="width:3;height:2;bottom:43.81;left:20;
                         right:43;top:20;src:img/slice9_texture/tooltip.png;
@@ -73,7 +69,7 @@
                        align:center;
                        anchor:center;
                        baseline:center;width:3;"></a-mixin>
-
+       <!-- Bouton -->
        <a-mixin id="Bouton" bouton-achat-vente
                 material="opacity:1;color:#4c4c4c;"
                 geometry="primitive:plane;height:0.2;width:0.65;"
@@ -95,24 +91,48 @@
         <a-mixin id="fadeCouleur" attribute="material.color" direction="reverse"
                  begin="playFadeCouleur"
                  to="#4c4c4c" dur="500"></a-mixin>
-        <a-mixin id="fadeBouton" attribute="material.color"
-                 begin="playFadeBouton" repeat="0"
-                 from="#4c4c4c" to="#000000" dur="500"></a-mixin>
-        <a-mixin id="fadeAuGris" attribute="material.color"repeat="0"
-                 to="#4c4c4c"dur="500"></a-mixin>
+
+        <!-- Chansons -->
+        <audio id="coupe" src="audio/compress/Coupe.mp3"
+               loop="true"></audio>
+        <audio id="mysteries" src="audio/compress/Mysteries.mp3"
+               loop="true"></audio>
+        <audio id="splashing-around" src="audio/compress/Splashing_Around.mp3"
+               loop="true"></audio>
+        <audio id="wind-marching-for-rain" src="audio/compress/Wind_Marching_For_Rain.mp3"
+               loop="true"></audio>
+
+        <!-- Boite son -->
+        <a-mixin id="boite-son" jouer-son
+                 text="alphaTest:0.6;
+                       zOffset:0.255;
+                       tabSize: 0; width: 0.5;
+                       baseline: top; wrapCount: 10;
+                       align:center;
+                       anchor:center;
+                       baseline:center;
+                       letterSpacing: 0.3;"
+                 geometry="primitive: box;height:0.5;width:0.5;depth:0.5;"
+                 material="color:#FFF;"
+                 event-set__hoveron="_event: hover-start;
+                                     material.opacity: 0.7;"
+                 event-set__hoveroff="_event: hover-end;
+                                      material.opacity: 1;"></a-mixin>
+
       </a-assets>
 
       <!-- Les mains -->
-      <a-entity id="player" rafraichissement joueur position='0 0 0'
+      <a-entity id="player" rafraichissement joueur inventaire position='0 0 0'
                 progressive-controls="controllerModel:true;
                                       pointMixin:pointer;
                                       maxLevel:point;
                                       objects:#ui-prochain-arret,
+                                              #ui-inventaire,
+                                              #ui-argent,
                                               .ui-article,
-                                              .ui-inventaire,
                                               .ui-achat,
-                                              .ui-argent,
                                               .bouton,
+                                              .boite-son,
                                               #map;">
         <a-camera id="head" camera="far:500;"></a-camera>
         <a-entity id="lhand" class="left-controller"></a-entity>
@@ -137,8 +157,8 @@
       </a-entity>
 
       <!-- Le panneau de notre inventaire -->
-      <a-entity class="ui-inventaire" hoverable sleepy dynamic-body grabbable
-                position="2 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+      <a-entity id="ui-inventaire" hoverable sleepy dynamic-body grabbable
+                position="1 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -160,8 +180,8 @@
       </a-entity>
 
       <!-- Le panneau de notre compte de banque  -->
-      <a-entity class="ui-argent" hoverable sleepy dynamic-body grabbable
-                position="2 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+      <a-entity id="ui-argent" hoverable sleepy dynamic-body grabbable
+                position="1 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -176,9 +196,9 @@
         </a-entity>
       </a-entity>
 
-      <!-- Le panneau article Toronto -->
+      <!-- Le panneau article Boston -->
       <a-entity class="ui-article" hoverable sleepy dynamic-body grabbable
-                position="0 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -186,7 +206,7 @@
         <!-- Valeur articles -->
         <a-entity position="0 -0.25 0">
           <a-text class="texteArticle" mixin="titreVille"
-                  value="Toronto" position="0 0.5 0"></a-text>
+                  value="Boston" position="0 0.5 0"></a-text>
           <a-entity class="article"
                     position="0 0 0.001"
                     text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
@@ -224,7 +244,7 @@
 
       <!-- Le panneau article Toronto -->
       <a-entity class="ui-article" hoverable sleepy dynamic-body grabbable
-                position="0 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -232,7 +252,7 @@
         <!-- Valeur articles -->
         <a-entity position="0 -0.25 0">
           <a-text class="texteArticle" mixin="titreVille"
-                  value="Boston" position="0 0.5 0"></a-text>
+                  value="Toronto" position="0 0.5 0"></a-text>
           <a-entity class="article"
                     position="0 0 0.001"
                     text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
@@ -245,8 +265,9 @@
         </a-entity>
       </a-entity>
 
+      <!-- Les panneaux pour acheter les articles -->
       <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
-                position="3 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="2 1 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -265,7 +286,7 @@
       </a-entity>
 
       <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
-                position="3 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="2 1.5 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -284,7 +305,7 @@
       </a-entity>
 
       <a-entity class="ui-achat" hoverable sleepy dynamic-body grabbable
-                position="3 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="2 2 1.5" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -312,7 +333,7 @@
                             radiusOuter:0.2;thetaLength:0;"
                   text="value:Boston;yOffset:2;
                         color:#000000;width:2;
-                        side:front;align:center;
+                        side:doubledsa;align:center;
                         color:white;">
         </a-entity>
         <a-entity position="0.75 0.5 0" material="color:#bf2f38;"
@@ -320,7 +341,7 @@
                             radiusOuter:0.2;thetaLength:0;"
                   text="value:Montreal;yOffset:2;
                         color:#000000;width:2;
-                        side:front;align:center;
+                        side:doubledsa;align:center;
                         color:white;">
         </a-entity>
         <a-entity position="-0.75 0.5 0" material="color:#003876;"
@@ -328,14 +349,34 @@
                             radiusOuter:0.2;thetaLength:0;"
                   text="value:Toronto;yOffset:2;
                         color:#000000;width:2;
-                        side:front;align:center;
+                        side:double;align:center;
                         color:white;">
         </a-entity>
       </a-entity>
 
       <a-plane static-body rotation="270 0 0" visible="false" geometry="height:20;width:20;"></a-plane>
-      <!-- Son
-      <a-entity sound="src:#desert" position="0 0 0"></a-entity>-->
+
+      <!-- Son -->
+      <a-entity id="jukebox" rotation="0 180 0" hoverable sleepy
+               dynamic-body grabbable position="3 1 1.5">
+        <a-text value="JUKEBOX - CLICK A CUBE TO PLAY THE SONG !" align="center" width="2" wrapCount="20"></a-text>
+        <a-entity class="boite-son" sound="src:#coupe;"
+                  mixin="boite-son" position="0 0 0"
+                  text="value:Coupe by The Grand Affair">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#mysteries;"
+                  mixin="boite-son" position="0.5 0 0"
+                  text="value:Mysteries by Dan Lebowitz">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#splashing-around;"
+                  mixin="boite-son" position="1 0 0"
+                  text="value:Splasphing Around by The Green Orbs">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#wind-marching-for-rain;"
+                  mixin="boite-son" position="1.5 0 0"
+                  text="value:Wind Marching For Rain by Puddle of Infinity">
+        </a-entity>
+      </a-entity>
     </a-scene>
   </body>
 </html>

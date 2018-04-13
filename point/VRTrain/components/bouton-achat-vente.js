@@ -17,24 +17,24 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 				/* Achats */
 				case "1":
-						 joueur.components["joueur"].acheterGrain;
+						 joueur.components["joueur"].acheterArticle(1);
 						 break;
 			  case "3":
-						 joueur.components["joueur"].acheterPoutine();
+						 joueur.components["joueur"].acheterArticle(2);
 						 break;
 			  case "5":
- 					 	 joueur.components["joueur"].acheterSteel();
+ 					 	 joueur.components["joueur"].acheterArticle(3);
  					 	 break;
 
 				/* Ventes */
 				case "2":
-						 joueur.components["joueur"].vendreGrain();
+						 joueur.components["joueur"].vendreArticle(1);
 						 break;
 				case "4":
-						 joueur.components["joueur"].vendrePoutine();
+						 joueur.components["joueur"].vendreArticle(2);
 						 break;
 				case "6":
-					 	 joueur.components["joueur"].vendreSteel();
+					 	 joueur.components["joueur"].vendreArticle(3);
 					 	 break;
 
 			}
@@ -55,7 +55,7 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 		remove:function() {
 
-			this.el.removeEventListener("click",this.activerSelection);
+			this.el.removeEventListener("click",this.modifierInventaire);
 
 		}
 
