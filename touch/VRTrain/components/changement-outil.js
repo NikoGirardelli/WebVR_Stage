@@ -1,35 +1,57 @@
-outilSelection = 0;
+var outilSelection = 0;
 
 AFRAME.registerComponent('changement-outil', {
 
-  init: function () {
-    // Do something when component first attached.
-    //var player = document.querySelector("#player");
-  },
+  init:function() {
 
-  update: function () {
-
+    this.changerOutil();
 
   },
 
   changerOutil: function() {
 
-    var map = document.querySelector("#map");
+    var objetsGrabbable = document.querySelectorAll("[grabbable]"),
+        lesPoignees = document.querySelectorAll(".poignee");
 
-    outilSelection ++;
-
+    /* Panneaux non grabbable et button clickable */
     if(outilSelection == 0) {
 
-      map.setAttribute("grabbable","");
-      console.log("grabbable");
+      for(var i = 0;i < objetsGrabbable.length;i++) {
+
+        objetsGrabbable[i].setAttribute("grabbable",{maxGrabbers:0});
+
+        if(i < 10) {
+
+          lesPoignees[i].components["poignee"].changerCouleurAuRouge();
+
+        }
+
+
+      }
+
+      outilSelection = 1;
+
+      //console.log("clickable");
 
     }
 
+    /* Panneaux grabbable et button non clickable */
     else if(outilSelection == 1) {
 
-      map.removeAttribute("grabbable","");
+      for(var i = 0;i < objetsGrabbable.length;i++) {
+
+        objetsGrabbable[i].setAttribute("grabbable",{maxGrabbers:2});
+
+        if(i < 10) {
+
+          lesPoignees[i].components["poignee"].changerCouleurAuVert();
+
+        }
+
+      }
+
       outilSelection = 0;
-      console.log("non grabbable")
+    //  console.log("non clickable, grabbable")
     }
 
   },
@@ -51,11 +73,6 @@ AFRAME.registerComponent('changement-outil', {
     // Do something the component or its entity is detached.
     this.el.children[1].removeEventListener("trackpaddown",this.changerOutil);
     this.el.children[2].removeEventListener("trackpaddown",this.changerOutil);
-  },
-
-  tick: function (time, timeDelta) {
-    // Do something on every scene tick or frame.
-
   }
 
 });
