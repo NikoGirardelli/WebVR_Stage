@@ -20,12 +20,7 @@ AFRAME.registerComponent('changement-outil', {
 
         objetsGrabbable[i].setAttribute("grabbable",{maxGrabbers:0});
 
-        if(i < 10) {
-
-          lesPoignees[i].components["poignee"].changerCouleurAuRouge();
-
-        }
-
+        lesPoignees[i].components["poignee"].changerCouleurAuRouge();
 
       }
 
@@ -42,11 +37,7 @@ AFRAME.registerComponent('changement-outil', {
 
         objetsGrabbable[i].setAttribute("grabbable",{maxGrabbers:2});
 
-        if(i < 10) {
-
-          lesPoignees[i].components["poignee"].changerCouleurAuVert();
-
-        }
+        lesPoignees[i].components["poignee"].changerCouleurAuVert();
 
       }
 

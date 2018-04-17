@@ -16,7 +16,7 @@ AFRAME.registerComponent("prochain-arret", {
 			}
 
 			/* Modifie le texte pour celui du prochain arrêt */
-			this.el.children[1].children[0].setAttribute("value","Train arrives  in " + LES_VILLES[indiceVille]);
+			this.el.children[1].children[0].setAttribute("value","Spaceship arrives  at " + LES_VILLES[indiceVille]);
 
 		},
 

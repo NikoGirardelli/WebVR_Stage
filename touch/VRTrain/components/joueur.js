@@ -1,7 +1,8 @@
-var valeurArticles = [["Boston",["Grain",4,7,6],["Poutine",10,8,12],["Steel",15,22,19]],
-											["Montreal",["Grain",6,2,3],["Poutine",4,8,5],["Steel",25,27,17]],
-											["Toronto",["Grain",5,7,6],["Poutine",6,8,12],["Steel",30,22,19]]
-										 ];
+var valeurArticles = [["Jupiter",["Grain",4,7,6],["Poutine",10,8,12],["Steel",15,22,19]],
+											["Mars",["Grain",6,2,3],["Poutine",4,8,5],["Steel",25,27,17]],
+											["Earth",["Grain",5,7,6],["Poutine",6,8,12],["Steel",30,22,19]]
+										];
+var lesDifficultes = ["facile","hardcore"];
 // valeurArticles[0][0] = "Boston", valeurArticles[0][2][0] = "Poutine", valeurArticles[0][2][1] = 10,
 
 /* S'occupe de l'inventaire du joueur et de son argent. */
@@ -10,15 +11,16 @@ AFRAME.registerComponent("joueur", {
 	schema: {
 
 		argent: {default:100, type:"int"},
-		grain:{default:3, type:"int"},
-		poutine:{default:3, type:"int"},
-		steel:{default:3, type:"int"}
+		grain:{default:1, type:"int"},
+		poutine:{default:1, type:"int"},
+		steel:{default:1, type:"int"},
+		difficulte:{default:lesDifficultes[0], type:"string", oneOf:lesDifficultes},
+		finJeu : {default:false, type:"boolean"}
 
 	},
 
 	init: function () {
 
-		//this.creationTitre();
 		/* Lorsqu'on vend ou achète un article, on modifie le texte de l'ui. */
 		this.changerTexteArgent();
 		this.changerTexteInventaire();
@@ -55,7 +57,7 @@ AFRAME.registerComponent("joueur", {
 		}
 
 		else {
-			console.log("pas assé");
+			console.log("pas assé $");
 		}
 
 	},
@@ -143,7 +145,70 @@ AFRAME.registerComponent("joueur", {
 		var uiArgent = document.querySelector("#ui-argent"),
 				argentJoueur = this.data.argent;
 
-		uiArgent.children[1].children[1].setAttribute("text",{value:argentJoueur + " $"});
+		uiArgent.children[1].children[1].setAttribute("text",{value:argentJoueur + " Bitcoin"});
+
+	},
+
+	/* Perte d'argent selon la difficulté */
+	perteArgent:function() {
+
+		var argentJoueur = this.data.argent,
+				montantPerte = 0;
+
+		/* Si c'est facile, -1 sinon c'est -5*/
+		if(this.data.difficulte == lesDifficultes[0]) {
+
+			montantPerte = 1;
+
+		} else if(this.data.difficulte == lesDifficultes[1]) {
+
+			montantPerte = 5;
+
+		}
+
+		if(argentJoueur - montantPerte >= 0) {
+
+			this.el.setAttribute("joueur",{argent: argentJoueur - montantPerte});
+
+		}
+
+		else {
+
+			this.data.finJeu = true;
+
+		}
+
+	},
+
+	verifierFin:function() {
+
+		/* Arrête tout si n'a plus d'argent*/
+		if(this.data.finJeu == true) {
+
+			var scene = document.querySelector('a-scene'),
+					textFin = document.createElement("a-text");
+
+			this.el.children[0].appendChild(textFin);
+
+			textFin.setAttribute("text",{
+				value:"The End!\nYou don't have any Bitcoin remaining. \nPlease restart the page to play it again.",
+				wrapCount:18,
+				zOffset:-4,
+				align:"center"
+			});
+
+			textFin.setAttribute("animation__text",{
+				dur:100,
+				property:"text.color",
+				from:0x0099ff,
+				to:0xFFFFFF,
+				autoplay:true,
+				loop:true
+			});
+
+			scene.pause();
+
+		}
 
 	},
 
@@ -152,6 +217,18 @@ AFRAME.registerComponent("joueur", {
 		/* Lorsqu'on vend ou achète un article, on modifie le texte de l'ui. */
 		this.changerTexteArgent();
 		this.changerTexteInventaire();
+
+	},
+
+	pause:function() {
+
+		console.log("fin?")
+
+	},
+
+	tick:function(){
+
+		this.verifierFin();
 
 	}
 

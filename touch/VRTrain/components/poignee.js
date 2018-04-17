@@ -9,7 +9,7 @@ AFRAME.registerComponent("poignee", {
 
 			this.hoverStart = function() {
 
-				if(panneauParent.getAttribute("grabbable").maxGrabbers == 2) {
+				if(outilSelection == 1) {
 
 
 					el.setAttribute("material",{opacity:0.7});

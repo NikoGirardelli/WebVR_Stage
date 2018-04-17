@@ -10,10 +10,11 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 			this.hoverStart = function() {
 
-				if(panneauParent.getAttribute("grabbable").maxGrabbers == 0) {
+				if(outilSelection == 1) {
 
 					el.setAttribute("material",{opacity:0.5});
-					el.setAttribute("scale",{x:3,y:3,z:1});
+					el.setAttribute("text",{color:0x0099ff});
+					el.setAttribute("scale",{x:3.2,y:3.2,z:1});
 
 				}
 
@@ -21,12 +22,9 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 			this.hoverEnd = function() {
 
-				if(panneauParent.getAttribute("grabbable").maxGrabbers == 0) {
-
 					el.setAttribute("material",{opacity:1});
+					el.setAttribute("text",{color:0xffffff});
 					el.setAttribute("scale",{x:2.6,y:2.6,z:1});
-
-			  }
 
       };
 
@@ -36,18 +34,10 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 			var el = this,
 					joueur = document.querySelector("#player"),
-					panneauParent = this.parentEl.parentEl;
+					panneauParent = this.parentEl.parentEl,
+					positionAnimY = 0;
 
-			if(panneauParent.getAttribute("grabbable").maxGrabbers == 0) {
-
-				el.setAttribute("animation",{
-					dur:300,
-					property:"material.color",
-					from:"#000000",
-					to:'#c4c4c4',
-					startEvents:"click",
-					autoplay:false
-				});
+			if(outilSelection == 1) {
 
 				/* Achat ou vente de l'article */
 				switch(el.getAttribute("data-btn")) {
@@ -55,26 +45,56 @@ AFRAME.registerComponent("bouton-achat-vente", {
 					/* Achats */
 					case "1":
 							 joueur.components["joueur"].acheterArticle(1);
+							 positionAnimY = 0.5;
 							 break;
 				  case "3":
 							 joueur.components["joueur"].acheterArticle(2);
+							 positionAnimY = 0.5;
 							 break;
 				  case "5":
 	 					 	 joueur.components["joueur"].acheterArticle(3);
+							 positionAnimY = 0.5;
 	 					 	 break;
 
 					/* Ventes */
 					case "2":
 							 joueur.components["joueur"].vendreArticle(1);
+							 positionAnimY = -1;
 							 break;
 					case "4":
 							 joueur.components["joueur"].vendreArticle(2);
+							 positionAnimY = -1;
 							 break;
 					case "6":
 						 	 joueur.components["joueur"].vendreArticle(3);
+							 positionAnimY = -1;
 						 	 break;
 
 				}
+
+				/* Copie la position du bouton */
+				var positionAnim = {x:0,y:positionAnimY,z:-0.08},
+						positionInit = {x:0,y:positionAnimY,z:0.2};
+
+
+				/* Animation posiiton et couleur */
+				el.setAttribute("animation__text",{
+					dur:300,
+					property:"text.color",
+					from:"#0099ff",
+					to:"#FFFFFF",
+					startEvents:"click",
+					autoplay:false
+				});
+
+				el.setAttribute("animation__position",{
+					dur:300,
+					property:"position",
+					from:positionAnim,
+					to:positionInit,
+					startEvents:"click",
+					autoplay:false
+				});
 
 			}
 

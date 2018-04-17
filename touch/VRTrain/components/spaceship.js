@@ -1,11 +1,11 @@
-const LES_VILLES = ["Boston","Montreal","Toronto"];
+const LES_VILLES = ["Jupiter","Mars","Earth"];
 var tempsRestant;
 var duree = 300,
 		estEnTrainDeCompter = false,
 		indiceVille = 1;
 
 /* S'occupe de changer de ville et d'afficher la ville courante. */
-AFRAME.registerComponent("train", {
+AFRAME.registerComponent("spaceship", {
 
 	schema: {
 
@@ -27,8 +27,14 @@ AFRAME.registerComponent("train", {
 		/* Met une ville visible */
 		villeVisible:function(laVille,indiceVille) {
 
-			laVille.setAttribute("geometry",{thetaLength:360});
-			laVille.setAttribute("scale",{x:1.2,y:1.2,z:1.2});
+			laVille.children[1].setAttribute("animation",{
+						dur:300,
+						property:"material.opacity",
+						from:"0",
+						to:'0.4',
+						autoplay:true
+					});
+			//laVille.setAttribute("scale",{x:1.2,y:1.2,z:1.2});
 			this.data.lieuActif = LES_VILLES[indiceVille];
 
 		},
@@ -36,8 +42,14 @@ AFRAME.registerComponent("train", {
 		/* Met une ville invisible */
 		villeInvisible:function(laVille) {
 
-			laVille.setAttribute("geometry",{thetaLength:0});
-			laVille.setAttribute("scale",{x:0.9,y:0.9,z:0.9});
+			laVille.children[1].setAttribute("animation",{
+						dur:300,
+						property:"material.opacity",
+						from:"0.4",
+						to:'0',
+						autoplay:true
+					});
+		//	laVille.setAttribute("scale",{x:0.9,y:0.9,z:0.9});
 
 		},
 
@@ -45,7 +57,8 @@ AFRAME.registerComponent("train", {
 
 			var el = this.el,
 					lesVilles = el.children,
-					panneauETA = document.querySelector("#ui-prochain-arret");
+					panneauETA = document.querySelector("#ui-prochain-arret"),
+					joueur = document.querySelector("#player");
 
 			/* Faire l'effet d'un chrono */
 			if(tempsRestant > 0) {
@@ -80,6 +93,9 @@ AFRAME.registerComponent("train", {
 				}
 
 				panneauETA.components["prochain-arret"].changerTitreProchaineVille(indiceVille);
+
+				/* On pert de l'argent à chaque fois qu'on change de lieu */
+				joueur.components["joueur"].perteArgent();
 
 				/* Met la nouvelle ville visible */
 				this.villeVisible(lesVilles[indiceVille], indiceVille);
