@@ -1,8 +1,9 @@
 const LES_VILLES = ["Jupiter","Mars","Earth"];
 var tempsRestant;
-var duree = 300,
+var duree = 1000,
 		estEnTrainDeCompter = false,
-		indiceVille = 1;
+		indiceVille = 1,
+		dureeTotalDeLaPartie = 0;
 
 /* S'occupe de changer de ville et d'afficher la ville courante. */
 AFRAME.registerComponent("spaceship", {
@@ -60,6 +61,9 @@ AFRAME.registerComponent("spaceship", {
 					panneauETA = document.querySelector("#ui-prochain-arret"),
 					joueur = document.querySelector("#player");
 
+			/* Incrémente notre variable de la durée total de la partie */
+			dureeTotalDeLaPartie++;
+
 			/* Faire l'effet d'un chrono */
 			if(tempsRestant > 0) {
 
@@ -106,7 +110,12 @@ AFRAME.registerComponent("spaceship", {
 
 		tick:function () {
 
-			this.chronoTrain();
+			/* Si le jeu est lancé on lance le compteur. */
+			if(jeuLancer == true) {
+
+				this.chronoTrain();
+
+			}
 
 		}
 

@@ -17,12 +17,14 @@
     <script src="components/spaceship.js"></script>
     <script src="components/rafraichissement.js"></script>
     <script src="components/prochain-arret.js"></script>
+    <script src="components/bouton-difficulte.js"></script>
     <script src="components/bouton-achat-vente.js"></script>
+    <script src="components/bouton-lancer-jeu.js"></script>
     <script src="components/joueur.js"></script>
     <script src="components/jouer-son.js"></script>
     <script src="components/poignee.js"></script>
     <script src="components/changement-outil.js"></script>
-
+    <script src="components/replacer-environnement.js"></script>
     <!--
     <script src="components/changement-outil.js"></script>
     <script src="js/papaparse.min.js"></script>
@@ -87,6 +89,31 @@
                       letterSpacing: 0.3;"
                 scale="2.6 2.6 1"></a-mixin>
 
+      <a-mixin id="BoutonDifficulte" bouton-difficulte
+               material="opacity:1;color:#c4c4c4;"
+               geometry="primitive:box;height:0.2;width:0.65;depth:0.2"
+               text="alphaTest:0.6;
+                     zOffset:0.01;
+                     tabSize: 0; width: 0.5;
+                     baseline: top; wrapCount: 5;
+                     align:center;
+                     anchor:center;
+                     baseline:center;
+                     letterSpacing: 0.3;"
+               scale="2.6 2.6 1"></a-mixin>
+
+        <a-mixin id="BoutonLancerJeu" bouton-lancer-jeu
+                 material="opacity:1;color:#c4c4c4;"
+                 geometry="primitive:box;height:0.2;width:0.65;depth:0.2"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.5;
+                       baseline: top; wrapCount: 5;
+                       align:center;
+                       anchor:center;
+                       baseline:center;
+                       letterSpacing: 0.3;"
+                 scale="2.6 2.6 1"></a-mixin>
         <!-- Chansons -->
         <audio id="coupe" src="audio/Coupe.mp3"></audio>
         <audio id="mysteries" src="audio/Mysteries.mp3"></audio>
@@ -117,7 +144,7 @@
               #ui-argent,
               .ui-article,
               .ui-achat,-->
-      <a-entity id="player" rafraichissement changement-outil
+      <a-entity id="player" rafraichissement changement-outil replacer-environnement
                 joueur inventaire position='0 0 0'
                 progressive-controls="controllerModel:true;
                                       touchMixin:myTouch;
@@ -126,7 +153,10 @@
                                               .boite-son,
                                               .poignee,
                                               .tutoriel,
-                                              #map;">
+                                              .message,
+                                              #map,
+                                              #ui-difficulte,
+                                              #ui-lancer-jeu;">
         <a-camera id="head" camera="far:500;"></a-camera>
         <a-entity id="lhand" class="left-controller" hand-controls="left"></a-entity>
         <a-entity id="rhand" class="right-controller" hand-controls="right"></a-entity>
@@ -397,9 +427,53 @@
 
       <a-plane static-body rotation="270 0 0" visible="false" geometry="height:20;width:20;"></a-plane>
 
+      <!-- Choix difficulté -->
+      <a-entity id="ui-difficulte" sleepy dynamic-body grabbable hoverable
+                position="0.5 2 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Difficulty" position="0 1.5 0"></a-text>
+          <a-entity class="bouton" mixin="BoutonDifficulte"
+                    position="0 0.5 0.2" data-btn="1"
+                    text="value:Easy;zOffset:0.15"></a-entity>
+          <a-entity class="bouton" mixin="BoutonDifficulte"
+                    position="0 -1 0.2" data-btn="2"
+                    text="value:Hard;zOffset:0.15"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <!-- Choix difficulté -->
+      <a-entity id="ui-lancer-jeu" sleepy dynamic-body grabbable hoverable
+                position="0.5 1 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Launch Spaceship and start the game!"
+                  position="0 0.5 0" wrapCount="10"></a-text>
+          <a-entity class="bouton" mixin="BoutonLancerJeu"
+                    position="0 -1.25 0.2" data-btn="1"
+                    text="value:Launch;zOffset:0.15;wrapCount:6;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
       <!-- Textes tutoriaux -->
       <a-entity sleepy dynamic-body grabbable hoverable
-                class="poignee" mixin="poignee" position="-1 2.5 -1"
+                class="poignee message" mixin="poignee" position="-1 2.5 -1"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:Click the trackpad to enable or disable the objects to be grabbable.
 
@@ -407,19 +481,19 @@
                             Green color: grabbable;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
       <a-entity sleepy dynamic-body grabbable hoverable position="-1 1 -1"
-                class="poignee" mixin="poignee"
+                class="poignee message" mixin="poignee"
                 geometry="depth:0.1;height:1;width:2.1;"
                 text="value:Use the trigger to interact with object, for example to grab a panel or buy some articles.;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
       <a-entity sleepy dynamic-body grabbable hoverable position="2 2.5 -1"
-                class="poignee" mixin="poignee"
+                class="poignee message" mixin="poignee"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:The goal of this game is to not lose all your Bitcoins. You can sell and buy articles to make more profit. Beware the transportation fees!;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
       <a-entity sleepy dynamic-body grabbable hoverable position="2 1 -1"
-                class="poignee" mixin="poignee"
+                class="poignee message" mixin="poignee"
                 geometry="depth:0.1;height:1;width:2.1;"
-                text="value:You can place your environment to be more efficent.;
+                text="value:You can place your environment to be more efficent. Use the grip button to replace the panel;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
 
       <!-- Son -->

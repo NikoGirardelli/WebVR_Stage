@@ -6,7 +6,29 @@ AFRAME.registerComponent("bouton-achat-vente", {
 		init: function () {
 
 			var el = this.el,
-					panneauParent = el.parentEl.parentEl;
+					panneauParent = el.parentEl.parentEl,
+					positionAnimY = el.getAttribute("position").y;
+				  positionAnim = {x:0,y:positionAnimY,z:-0.08},
+					positionInit = {x:0,y:positionAnimY,z:0.2};
+
+			/* Animation posiiton et couleur */
+			el.setAttribute("animation__text",{
+				dur:300,
+				property:"text.color",
+				from:"#0099ff",
+				to:"#FFFFFF",
+				startEvents:"click",
+				autoplay:false
+			});
+
+			el.setAttribute("animation__position",{
+				dur:300,
+				property:"position",
+				from:positionAnim,
+				to:positionInit,
+				startEvents:"click",
+				autoplay:false
+			});
 
 			this.hoverStart = function() {
 
@@ -34,8 +56,7 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 			var el = this,
 					joueur = document.querySelector("#player"),
-					panneauParent = this.parentEl.parentEl,
-					positionAnimY = 0;
+					panneauParent = this.parentEl.parentEl;
 
 			if(outilSelection == 1) {
 
@@ -45,56 +66,26 @@ AFRAME.registerComponent("bouton-achat-vente", {
 					/* Achats */
 					case "1":
 							 joueur.components["joueur"].acheterArticle(1);
-							 positionAnimY = 0.5;
 							 break;
 				  case "3":
 							 joueur.components["joueur"].acheterArticle(2);
-							 positionAnimY = 0.5;
 							 break;
 				  case "5":
 	 					 	 joueur.components["joueur"].acheterArticle(3);
-							 positionAnimY = 0.5;
 	 					 	 break;
 
 					/* Ventes */
 					case "2":
 							 joueur.components["joueur"].vendreArticle(1);
-							 positionAnimY = -1;
 							 break;
 					case "4":
 							 joueur.components["joueur"].vendreArticle(2);
-							 positionAnimY = -1;
 							 break;
 					case "6":
 						 	 joueur.components["joueur"].vendreArticle(3);
-							 positionAnimY = -1;
 						 	 break;
 
 				}
-
-				/* Copie la position du bouton */
-				var positionAnim = {x:0,y:positionAnimY,z:-0.08},
-						positionInit = {x:0,y:positionAnimY,z:0.2};
-
-
-				/* Animation posiiton et couleur */
-				el.setAttribute("animation__text",{
-					dur:300,
-					property:"text.color",
-					from:"#0099ff",
-					to:"#FFFFFF",
-					startEvents:"click",
-					autoplay:false
-				});
-
-				el.setAttribute("animation__position",{
-					dur:300,
-					property:"position",
-					from:positionAnim,
-					to:positionInit,
-					startEvents:"click",
-					autoplay:false
-				});
 
 			}
 

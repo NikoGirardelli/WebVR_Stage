@@ -26,8 +26,6 @@ AFRAME.registerComponent('changement-outil', {
 
       outilSelection = 1;
 
-      //console.log("clickable");
-
     }
 
     /* Panneaux grabbable et button non clickable */
@@ -42,12 +40,13 @@ AFRAME.registerComponent('changement-outil', {
       }
 
       outilSelection = 0;
-    //  console.log("non clickable, grabbable")
+
     }
 
   },
 
   play:function() {
+
     // Do something when component's data is updated.
     this.el.children[1].addEventListener("trackpaddown",this.changerOutil);
     this.el.children[2].addEventListener("trackpaddown",this.changerOutil);
@@ -58,12 +57,14 @@ AFRAME.registerComponent('changement-outil', {
     // Do something the component or its entity is detached.
     this.el.children[1].removeEventListener("trackpaddown",this.changerOutil);
     this.el.children[2].removeEventListener("trackpaddown",this.changerOutil);
+
   },
 
   remove: function () {
     // Do something the component or its entity is detached.
     this.el.children[1].removeEventListener("trackpaddown",this.changerOutil);
     this.el.children[2].removeEventListener("trackpaddown",this.changerOutil);
+
   }
 
 });

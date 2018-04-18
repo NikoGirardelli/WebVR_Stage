@@ -3,14 +3,15 @@ var valeurArticles = [["Jupiter",["Grain",4,7,6],["Poutine",10,8,12],["Steel",15
 											["Earth",["Grain",5,7,6],["Poutine",6,8,12],["Steel",30,22,19]]
 										];
 var lesDifficultes = ["facile","hardcore"];
-// valeurArticles[0][0] = "Boston", valeurArticles[0][2][0] = "Poutine", valeurArticles[0][2][1] = 10,
+
+var jeuLancer = false;
 
 /* S'occupe de l'inventaire du joueur et de son argent. */
 AFRAME.registerComponent("joueur", {
 
 	schema: {
 
-		argent: {default:100, type:"int"},
+		argent: {default:300, type:"int"},
 		grain:{default:1, type:"int"},
 		poutine:{default:1, type:"int"},
 		steel:{default:1, type:"int"},
@@ -160,6 +161,7 @@ AFRAME.registerComponent("joueur", {
 
 			montantPerte = 1;
 
+
 		} else if(this.data.difficulte == lesDifficultes[1]) {
 
 			montantPerte = 5;
@@ -190,25 +192,35 @@ AFRAME.registerComponent("joueur", {
 
 			this.el.children[0].appendChild(textFin);
 
-			textFin.setAttribute("text",{
-				value:"The End!\nYou don't have any Bitcoin remaining. \nPlease restart the page to play it again.",
-				wrapCount:18,
-				zOffset:-4,
-				align:"center"
-			});
-
-			textFin.setAttribute("animation__text",{
-				dur:100,
-				property:"text.color",
-				from:0x0099ff,
-				to:0xFFFFFF,
-				autoplay:true,
-				loop:true
-			});
+			this.affichageTexteTemps(textFin);
 
 			scene.pause();
 
 		}
+
+	},
+
+	affichageTexteTemps:function(textFin) {
+
+		/* Transforme en secondes */
+		dureeTotalDeLaPartie = dureeTotalDeLaPartie/100;
+
+		textFin.setAttribute("text",{
+			value:"The End!\nYou don't have any Bitcoin remaining. \nYou survived " + dureeTotalDeLaPartie + " seconds.",
+			wrapCount:18,
+			zOffset:-4,
+			align:"center"
+		});
+
+		textFin.setAttribute("animation__text",{
+			dur:100,
+			property:"text.color",
+			from:0x0099ff,
+			to:0xFFFFFF,
+			autoplay:true,
+			loop:true
+		});
+
 
 	},
 
@@ -222,7 +234,7 @@ AFRAME.registerComponent("joueur", {
 
 	pause:function() {
 
-		console.log("fin?")
+		//console.log("fin?")
 
 	},
 

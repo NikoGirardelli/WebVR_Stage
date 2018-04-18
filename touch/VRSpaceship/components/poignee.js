@@ -9,7 +9,7 @@ AFRAME.registerComponent("poignee", {
 
 			this.hoverStart = function() {
 
-				if(outilSelection == 1) {
+				if(outilSelection == 0) {
 
 
 					el.setAttribute("material",{opacity:0.7});
