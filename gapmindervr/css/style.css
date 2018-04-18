@@ -9,11 +9,10 @@ h3, h4 {
     color: #111;
 }
 .container {
-    padding: 80px 120px;
+    padding: 120px 10% 120px 10%;
 }
 .bg-1 {
     background: #f9f9f9;
-    color: #bdbdbd;
 }
 .bg-1 p {font-style: italic;}
 .bg-2 p {font-style: italic;}
