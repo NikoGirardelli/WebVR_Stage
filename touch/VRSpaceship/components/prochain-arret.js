@@ -23,6 +23,12 @@ AFRAME.registerComponent("prochain-arret", {
 		/* Modifie le temps restant pour aller à la prochaine ville */
 		changerETAProchaineVille:function() {
 
+			if(jeuLancer == false) {
+
+				tempsRestant = duree;
+
+			}
+
 			/* Accède au train pour connaître son prochain arrêt */
 			this.el.children[1].children[1].setAttribute("value","ETA:  " + tempsRestant);
 

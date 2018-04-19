@@ -55,7 +55,7 @@ AFRAME.registerComponent("bouton-difficulte", {
 
 			this.hoverStart = function() {
 
-				if(outilSelection == 1) {
+				if(outilSelection == 1 && el.getAttribute("position").z == 0.2) {
 
 					el.setAttribute("material",{opacity:0.5});
 					el.setAttribute("text",{color:0x0099ff});
@@ -67,9 +67,13 @@ AFRAME.registerComponent("bouton-difficulte", {
 
 			this.hoverEnd = function() {
 
+				if(el.getAttribute("position").z == 0.2) {
+
 					el.setAttribute("material",{opacity:1});
 					el.setAttribute("text",{color:0xffffff});
 					el.setAttribute("scale",{x:2.6,y:2.6,z:1});
+
+				}
 
       };
 
@@ -81,7 +85,7 @@ AFRAME.registerComponent("bouton-difficulte", {
 					joueur = document.querySelector("#player"),
 					panneauParent = el.parentEl.parentEl;
 
-			if(jeuLancer == false) {
+			if(outilSelection == 1 && jeuLancer == false) {
 
 				/* Achat ou vente de l'article */
 				switch(el.getAttribute("data-btn")) {

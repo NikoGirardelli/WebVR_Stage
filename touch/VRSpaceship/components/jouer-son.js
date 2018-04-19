@@ -32,12 +32,13 @@ AFRAME.registerComponent("jouer-son", {
 
 		pause:function() {
 
+			this.el.removeEventListener("click",this.jouerSon);
+
 		},
 
 		remove:function() {
 
 			this.el.removeEventListener("click",this.jouerSon);
-			lesBoitesSon[1].removeEventListener("sound-loaded",this.jouerSon);
 
 		}
 

@@ -146,7 +146,7 @@ AFRAME.registerComponent("joueur", {
 		var uiArgent = document.querySelector("#ui-argent"),
 				argentJoueur = this.data.argent;
 
-		uiArgent.children[1].children[1].setAttribute("text",{value:argentJoueur + " Bitcoin"});
+		uiArgent.children[1].children[1].setAttribute("text",{value:argentJoueur + " Bitcoins"});
 
 	},
 
@@ -174,9 +174,10 @@ AFRAME.registerComponent("joueur", {
 
 		}
 
-		else {
+		else if(argentJoueur - montantPerte < 0) {
 
 			this.data.finJeu = true;
+			this.pause();
 
 		}
 
@@ -188,13 +189,13 @@ AFRAME.registerComponent("joueur", {
 		if(this.data.finJeu == true) {
 
 			var scene = document.querySelector('a-scene'),
-					textFin = document.createElement("a-text");
+					textFin = document.createElement("a-text"),
+					map = document.querySelector("#map");
+
 
 			this.el.children[0].appendChild(textFin);
-
 			this.affichageTexteTemps(textFin);
-
-			scene.pause();
+			map.pause();
 
 		}
 
@@ -206,17 +207,18 @@ AFRAME.registerComponent("joueur", {
 		dureeTotalDeLaPartie = dureeTotalDeLaPartie/100;
 
 		textFin.setAttribute("text",{
-			value:"The End!\nYou don't have any Bitcoin remaining. \nYou survived " + dureeTotalDeLaPartie + " seconds.",
+			value:"You don't have any Bitcoin remaining. \nYou survived " + dureeTotalDeLaPartie + " seconds. \nUse the menu button to restart the game.",
 			wrapCount:18,
 			zOffset:-4,
-			align:"center"
+			align:"center",
+			width:3
 		});
 
 		textFin.setAttribute("animation__text",{
-			dur:100,
+			dur:500,
 			property:"text.color",
-			from:0x0099ff,
-			to:0xFFFFFF,
+			from:"#0099ff",
+			to:"#FFFFFF",
 			autoplay:true,
 			loop:true
 		});
@@ -233,12 +235,6 @@ AFRAME.registerComponent("joueur", {
 	},
 
 	pause:function() {
-
-		//console.log("fin?")
-
-	},
-
-	tick:function(){
 
 		this.verifierFin();
 

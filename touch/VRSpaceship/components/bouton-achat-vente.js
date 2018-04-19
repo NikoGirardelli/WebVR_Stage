@@ -17,7 +17,7 @@ AFRAME.registerComponent("bouton-achat-vente", {
 				property:"text.color",
 				from:"#0099ff",
 				to:"#FFFFFF",
-				startEvents:"click",
+				startEvents:"activerBouton",
 				autoplay:false
 			});
 
@@ -26,13 +26,13 @@ AFRAME.registerComponent("bouton-achat-vente", {
 				property:"position",
 				from:positionAnim,
 				to:positionInit,
-				startEvents:"click",
+				startEvents:"activerBouton",
 				autoplay:false
 			});
 
 			this.hoverStart = function() {
 
-				if(outilSelection == 1) {
+				if(outilSelection == 1 && jeuLancer == true) {
 
 					el.setAttribute("material",{opacity:0.5});
 					el.setAttribute("text",{color:0x0099ff});
@@ -44,9 +44,9 @@ AFRAME.registerComponent("bouton-achat-vente", {
 
 			this.hoverEnd = function() {
 
-					el.setAttribute("material",{opacity:1});
-					el.setAttribute("text",{color:0xffffff});
-					el.setAttribute("scale",{x:2.6,y:2.6,z:1});
+				el.setAttribute("material",{opacity:1});
+				el.setAttribute("text",{color:0xffffff});
+				el.setAttribute("scale",{x:2.6,y:2.6,z:1});
 
       };
 
@@ -58,7 +58,10 @@ AFRAME.registerComponent("bouton-achat-vente", {
 					joueur = document.querySelector("#player"),
 					panneauParent = this.parentEl.parentEl;
 
-			if(outilSelection == 1) {
+			if(outilSelection == 1 && jeuLancer == true) {
+
+				/* Joue l'animation */
+				el.emit("activerBouton");
 
 				/* Achat ou vente de l'article */
 				switch(el.getAttribute("data-btn")) {

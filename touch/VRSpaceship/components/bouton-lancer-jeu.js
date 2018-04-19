@@ -55,14 +55,98 @@ AFRAME.registerComponent("bouton-lancer-jeu", {
 			var uiLancerJeu = document.querySelector("#ui-lancer-jeu"),
 					uiDifficulte = document.querySelector("#ui-difficulte");
 
-			/* Détruit les panneaux du choix de difficulté et celui de lancer
-		  *  le jeu lorsque le jeu est lancé.
-			*/
-			if(jeuLancer == false) {
+			/* Animation des panneaux  et destruction à la fin de l'animation */
+			if(outilSelection == 1 && jeuLancer == false) {
 
 				jeuLancer = true;
-				uiDifficulte.parentNode.removeChild(uiDifficulte);
-				uiLancerJeu.parentNode.removeChild(uiLancerJeu);
+
+				uiDifficulte.children[0].setAttribute("animation__opacite",{
+					dur:300,
+					property:"slice9.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiDifficulte.children[2].setAttribute("animation__opacite",{
+					dur:300,
+					property:"material.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiDifficulte.children[1].children[0].setAttribute("animation__opacite",{
+					dur:300,
+					property:"text.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiDifficulte.children[1].children[1].setAttribute("animation__opacite",{
+					dur:300,
+					property:"material.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiDifficulte.children[1].children[2].setAttribute("animation__opacite",{
+					dur:300,
+					property:"material.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiLancerJeu.children[0].setAttribute("animation__opacite",{
+					dur:300,
+					property:"slice9.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiLancerJeu.children[2].setAttribute("animation__opacite",{
+					dur:300,
+					property:"material.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiLancerJeu.children[1].children[0].setAttribute("animation__opacite",{
+					dur:300,
+					property:"text.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+				uiLancerJeu.children[1].children[1].setAttribute("animation__opacite",{
+					dur:300,
+					property:"material.opacity",
+					to:0,
+					from:1,
+					autoplay:true
+				});
+
+			}
+
+		},
+
+		/* Détruit les panneaux */
+		detruirePanneaux:function() {
+
+			if(document.querySelector("#ui-lancer-jeu") != null) {
+
+				var sceneEl = document.querySelector('a-scene');
+						uiLancerJeu = document.querySelector("#ui-lancer-jeu"),
+						uiDifficulte = document.querySelector("#ui-difficulte");
+
+					sceneEl.removeChild(uiDifficulte);
+					sceneEl.removeChild(uiLancerJeu);
 
 			}
 
@@ -70,14 +154,16 @@ AFRAME.registerComponent("bouton-lancer-jeu", {
 
 		play:function () {
 
-				/* Lorsqu'on clique le bouton */
-				this.el.addEventListener("click",this.commencerJeu);
-				this.el.addEventListener('hover-start', this.hoverStart);
-	      this.el.addEventListener('hover-end', this.hoverEnd);
+			/* Lorsqu'on clique le bouton */
+		  this.el.addEventListener("animationcomplete",this.detruirePanneaux);
+			this.el.addEventListener("click",this.commencerJeu);
+			this.el.addEventListener('hover-start', this.hoverStart);
+      this.el.addEventListener('hover-end', this.hoverEnd);
 		},
 
 		pause:function() {
 
+			this.el.removeEventListener("animationcomplete",this.detruirePanneaux);
 			this.el.removeEventListener("click",this.commencerJeu);
 			this.el.removeEventListener('hover-start', this.hoverStart);
 			this.el.removeEventListener('hover-end', this.hoverEnd);
@@ -86,6 +172,7 @@ AFRAME.registerComponent("bouton-lancer-jeu", {
 
 		remove:function() {
 
+			this.el.removeEventListener("animationcomplete",this.detruirePanneaux);
 			this.el.removeEventListener("click",this.commencerJeu);
 			this.el.removeEventListener('hover-start', this.hoverStart);
       this.el.removeEventListener('hover-end', this.hoverEnd);

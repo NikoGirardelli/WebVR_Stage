@@ -24,7 +24,6 @@
     <script src="components/jouer-son.js"></script>
     <script src="components/poignee.js"></script>
     <script src="components/changement-outil.js"></script>
-    <script src="components/replacer-environnement.js"></script>
     <!--
     <script src="components/changement-outil.js"></script>
     <script src="js/papaparse.min.js"></script>
@@ -139,13 +138,9 @@
 
       </a-assets>
 
-      <!-- Les mains #ui-prochain-arret,
-              #ui-inventaire,
-              #ui-argent,
-              .ui-article,
-              .ui-achat,-->
-      <a-entity id="player" rafraichissement changement-outil replacer-environnement
-                joueur inventaire position='0 0 0'
+      <!-- Les mains -->
+      <a-entity id="player" rafraichissement changement-outil
+                joueur inventaire position='0 0 -0.5'
                 progressive-controls="controllerModel:true;
                                       touchMixin:myTouch;
                                       maxLevel:touch;
@@ -173,7 +168,7 @@
         <!-- Nom et temps restant -->
         <a-entity position="0 -0.25 0">
           <a-text class="pa-ville" mixin="titreVille"
-                  value="Spaceship arrives  in Townroto" position="0 0.25 0"></a-text>
+                  value="Spaceship arrives  in Jupiter" position="0 0.25 0"></a-text>
           <a-text class="pa-eta" mixin="titreVille"
                   value="ETA: 0" position="0 -0.7 0"></a-text>
         </a-entity>
@@ -218,7 +213,7 @@
         <!-- Valeur articles -->
         <a-entity position="0 -0.25 0">
           <a-text class="texteArticle" mixin="titreVille"
-                  value="Your Money" position="0 0.5 0"></a-text>
+                  value="Your Bitcoin" position="0 0.5 0"></a-text>
           <a-entity id="myMoney"
                     position="0 0 0.001"
                     text="value:0 Bitcoin;wrapCount:15;width:2.5;align:center;"></a-entity>
@@ -425,11 +420,9 @@
                                             width:2;primitive:cylinder;"></a-entity>
       </a-entity>
 
-      <a-plane static-body rotation="270 0 0" visible="false" geometry="height:20;width:20;"></a-plane>
-
       <!-- Choix difficulté -->
       <a-entity id="ui-difficulte" sleepy dynamic-body grabbable hoverable
-                position="0.5 2 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+                position="0.1 0.7 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -452,7 +445,7 @@
 
       <!-- Choix difficulté -->
       <a-entity id="ui-lancer-jeu" sleepy dynamic-body grabbable hoverable
-                position="0.5 1 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+                position="0.9 0.7 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -461,7 +454,7 @@
         <a-entity position="0 -0.25 0">
           <a-text mixin="titreVille"
                   value="Launch Spaceship and start the game!"
-                  position="0 0.5 0" wrapCount="10"></a-text>
+                  position="0 0.5 0" wrapCount="14" width="3"></a-text>
           <a-entity class="bouton" mixin="BoutonLancerJeu"
                     position="0 -1.25 0.2" data-btn="1"
                     text="value:Launch;zOffset:0.15;wrapCount:6;"></a-entity>
@@ -472,26 +465,26 @@
       </a-entity>
 
       <!-- Textes tutoriaux -->
-      <a-entity sleepy dynamic-body grabbable hoverable
-                class="poignee message" mixin="poignee" position="-1 2.5 -1"
+      <a-entity sleepy dynamic-body grabbable hoverable position="-1 2.35 -1"
+                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:Click the trackpad to enable or disable the objects to be grabbable.
 
                             Red color: not grabbable
                             Green color: grabbable;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="-1 1 -1"
-                class="poignee message" mixin="poignee"
+      <a-entity sleepy dynamic-body grabbable hoverable position="-1 1.5 -1"
+                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
                 geometry="depth:0.1;height:1;width:2.1;"
                 text="value:Use the trigger to interact with object, for example to grab a panel or buy some articles.;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="2 2.5 -1"
-                class="poignee message" mixin="poignee"
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.6 2.35 -1"
+                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:The goal of this game is to not lose all your Bitcoins. You can sell and buy articles to make more profit. Beware the transportation fees!;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="2 1 -1"
-                class="poignee message" mixin="poignee"
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.6 1.5 -1"
+                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
                 geometry="depth:0.1;height:1;width:2.1;"
                 text="value:You can place your environment to be more efficent. Use the grip button to replace the panel;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
@@ -523,6 +516,19 @@
                   mixin="poignee" geometry="height:0.125;depth:0.125;width:2"></a-entity>
       </a-entity>
 
+      <!-- Colliders -->
+      <a-plane static-body rotation="270 0 0" visible="false"
+               geometry="height:20;width:20;"></a-plane>
+      <a-plane static-body rotation="270 0 0" visible="false"
+               geometry="height:20;width:20;" position="0 3 0"></a-plane>
+      <a-plane static-body rotation="0 270 0" visible="false"
+               geometry="height:20;width:20;" position="2.5 0 0"></a-plane>
+      <a-plane static-body rotation="0 90 0" visible="false"
+               geometry="height:20;width:20;" position="-2.5 0 0"></a-plane>
+      <a-plane static-body rotation="0 180 0" visible="false"
+               geometry="height:20;width:20;" position="0 0 2.5"></a-plane>
+      <a-plane static-body rotation="0 0 0" visible="false"
+               geometry="height:20;width:20;" position="0 0 -2.5"></a-plane>
     </a-scene>
   </body>
 </html>

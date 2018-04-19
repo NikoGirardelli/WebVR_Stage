@@ -47,6 +47,8 @@ AFRAME.registerComponent("poignee", {
 
 		pause:function() {
 
+			this.el.removeEventListener("raycaster-intersected",this.eventScalingBegining);
+			this.el.removeEventListener("raycaster-intersected-cleared",this.eventScalingEnding);
 			this.el.removeEventListener("hover-start",this.hoverStart);
 			this.el.removeEventListener("hover-end",this.hoverEnd);
 

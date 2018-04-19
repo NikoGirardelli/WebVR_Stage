@@ -54,9 +54,9 @@ AFRAME.registerComponent('changement-outil', {
   },
 
   pause: function () {
-    // Do something the component or its entity is detached.
+    /* Do something the component or its entity is detached.
     this.el.children[1].removeEventListener("trackpaddown",this.changerOutil);
-    this.el.children[2].removeEventListener("trackpaddown",this.changerOutil);
+    this.el.children[2].removeEventListener("trackpaddown",this.changerOutil);*/
 
   },
 
