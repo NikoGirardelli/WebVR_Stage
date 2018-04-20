@@ -15,7 +15,7 @@ AFRAME.registerComponent('rafraichissement', {
 
   pause: function () {
 
-    this.el.removeEventListener("menudown",this.rafraichir);
+    //this.el.removeEventListener("menudown",this.rafraichir);
 
   }
 

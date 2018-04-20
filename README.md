@@ -5,6 +5,10 @@
  - Site regroupant la démonstration du 'Museum' et celle de 'Rail of Time'.
 
 ## Démonstrations intéressantes
+[VRSpaceTrader](http://www.vrspacetrader.fun/)
+[GitHub](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/touch/VRSpaceTrader/index.html)
+ - Permet de modifier l'environnement afin d'optimiser son temps de réaction face au mini-jeu. Le but du mini-jeu est de ne pas perdre tous ses Bitcoins. On peut vendre ou acheter des articles.
+
 [Musee](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/point/musee/index.html)
  - Permet de se déplacer dans un musée contenant des données qui influencent l'apparence des statues et de son environnement.
 
@@ -24,7 +28,7 @@
 
 [Choisir un mois avec le laser](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/point/moisAvecPointer/index.html)
 
-[Main et laser pour choisir des pays et des années](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/boulesPaysEsperanceDeVieEtRevenu/index.html)
+[Main et laser pour choisir des pays et des années](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/mainEtPointer/boulesPaysEsperanceDeVieEtRevenu/index.html)
 
 [Prototype 18-01-26](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/prototypes/prototype_01-26/index.html)
 
