@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Inspired by the demo on W3Schools https://www.w3schools.com/bootstrap/bootstrap_theme_band.asp -->
+  <title>VR Space Trader</title>
+  <meta charset="utf-8">
+  <meta name ="description" content="VR Space Trader">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#welcome">VR Space Trader</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#vrspacetrader">DEMO</a></li>
+        <li><a href="#about">ABOUT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Welcome -->
+<div id="welcome" class="bg-1">
+  <div class="container">
+    <h3 class="text-center">WELCOME</h3>
+     <p>We envision a future where many people work in virtual reality (VR). We think that workers might be able to use their virtual environment to enhance their cognitive abilities. We wanted to test this idea out by creating a game where you must buy and sell goods on different planets while trying to make a profit.</p>
+    <br>
+    <p><kbd>To experience VR Space Trader, we recommend an HTC Vive connected to a suitable PC running a recent version of Firefox. However, <a href="https://webvr.info/">other browsers and headsets might work</a>.</kbd></p>
+  </div>
+</div>
+
+<!-- VR Space Trader -->
+<div id="vrspacetrader" class='bg-2'>
+  <div class="container">
+    <h3 class="text-center">DEMO</h3>
+     <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+           <a href="media/01.jpg"><img src="media/01.jpg" alt="01" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <a href="media/02.jpg"><img src="media/02.jpg" alt="02" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <a href="media/03.jpg"><img src="media/03.jpg" alt="03" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <a href="media/04.jpg"><img src="media/04.jpg" alt="04" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <a href="media/05.jpg"><img src="media/05.jpg" alt="05" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <a href="media/06.jpg"><img src="media/06.jpg" alt="06" width="400" height="300"></a>
+        </div>
+      </div>
+      <div class="col-sm-12 videoDemo">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/MdnT4LZcg6c"></iframe>
+        </div>
+      </div>
+      <a class="btn" href="demo/VRSpaceTrader/index.html" target="_blank">Try demo with a VR headset</a>
+    </div>
+  </div>
+</div>
+
+<!-- About -->
+<div id="about" class="container">
+  <h3>ABOUT</h3>
+  <p>The VR Space Trader experience was designed by Niko Girardelli in collaboration
+    with Dara Aghamirkarimi, Béatrice Pudelko and <a href="https://lemire.me/en/">Daniel Lemire</a> at the University of Quebec (TELUQ). We acknowledge the support of the Natural Sciences and Engineering Research Council of Canada (NSERC), which invests annually over $1 billion in people, discovery and innovation.</p>
+    <a href="https://www.teluq.ca/site/en/"><img src="media/logo_teluq_nb.png" width="20%"/></a>
+    <a href="http://nserc-crsng.gc.ca/index_eng.asp"><img src="media/NSERC_B.jpg" width="20%"/></a>
+</div>
+
+
+<!-- Footer -->
+<footer class="text-center">
+  <a class="up-arrow" href="#welcome" data-toggle="tooltip" title="TO TOP">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a><br><br>
+  <p>Copyright © VR Space Trader 2018| <a href="mailto:lemire@gmail.com?subject=GapminderVR">Get in touch</a>
+</footer>
+
+<script>
+$(document).ready(function(){
+  // Initialize Tooltip
+  $('[data-toggle="tooltip"]').tooltip();
+
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#welcome']").on('click', function(event) {
+
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== "") {
+
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 900, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+})
+</script>
+
+</body>
+</html>

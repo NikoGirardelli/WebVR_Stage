@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VRSpaceTrader</title>
+    <meta name ="description" content="VRSpaceTrader - A-Frame">
+    <meta name="author" content="Niko Girardelli">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.0.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v3.0.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-slice9-component/dist/aframe-slice9-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
+    <script src="components/spaceship.js"></script>
+    <script src="components/rafraichissement.js"></script>
+    <script src="components/prochain-arret.js"></script>
+    <script src="components/bouton-difficulte.js"></script>
+    <script src="components/bouton-achat-vente.js"></script>
+    <script src="components/bouton-lancer-jeu.js"></script>
+    <script src="components/joueur.js"></script>
+    <script src="components/jouer-son.js"></script>
+    <script src="components/poignee.js"></script>
+    <script src="components/changement-outil.js"></script>
+  </head>
+  <body>
+    <a-scene stats physics="gravity:0"
+             environment="grid: none;
+                          active: true;
+                          fog: 0;preset:yavapai;
+                          groundTexture:none;">
+
+      <a-assets>
+        <!-- Touch -->
+        <a-mixin id="myTouch" sphere-collider
+                 super-hands="grabStartButtons:triggerdown;
+                              grabEndButtons:triggerup;"></a-mixin>
+        <!-- Poigné -->
+        <a-mixin id="poignee" poignee
+                 geometry="width:0.5;height:2;
+                           depth:0.25;primitive:box;"></a-mixin>
+
+        <!-- panneau -->
+        <a-mixin id="panneau"
+                slice9="width:3;height:2;bottom:43.81;left:20;
+                        right:43;top:20;src:img/slice9_texture/tooltip.png;
+                        color:white;padding:0.02;
+                        side:double;"></a-mixin>
+        <!-- panneau achat -->
+        <a-mixin id="panneau-achat"
+                slice9="width:3;height:4;bottom:43.81;left:20;
+                        right:43;top:20;src:img/slice9_texture/tooltip.png;
+                        color:white;padding:0.02;
+                        side:double;"></a-mixin>
+
+        <!-- Ui - Titre ville -->
+        <a-mixin id="titreVille"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.6;
+                       baseline: top; wrapCount: 12;
+                       letterSpacing: 0.3;
+                       align:center;
+                       anchor:center;
+                       baseline:center;width:3;"></a-mixin>
+       <!-- Bouton -->
+       <a-mixin id="Bouton" bouton-achat-vente
+                material="opacity:1;color:#c4c4c4;"
+                geometry="primitive:box;height:0.2;width:0.65;depth:0.2"
+                text="alphaTest:0.6;
+                      zOffset:0.01;
+                      tabSize: 0; width: 0.5;
+                      baseline: top; wrapCount: 5;
+                      align:center;
+                      anchor:center;
+                      baseline:center;
+                      letterSpacing: 0.3;"
+                scale="2.6 2.6 1"></a-mixin>
+
+      <a-mixin id="BoutonDifficulte" bouton-difficulte
+               material="opacity:1;color:#c4c4c4;"
+               geometry="primitive:box;height:0.2;width:0.65;depth:0.2"
+               text="alphaTest:0.6;
+                     zOffset:0.01;
+                     tabSize: 0; width: 0.5;
+                     baseline: top; wrapCount: 5;
+                     align:center;
+                     anchor:center;
+                     baseline:center;
+                     letterSpacing: 0.3;"
+               scale="2.6 2.6 1"></a-mixin>
+
+        <a-mixin id="BoutonLancerJeu" bouton-lancer-jeu
+                 material="opacity:1;color:#c4c4c4;"
+                 geometry="primitive:box;height:0.2;width:0.65;depth:0.2"
+                 text="alphaTest:0.6;
+                       zOffset:0.01;
+                       tabSize: 0; width: 0.5;
+                       baseline: top; wrapCount: 5;
+                       align:center;
+                       anchor:center;
+                       baseline:center;
+                       letterSpacing: 0.3;"
+                 scale="2.6 2.6 1"></a-mixin>
+        <!-- Chansons -->
+        <audio id="coupe" src="audio/Coupe.mp3"></audio>
+        <audio id="mysteries" src="audio/Mysteries.mp3"></audio>
+        <audio id="splashing-around" src="audio/Splashing_Around.mp3"></audio>
+        <audio id="wind-marching-for-rain" src="audio/Wind_Marching_For_Rain.mp3"></audio>
+
+        <!-- Boite son -->
+        <a-mixin id="boite-son" jouer-son
+                 text="alphaTest:0.6;
+                       zOffset:0.255;
+                       tabSize: 0; width: 0.5;
+                       baseline: top; wrapCount: 10;
+                       align:center;
+                       anchor:center;
+                       baseline:center;
+                       letterSpacing: 0.3;"
+                 geometry="primitive: box;height:0.5;width:0.5;depth:0.5;"
+                 material="color:#FFF;"
+                 event-set__hoveron="_event: hover-start;
+                                     material.opacity: 0.7;"
+                 event-set__hoveroff="_event: hover-end;
+                                      material.opacity: 1;"></a-mixin>
+
+      </a-assets>
+
+      <!-- Les mains position='-1 0 -0.5'-->
+      <a-entity id="player" rafraichissement changement-outil
+                joueur inventaire
+                progressive-controls="controllerModel:true;
+                                      touchMixin:myTouch;
+                                      maxLevel:touch;
+                                      objects:.bouton,
+                                              .boite-son,
+                                              .poignee,
+                                              .tutoriel,
+                                              .message,
+                                              #map,
+                                              #ui-difficulte,
+                                              #ui-lancer-jeu;">
+        <a-camera id="head" camera="far:500;"></a-camera>
+        <a-entity id="lhand" class="left-controller" hand-controls="left"></a-entity>
+        <a-entity id="rhand" class="right-controller" hand-controls="right"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau prochain arrêt -->
+      <a-entity id="ui-prochain-arret" sleepy dynamic-body grabbable hoverable
+                position="1.35 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0"
+                prochain-arret>
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Nom et temps restant -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="pa-ville" mixin="titreVille"
+                  value="Spaceship arrives  in Jupiter" position="0 0.25 0"></a-text>
+          <a-text class="pa-eta" mixin="titreVille"
+                  value="ETA: 0" position="0 -0.7 0"></a-text>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau de notre inventaire -->
+      <a-entity id="ui-inventaire" sleepy dynamic-body grabbable hoverable
+                position="0.8 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Inventory" position="0 0.5 0"></a-text>
+          <a-entity class="inv-article"
+                    position="0 0 0.001"
+                    text="value:0 x Grain;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="inv-article"
+                    position="0 -0.375 0.001"
+                    text="value:0 x Steel;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="inv-article"
+                    position="0 -0.75 0.001"
+                    text="value:0 x Poutine;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau de notre compte de banque  -->
+      <a-entity id="ui-argent" sleepy dynamic-body grabbable hoverable
+                position="0.25 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Your Bitcoin" position="0 0.5 0"></a-text>
+          <a-entity id="myMoney"
+                    position="0 0 0.001"
+                    text="value:0 Bitcoin;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Jupiter -->
+      <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
+                position="1.35 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Jupiter" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Mars -->
+      <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
+                position="0.8 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Mars" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Le panneau article Earth -->
+      <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
+                position="0.25 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
+
+        <!-- Valeur articles -->
+        <a-entity position="0 -0.25 0">
+          <a-text class="texteArticle" mixin="titreVille"
+                  value="Earth" position="0 0.5 0"></a-text>
+          <a-entity class="article"
+                    position="0 0 0.001"
+                    text="value:Grain: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.375 0.001"
+                    text="value:Steel: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+          <a-entity class="article"
+                    position="0 -0.75 0.001"
+                    text="value:Poutine: 0;wrapCount:15;width:2.5;align:center;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee"></a-entity>
+      </a-entity>
+
+      <!-- Les panneaux pour acheter les articles -->
+      <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
+                position="0.25 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Grain" position="0 1.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 0.5 0.2" data-btn="1"
+                    text="value:Buy;zOffset:0.15"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -1 0.2" data-btn="2"
+                    text="value:Sell;zOffset:0.15"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
+                position="0.8 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Poutine" position="0 1.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 0.5 0.2" data-btn="3"
+                    text="value:Buy;zOffset:0.15"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -1 0.2" data-btn="4"
+                    text="value:Sell;zOffset:0.15"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
+                position="1.35 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Steel" position="0 1.5 0"></a-text>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 0.5 0.2" data-btn="5"
+                    text="value:Buy;zOffset:0.15"></a-entity>
+          <a-entity class="bouton" mixin="Bouton"
+                    position="0 -1 0.2" data-btn="6"
+                    text="value:Sell;zOffset:0.15"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <!-- Map -->
+      <a-entity id="map" sleepy dynamic-body grabbable hoverable spaceship
+                scale="0.5 0.5 0.5" rotation="0 90 0" position="-0.75 0.5 0">
+
+        <a-sphere geometry="radius:0.2" position="0 0.5 0.75"
+                  material="color:#ffb800;">
+          <a-entity text="value:Jupiter;yOffset:2;
+                          color:#000000;width:2;
+                          side:double;align:center;
+                          color:white;"
+                    position="0 -0.5 0">
+          </a-entity>
+          <a-sphere geometry="radius:0.3"
+                    material="color:#FFFFFF;opacity:0;
+                              transparent:true;depthTest:false;">
+          </a-sphere>
+        </a-sphere>
+
+        <a-sphere geometry="radius:0.2" position="0.75 0.5 0"
+                  material="color:#bf2f38;">
+          <a-entity text="value:Mars;yOffset:2;
+                          color:#000000;width:2;
+                          side:double;align:center;
+                          color:white;"
+                    position="0 -0.5 0">
+          </a-entity>
+          <a-sphere geometry="radius:0.3"
+                    material="color:#FFFFFF;opacity:0;
+                              transparent:true;depthTest:false;">
+          </a-sphere>
+        </a-sphere>
+
+        <a-sphere geometry="radius:0.2" position="-0.75 0.5 0"
+                  material="color:#003876;">
+          <a-entity text="value:Earth;yOffset:2;
+                          color:#000000;width:2;
+                          side:double;align:center;
+                          color:white;"
+                    position="0 -0.5 0">
+          </a-entity>
+          <a-sphere geometry="radius:0.3"
+                    material="color:#FFFFFF;opacity:0;
+                              transparent:true;depthTest:false;">
+          </a-sphere>
+        </a-sphere>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="0 -0.19 0"
+                  mixin="poignee" geometry="height:0.125;depth:0.125;
+                                            width:2;primitive:cylinder;"></a-entity>
+      </a-entity>
+
+      <!-- Choix difficulté -->
+      <a-entity id="ui-difficulte" sleepy dynamic-body grabbable hoverable
+                position="0.25 0.8 -0.75" scale="0.15 0.15 0.15" rotation="0 0 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Difficulty" position="0 1.5 0"></a-text>
+          <a-entity class="bouton" mixin="BoutonDifficulte"
+                    position="0 0.5 0.2" data-btn="1"
+                    text="value:Easy;zOffset:0.15"></a-entity>
+          <a-entity class="bouton" mixin="BoutonDifficulte"
+                    position="0 -1 0.2" data-btn="2"
+                    text="value:Hard;zOffset:0.15"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <!-- Choix difficulté -->
+      <a-entity id="ui-lancer-jeu" sleepy dynamic-body grabbable hoverable
+                position="0.85 0.8 -0.75" scale="0.15 0.15 0.15" rotation="0 0 0">
+
+        <!-- Fond -->
+        <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
+
+        <!-- Boutons -->
+        <a-entity position="0 -0.25 0">
+          <a-text mixin="titreVille"
+                  value="Launch Spaceship and start the game!"
+                  position="0 0.5 0" wrapCount="14" width="3"></a-text>
+          <a-entity class="bouton" mixin="BoutonLancerJeu"
+                    position="0 -1.25 0.2" data-btn="1"
+                    text="value:Launch;zOffset:0.15;wrapCount:6;"></a-entity>
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="1.75 -0.3 0" mixin="poignee" geometry="height:4;"></a-entity>
+      </a-entity>
+
+      <!-- Textes tutoriaux -->
+      <a-entity sleepy dynamic-body grabbable hoverable position="-0.6 2 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
+                geometry="depth:0.1;height:1.2;width:2.1;"
+                text="value:Click the trackpad to enable or disable the objects to be grabbable.
+
+                            Red color: not grabbable
+                            Green color: grabbable;
+                      align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.5 1.4 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
+                geometry="depth:0.1;height:1;width:2.1;"
+                text="value:Use the trigger to interact with object, for example to grab a panel or buy some articles.;
+                      align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.5 2 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
+                geometry="depth:0.1;height:1.2;width:2.1;"
+                text="value:The goal of this game is to not lose all your Bitcoins. You can sell and buy articles to make more profit. Beware the transportation fees!;
+                      align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
+      <a-entity sleepy dynamic-body grabbable hoverable  position="1.6 2.04 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
+                geometry="depth:0.1;height:1;width:2.1;"
+                text="value:You can place your environment to be more efficent. Use the grip button to replace the panel;
+                      align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
+
+      <!-- Son -->
+      <a-entity id="jukebox" hoverable sleepy
+               dynamic-body grabbable position="1.75 1 0" scale="0.5 0.5 0.5">
+        <a-text value="JUKEBOX - CLICK A CUBE TO PLAY THE SONG !" rotation="0 270 0"
+                align="center" width="2" wrapCount="20" position="-0.07 -0.19 0"></a-text>
+        <a-entity class="boite-son" sound="src:#coupe;loop:true;"
+                  mixin="boite-son" position="0 -0.5 -0.75" rotation="0 270 0"
+                  text="value:Coupe by The Grand Affair">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#mysteries;loop:true;"
+                  mixin="boite-son" position="0 -0.5 -0.25" rotation="0 270 0"
+                  text="value:Mysteries by Dan Lebowitz">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#splashing-around;loop:true;"
+                  mixin="boite-son" position="0 -0.5 0.25" rotation="0 270 0"
+                  text="value:Splasphing Around by The Green Orbs">
+        </a-entity>
+        <a-entity class="boite-son" sound="src:#wind-marching-for-rain;loop:true;"
+                  mixin="boite-son" position="0 -0.5 0.75" rotation="0 270 0"
+                  text="value:Wind Marching For Rain by Puddle of Infinity">
+        </a-entity>
+
+        <!-- Poigné -->
+        <a-entity class="poignee" position="0 -0.19 0" rotation="0 270 0"
+                  mixin="poignee" geometry="height:0.125;depth:0.125;width:2"></a-entity>
+      </a-entity>
+
+      <!-- Colliders -->
+      <a-plane static-body rotation="270 0 0" visible="false"
+               geometry="height:20;width:20;"></a-plane>
+      <a-plane static-body rotation="270 0 0" visible="false"
+               geometry="height:20;width:20;" position="0 3 0"></a-plane>
+      <a-plane static-body rotation="0 270 0" visible="false"
+               geometry="height:20;width:20;" position="2.25 0 0"></a-plane>
+      <a-plane static-body rotation="0 90 0" visible="false"
+               geometry="height:20;width:20;" position="-1.25 0 0"></a-plane>
+      <a-plane static-body rotation="0 180 0" visible="false"
+               geometry="height:20;width:20;" position="0 0 1.25"></a-plane>
+      <a-plane static-body rotation="0 0 0" visible="false"
+               geometry="height:20;width:20;" position="0 0 -1.25"></a-plane>
+    </a-scene>
+  </body>
+</html>

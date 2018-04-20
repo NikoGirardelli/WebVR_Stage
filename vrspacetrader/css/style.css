@@ -1,0 +1,80 @@
+body {
+    font: 400 15px/1.8 Lato, sans-serif;
+    color: #777;
+}
+h3, h4 {
+    margin: 10px 0 30px 0;
+    letter-spacing: 10px;
+    font-size: 20px;
+    color: #111;
+}
+.container {
+    padding: 120px 10% 120px 10%;
+}
+.bg-1 {
+    background: #f9f9f9;
+}
+.bg-1 p {font-style: italic;}
+.bg-2 p {font-style: italic;}
+.thumbnail {
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+}
+.thumbnail p {
+    margin-top: 15px;
+    color: #555;
+}
+.btn {
+    padding: 10px 20px;
+    background-color: #0099ff;
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+}
+.btn:hover, .btn:focus {
+    border: 1px solid #0099ff;
+    background-color: #fff;
+    color: #000;
+}
+.nav-tabs li a {
+    color: #777;
+}
+.navbar {
+    font-family: Montserrat, sans-serif;
+    margin-bottom: 0;
+    background-color: #f4f4f4;
+    font-size: 11px !important;
+    letter-spacing: 4px;
+    opacity: 0.9;
+    border-bottom-color: #0099ff;
+}
+.navbar li a, .navbar .navbar-brand {
+    color: #0099ff !important;
+}
+.navbar-nav li a:hover {
+    color: #000000 !important;
+}
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #0099ff !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+footer {
+    background-color: #2d2d30;
+    color: #f5f5f5;
+    padding: 32px;
+}
+.up-arrow {
+  color: #0099ff !important;
+  text-decoration: none !important;
+}
+.videoDemo {
+  margin-bottom: 20px;
+}
+kbd {
+  background-color: #0099ff !important;
+}
