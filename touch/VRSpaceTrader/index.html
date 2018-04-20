@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>VRTrain</title>
-    <meta name ="description" content="VRTrain - A-Frame">
+    <title>VRSpaceTrader</title>
+    <meta name ="description" content="VRSpaceTrader - A-Frame">
     <meta name="author" content="Niko Girardelli">
     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.0.1/dist/aframe-extras.min.js"></script>
@@ -24,18 +24,9 @@
     <script src="components/jouer-son.js"></script>
     <script src="components/poignee.js"></script>
     <script src="components/changement-outil.js"></script>
-    <!--
-    <script src="components/changement-outil.js"></script>
-    <script src="js/papaparse.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
-    <script src="js/lire-csv.js"></script>
-    <script src="components/statue.js"></script>
-    <script src="components/pays-selection.js"></script>
-    <script src="components/modification-piece.js"></script>
-    <script src="components/teleportation.js"></script>-->
   </head>
   <body>
-    <a-scene stats physics="debug: true;gravity:0"
+    <a-scene stats physics="gravity:0"
              environment="grid: none;
                           active: true;
                           fog: 0;preset:yavapai;
@@ -138,9 +129,9 @@
 
       </a-assets>
 
-      <!-- Les mains -->
+      <!-- Les mains position='-1 0 -0.5'-->
       <a-entity id="player" rafraichissement changement-outil
-                joueur inventaire position='0 0 -0.5'
+                joueur inventaire
                 progressive-controls="controllerModel:true;
                                       touchMixin:myTouch;
                                       maxLevel:touch;
@@ -159,7 +150,7 @@
 
       <!-- Le panneau prochain arrêt -->
       <a-entity id="ui-prochain-arret" sleepy dynamic-body grabbable hoverable
-                position="1.5 2 1" scale="0.15 0.15 0.15" rotation="0 180 0"
+                position="1.35 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0"
                 prochain-arret>
 
         <!-- Fond -->
@@ -179,7 +170,7 @@
 
       <!-- Le panneau de notre inventaire -->
       <a-entity id="ui-inventaire" sleepy dynamic-body grabbable hoverable
-                position="1.5 1 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.8 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -205,7 +196,7 @@
 
       <!-- Le panneau de notre compte de banque  -->
       <a-entity id="ui-argent" sleepy dynamic-body grabbable hoverable
-                position="1.5 1.5 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.25 1.15 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -225,7 +216,7 @@
 
       <!-- Le panneau article Jupiter -->
       <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
-                position="0.5 2 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="1.35 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -251,7 +242,7 @@
 
       <!-- Le panneau article Mars -->
       <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
-                position="0.5 1.5 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.8 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -277,7 +268,7 @@
 
       <!-- Le panneau article Earth -->
       <a-entity class="ui-article" sleepy dynamic-body grabbable hoverable
-                position="0.5 1 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.25 1.5 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau"></a-entity>
@@ -303,7 +294,7 @@
 
       <!-- Les panneaux pour acheter les articles -->
       <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
-                position="-0.5 2 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.25 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -325,7 +316,7 @@
       </a-entity>
 
       <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
-                position="-0.5 1 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="0.8 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -347,7 +338,7 @@
       </a-entity>
 
       <a-entity class="ui-achat" sleepy dynamic-body grabbable hoverable
-                position="-1.5 1 1" scale="0.15 0.15 0.15" rotation="0 180 0">
+                position="1.35 2 0.75" scale="0.15 0.15 0.15" rotation="0 180 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -370,7 +361,7 @@
 
       <!-- Map -->
       <a-entity id="map" sleepy dynamic-body grabbable hoverable spaceship
-                scale="0.75 0.75 0.75" rotation="0 90 0" position="-1.5 0.5 0">
+                scale="0.5 0.5 0.5" rotation="0 90 0" position="-0.75 0.5 0">
 
         <a-sphere geometry="radius:0.2" position="0 0.5 0.75"
                   material="color:#ffb800;">
@@ -422,7 +413,7 @@
 
       <!-- Choix difficulté -->
       <a-entity id="ui-difficulte" sleepy dynamic-body grabbable hoverable
-                position="0.1 0.7 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+                position="0.25 0.8 -0.75" scale="0.15 0.15 0.15" rotation="0 0 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -445,7 +436,7 @@
 
       <!-- Choix difficulté -->
       <a-entity id="ui-lancer-jeu" sleepy dynamic-body grabbable hoverable
-                position="0.9 0.7 -1" scale="0.15 0.15 0.15" rotation="0 0 0">
+                position="0.85 0.8 -0.75" scale="0.15 0.15 0.15" rotation="0 0 0">
 
         <!-- Fond -->
         <a-entity class="panneau" position="0 -0.3 0" mixin="panneau-achat"></a-entity>
@@ -465,33 +456,33 @@
       </a-entity>
 
       <!-- Textes tutoriaux -->
-      <a-entity sleepy dynamic-body grabbable hoverable position="-1 2.35 -1"
-                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
+      <a-entity sleepy dynamic-body grabbable hoverable position="-0.6 2 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:Click the trackpad to enable or disable the objects to be grabbable.
 
                             Red color: not grabbable
                             Green color: grabbable;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="-1 1.5 -1"
-                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.5 1.4 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
                 geometry="depth:0.1;height:1;width:2.1;"
                 text="value:Use the trigger to interact with object, for example to grab a panel or buy some articles.;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="0.6 2.35 -1"
-                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
+      <a-entity sleepy dynamic-body grabbable hoverable position="0.5 2 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
                 geometry="depth:0.1;height:1.2;width:2.1;"
                 text="value:The goal of this game is to not lose all your Bitcoins. You can sell and buy articles to make more profit. Beware the transportation fees!;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
-      <a-entity sleepy dynamic-body grabbable hoverable position="0.6 1.5 -1"
-                class="poignee message" mixin="poignee" scale="0.75 0.75 0.75"
+      <a-entity sleepy dynamic-body grabbable hoverable  position="1.6 2.04 -0.85"
+                class="poignee message" mixin="poignee" scale="0.5 0.5 0.5"
                 geometry="depth:0.1;height:1;width:2.1;"
                 text="value:You can place your environment to be more efficent. Use the grip button to replace the panel;
                       align:center;width:2;wrapCount:20;zOffset:0.08;"></a-entity>
 
       <!-- Son -->
       <a-entity id="jukebox" hoverable sleepy
-               dynamic-body grabbable position="2 1 0.25" scale="0.5 0.5 0.5">
+               dynamic-body grabbable position="1.75 1 0" scale="0.5 0.5 0.5">
         <a-text value="JUKEBOX - CLICK A CUBE TO PLAY THE SONG !" rotation="0 270 0"
                 align="center" width="2" wrapCount="20" position="-0.07 -0.19 0"></a-text>
         <a-entity class="boite-son" sound="src:#coupe;loop:true;"
@@ -522,13 +513,13 @@
       <a-plane static-body rotation="270 0 0" visible="false"
                geometry="height:20;width:20;" position="0 3 0"></a-plane>
       <a-plane static-body rotation="0 270 0" visible="false"
-               geometry="height:20;width:20;" position="2.5 0 0"></a-plane>
+               geometry="height:20;width:20;" position="2.25 0 0"></a-plane>
       <a-plane static-body rotation="0 90 0" visible="false"
-               geometry="height:20;width:20;" position="-2.5 0 0"></a-plane>
+               geometry="height:20;width:20;" position="-1.25 0 0"></a-plane>
       <a-plane static-body rotation="0 180 0" visible="false"
-               geometry="height:20;width:20;" position="0 0 2.5"></a-plane>
+               geometry="height:20;width:20;" position="0 0 1.25"></a-plane>
       <a-plane static-body rotation="0 0 0" visible="false"
-               geometry="height:20;width:20;" position="0 0 -2.5"></a-plane>
+               geometry="height:20;width:20;" position="0 0 -1.25"></a-plane>
     </a-scene>
   </body>
 </html>
