@@ -5,7 +5,8 @@
  - Site regroupant la démonstration du 'Museum' et celle de 'Rail of Time'.
 
 ## Démonstrations intéressantes
-[VRSpaceship](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/touch/VRSpaceship/index.html)
+[VRSpaceTrader](http://www.vrspacetrader.fun/)
+[GitHub](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/touch/VRSpaceTrader/index.html)
  - Permet de modifier l'environnement afin d'optimiser son temps de réaction face au mini-jeu. Le but du mini-jeu est de ne pas perdre tous ses Bitcoins. On peut vendre ou acheter des articles.
 
 [Musee](https://rawgit.com/NikoGirardelli/WebVR_Stage/master/point/musee/index.html)
