@@ -145,18 +145,8 @@
       </a-assets>
 
       <!-- Les mains -->
-      <a-entity id="player" rafraichissement position='0 0 0'>
-        <a-camera id="head" camera="far:500;">
-          <!-- Annee texte -->
-          <a-text id="anneeTexte"
-                   text="alphaTest:0.6;
-                         tabSize: 0; width: 10;
-                         baseline: top; wrapCount: 12;
-                         letterSpacing: 0.3;
-                         align:center;color:#ffffff;
-                         anchor:center;zOffset:-30;
-                         baseline:center;value:;"></a-text>
-        </a-camera>
+      <a-entity id="player" rafraichissement>
+        <a-camera id="head" camera="far:500;"></a-camera>
         <a-entity id="lhand" vive-controls="hand:left;model:false">
 
           <a-entity id="ui-joueur" position="0 0 -0.07" scale="0.15 0.15 0.15" rotation="-45 0 0">
@@ -383,7 +373,7 @@
         <a-entity id="rhand"
         raycaster="objects:.pointTeleportation,.panneau,.panneauData,.panneauPiece,.panneauAnnee,
                            .sphereGraphe,.panneauSelectionPays;far:20;recursive:false;"
-        laser-controls="hands:right" line="color: #22D1EE; opacity: 0.75"></a-entity>
+        laser-controls="hand:right" line="color: #22D1EE; opacity: 0.75"></a-entity>
       </a-entity>
 
       <!-- Toutes les statues -->
