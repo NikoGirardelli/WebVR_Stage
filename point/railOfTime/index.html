@@ -5,7 +5,7 @@
     <title>Rail of Time</title>
     <meta name ="description" content="Rail of Time - A-Frame">
     <meta name="author" content="Niko Girardelli">
-    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.js"></script>
@@ -131,7 +131,7 @@
                 progressive-controls="controllerModel:false;override:true;
                                       maxLevel:point;touchMixin:mytouch;
                                       pointMixin:mypoint;">
-        <a-camera id="head" camera="far:500;"wasd-controls look-controls>
+        <a-camera id="head" camera="far:500;">
           <!-- Annee texte -->
           <a-text id="anneeTexte"
                    text="alphaTest:0.6;
@@ -315,17 +315,17 @@
 
       <!-- Ligne du temps -->
       <a-entity>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="1.5 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="1.2 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.9 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.6 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="0.3 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="0 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.3 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.6 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.9 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" position="-1.2 0.25 0"></a-box>
-        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="-1.5 0.25 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="1.5 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="1.2 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.9 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.6 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="0.3 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="0 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.3 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.6 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-0.9 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" position="-1.2 0.05 0"></a-box>
+        <a-box class="ligneTemps" mixin="ligneTemps" geometry="depth:1" position="-1.5 0.05 0"></a-box>
       </a-entity>
 
 
@@ -358,7 +358,7 @@
 
 
       <!-- Plateforme -->
-      <a-box id='plateforme' position="0 0.1 0"
+      <a-box id='plateforme' position="0 -0.1 0"
              geometry="depth:1.5;width:3.5;height:0.25"
              material="color:#c0c0c0;"></a-box>
 
